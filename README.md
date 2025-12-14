@@ -210,7 +210,7 @@ If you use this tool in your research, please cite:
 
 ## Contact
 
-- **Issues:** [GitHub Issues]r(https://github.com/gilde-valeria/rv_collects/issues) - We're following an internal development flow, where all changes are made and tested in Gilde's repository and then in a public repository.
+- **Issues:** [GitHub Issues](https://github.com/gilde-valeria/rv_collects/issues) - We're following an internal development flow, where all changes are made and tested in Gilde's repository and then in a public repository.
 - **Maintainers:**
   - **Miguel Piña** — `miguelpinia1@gmail.com`
   - **Gilde Valeria Rodríguez** — `gildevroji@gmail.com`
