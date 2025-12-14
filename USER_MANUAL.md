@@ -1,8 +1,8 @@
 # User Manual - Efficient Distributed Runtime Verification
 
-**Version:** 1.0  
-**Date:** December 2025  
-**For:** RV 2025 Artifact Submission
+**Version:** 1.0
+**Date:** December 2025
+**For:** RV 2024 Artifact Submission
 
 ---
 
@@ -17,6 +17,8 @@
 7. [Configuration](#configuration)
 8. [Troubleshooting](#troubleshooting)
 9. [Limitations](#limitations)
+10. [References](#references)
+
 
 ---
 
@@ -24,21 +26,31 @@
 
 ### What is This Tool?
 
-This tool verifies **linearizability** of concurrent data structures. Linearizability is a correctness condition that ensures concurrent operations appear to execute atomically at some point between their invocation and response.
+This tool performs runtime verification of linearizability for concurrent
+data structures. Linearizability is a correctness condition requiring that each
+operation appears to take effect atomically at some point between its invocation
+and response, while preserving real-time ordering of non-overlapping operations.
+
+The framework executes concurrent operations, collects the current execution
+using lightweight instrumentation, and checks linearizability using a
+Just-In-Time (JIT) backtracking algorithm.
+
 
 ### Key Features
 
+- **Two snapshot strategies** for event collection: GAI (Fetch-And-Increment) and RAW (Read-After-Write)
 - **JIT-based verification** using undo operations for efficient backtracking
-- **Two snapshot strategies**: GAI (Fetch-And-Increment) and RAW (Read-After-Write)
-- **Support for Java concurrent collections** (ConcurrentLinkedQueue, ConcurrentHashMap, etc.)
+- **Support for Java concurrent collections**
 - **Clean fluent API** for easy integration
 - **Extensible architecture** for adding new algorithms
 
 ### What Makes This Tool Different?
 
-- **Undo operations**: Efficient backtracking without full state copying
-- **Dual snapshot strategies**: Compare different event collection approaches
-- **Practical focus**: Works with real Java concurrent collections
+- Uses non-linearizable snapshot objects for instrumentation, that are
+sufficient to detect linearizability violations at runtime.
+- If the current execution is not linearizable, then the system under inspection is not linearizable
+- Avoids heavy state copying during verification via immutable states.
+- Focuses on practical verification of existing concurrent libraries.
 
 ---
 
@@ -55,7 +67,7 @@ This tool verifies **linearizability** of concurrent data structures. Linearizab
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/miguelpinia/efficient-distributed-rv.git
 cd efficient-distributed-rv
 
 # Build
@@ -79,118 +91,60 @@ mvn test
 
 ## 3. Quick Start
 
-### Example 1: Basic Verification
+### Example: High-Level API (recommended)
 
 ```java
 import phd.distributed.api.*;
-import phd.distributed.core.*;
-
-public class BasicExample {
-    public static void main(String[] args) {
-        // 1. Create algorithm wrapper
-        DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
-        
-        // 2. Create executioner (4 threads, 100 operations, queue type)
-        Executioner exec = new Executioner(4, 100, algorithm, "queue");
-        
-        // 3. Run concurrent operations
-        exec.taskProducers();
-        
-        // 4. Verify linearizability
-        boolean isLinearizable = exec.taskVerifiers();
-        
-        System.out.println("Linearizable: " + isLinearizable);
-    }
-}
-```
-
-### Example 2: Using High-Level API
-
-```java
-import phd.distributed.api.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class HighLevelExample {
-    public static void main(String[] args) {
-        VerificationResult result = VerificationFramework
-            .verify(java.util.concurrent.ConcurrentLinkedQueue.class)
-            .withThreads(4)
-            .withOperations(100)
-            .withObjectType("queue")
-            .run();
-        
-        System.out.println("Linearizable: " + result.isCorrect());
-        System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
-    }
+  public static void main(String[] args) {
+    VerificationResult result = VerificationFramework
+        .verify(ConcurrentLinkedQueue.class)
+        .withThreads(4)
+        .withOperations(100)
+        .withObjectType("queue")
+        .withMethods("offer", "poll")
+        .run();
+
+    System.out.println("Linearizable: " + result.isLinearizable());
+  }
 }
-```
-
-### Example 3: Different Snapshot Strategy
-
-```java
-// Use RAW snapshot instead of default GAI
-Executioner exec = new Executioner(4, 100, algorithm, "queue", "rawsnap");
-exec.taskProducers();
-boolean result = exec.taskVerifiers();
 ```
 
 ---
 
+
 ## 4. Core Concepts
 
-### 4.1 Linearizability
+### Runtime Verification Architecture
 
-A concurrent execution is linearizable if:
-1. Each operation appears to take effect instantaneously at some point between its invocation and response
-2. The order of non-overlapping operations is preserved
-3. The sequential execution respects the sequential specification
+The framework follows a classical three-layer structure:
 
-### 4.2 JIT-based Checking
-
-Traditional linearizability checkers explore the state space by:
-- Creating full copies of states
-- Backtracking by restoring saved states
-
-Our JIT-based approach:
-- Uses **undo operations** to reverse state changes
-- Avoids expensive state copying
-- More efficient for large state spaces
-
-### 4.3 Snapshot Strategies
-
-**GAI (Get-And-Increment):**
-- Uses atomic fetch-and-increment for event ordering
-- Provides total order of events
-- Lower overhead
-
-**RAW (Read-After-Write):**
-- Uses read-after-write for event ordering
-- Provides happens-before relationships
-- More precise causality
-
-### 4.4 Object Types
-
-The tool supports different data structure types:
-- `"queue"` - FIFO queues (enqueue/dequeue)
-- `"stack"` - LIFO stacks (push/pop)
-- `"set"` - Sets (add/remove/contains)
-- `"map"` - Maps (put/get/remove)
-- `"deque"` - Double-ended queues (offerFirst/offerLast/pollFirst/pollLast)
+1. Instrumentation – obtain the current execution
+2. Monitoring – decide correctness of the execution
+3. Specification – define correct sequential behavior
 
 ---
 
 ## 5. API Reference
+
+See `API_USAGE_GUIDE.org` for the complete API description.
 
 ### 5.1 Executioner Class
 
 Main class for verification workflow.
 
 **Constructor:**
+
 ```java
 Executioner(int threads, int operations, DistAlgorithm algorithm, String objectType)
-Executioner(int threads, int operations, DistAlgorithm algorithm, String objectType, String snapType)
+Executioner(int processes, int operations, DistAlgorithm algorithm,
+            String objectType, String snapType)
 ```
 
 **Parameters:**
+
 - `threads` - Number of concurrent threads
 - `operations` - Total operations to execute
 - `algorithm` - Algorithm wrapper (use class `A`)
@@ -198,7 +152,10 @@ Executioner(int threads, int operations, DistAlgorithm algorithm, String objectT
 - `snapType` - Snapshot strategy ("gaisnap" or "rawsnap", default: "gaisnap")
 
 **Methods:**
-- `taskProducers()` - Execute concurrent operations
+
+- `taskProducers()` - Execute concurrent operations without a workload
+- `taskProducersSeed(List<OperationCall> ops)` - Executes a predefined workload.
+Thread identifiers are assigned by the Executioner.
 - `taskVerifiers()` - Verify linearizability (returns boolean)
 
 ### 5.2 VerificationFramework Class
@@ -206,6 +163,7 @@ Executioner(int threads, int operations, DistAlgorithm algorithm, String objectT
 High-level fluent API.
 
 **Static Methods:**
+
 ```java
 VerificationBuilder verify(Class<?> algorithmClass)
 VerificationBuilder verify(String className)
@@ -213,6 +171,7 @@ VerificationBuilder verify(Object instance)
 ```
 
 **Builder Methods:**
+
 ```java
 withThreads(int threads)
 withOperations(int operations)
@@ -228,15 +187,20 @@ runAsync()  // Returns CompletableFuture<VerificationResult>
 Result object with verification details.
 
 **Methods:**
+
 - `isCorrect()` / `isLinearizable()` - Verification result
-- `getExecutionTime()` - Duration of verification
+- `getExecutionTime()` - Total duration of verification
+- `getProdExecutionTime()` - Duration of producers
+- `getVerifierExecutionTime()` - Duratioin of
 - `getStatistics()` - Execution statistics
+
 
 ### 5.4 AlgorithmLibrary Class
 
 Registry of built-in algorithms.
 
 **Methods:**
+
 ```java
 static List<AlgorithmInfo> listAll()
 static List<AlgorithmInfo> byCategory(Category category)
@@ -250,7 +214,7 @@ static AlgorithmInfo getInfo(String name)
 ### Example 1: Verify ConcurrentHashMap
 
 ```java
-DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentHashMap", 
+DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentHashMap",
                                  "put", "get", "remove");
 Executioner exec = new Executioner(4, 100, algorithm, "map");
 exec.taskProducers();
@@ -267,25 +231,7 @@ exec.taskProducers();
 boolean result = exec.taskVerifiers();
 ```
 
-### Example 3: Compare Snapshot Strategies
-
-```java
-DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
-
-// Test with GAI
-Executioner execGAI = new Executioner(4, 100, algorithm, "queue", "gaisnap");
-execGAI.taskProducers();
-boolean resultGAI = execGAI.taskVerifiers();
-
-// Test with RAW
-Executioner execRAW = new Executioner(4, 100, algorithm, "queue", "rawsnap");
-execRAW.taskProducers();
-boolean resultRAW = execRAW.taskVerifiers();
-
-System.out.println("GAI: " + resultGAI + ", RAW: " + resultRAW);
-```
-
-### Example 4: Detect Non-Linearizable Implementation
+### Example 3: Detect Non-Linearizable Implementation
 
 ```java
 // BrokenQueue is intentionally non-linearizable
@@ -326,6 +272,7 @@ Edit `src/main/resources/log4j2.xml` for logging levels.
 ### Problem: OutOfMemoryError
 
 **Solution:** Reduce operations or increase heap size:
+
 ```bash
 java -Xmx4g -cp ... YourClass
 ```
@@ -333,6 +280,7 @@ java -Xmx4g -cp ... YourClass
 ### Problem: Tests fail to compile
 
 **Solution:** Ensure Java 21 is installed:
+
 ```bash
 java -version  # Should show 21 or higher
 ```
@@ -340,6 +288,7 @@ java -version  # Should show 21 or higher
 ### Problem: Verification takes too long
 
 **Solution:** Reduce operations or threads:
+
 ```java
 Executioner exec = new Executioner(2, 50, algorithm, "queue");
 ```
@@ -347,6 +296,7 @@ Executioner exec = new Executioner(2, 50, algorithm, "queue");
 ### Problem: "Class not found" error
 
 **Solution:** Use fully qualified class name:
+
 ```java
 DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
 ```
@@ -358,7 +308,6 @@ DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
 ### Current Limitations
 
 1. **Sequential verification only**
-   - Parallel verification infrastructure exists but not integrated
    - Single-threaded verification of event history
 
 2. **In-memory datasets only**
@@ -366,7 +315,7 @@ DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
    - Limited by available memory
 
 3. **No performance benchmarks**
-   - No comparison with other tools (Kater, Line-Up, etc.)
+   - No comparison with other tools (AspectJ, etc.)
    - Performance characteristics not formally measured
 
 4. **Limited test coverage**
@@ -401,7 +350,19 @@ DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
    - Test all features
    - Increase coverage
 
----
+
+
+## 10. References
+
+- **Castañeda, Armando and Rodríguez, Gilde Valeria.** (2023). *Asynchronous Wait-Free Runtime Verification and Enforcement of Linearizability.* In Proceedings of the 2023 ACM Symposium on Principles of Distributed Computing (PODC '23). Association for Computing Machinery, New York, NY, USA, 90–101. [https://doi.org/10.1145/3583668.3594563]
+
+- **Lowe, Gavin.** *Testing for Linearizability.*
+  *Concurrency and Computation: Practice and Experience,* Vol. 29, No. 4, Article e3928, 2017.
+  ISSN: 1532-0626.
+  [https://doi.org/10.1002/cpe.3928](https://doi.org/10.1002/cpe.3928)
+
+- **Rodríguez, Gilde Valeria and Castañeda, Armando** (2024). *Towards Efficient Runtime     Verified Linearizable Algorithms.* In: Ábrahám, E., Abbas, H. (eds) Runtime Verification. RV 2024. Lecture Notes in Computer Science, vol 15191. Springer, Cham. [https://doi.org/10.1007/978-3-031-74234-7_17]
+
 
 ## Appendix A: Supported Algorithms
 
@@ -419,16 +380,11 @@ DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
 - PriorityBlockingQueue
 - CopyOnWriteArraySet
 
-### Gavin Lowe's Algorithms (40+)
 
-See `src/main/scala/lowe/collection/` for full list.
-
----
-
-## Appendix B: Method Names by Object Type
+## Appendix B: Supported Method Names by Object Type
 
 ### Queue Methods
-- `offer`, `poll`, `peek`
+- `offer`, `poll`
 - `add`, `remove`, `element`
 
 ### Map Methods

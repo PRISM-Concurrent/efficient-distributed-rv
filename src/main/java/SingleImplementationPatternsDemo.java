@@ -2,65 +2,157 @@ import phd.distributed.api.VerificationFramework;
 import phd.distributed.api.VerificationResult;
 import phd.distributed.api.WorkloadPattern;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class SingleImplementationPatternsDemo {
 
-    // Parámetros base
-    private static final int THREADS    = 4;
-    private static final int OPERATIONS = 50;
+    // Base parameters
+    private static final int THREADS    = 8;
+    private static final int OPERATIONS = 20;
 
     public static void main(String[] args) {
+
         System.out.println("╔════════════════════════════════════════════════════╗");
         System.out.println("║  Patterns demo for ConcurrentLinkedQueue          ║");
         System.out.println("║  Threads: " + THREADS + " | Operations: " + OPERATIONS + "                ║");
-        System.out.println("╚════════════════════════════════════════════════════╝");
+        System.out.println("╚════════════════════════════════════════════════════╝\n");
 
-        // 1) Sin workload explícito (modo aleatorio interno: chooseOp)
-        runScenario("Random (no explicit workload)", null);
+        List<Result> results = new ArrayList<>();
 
-        // 2) Patrón productor–consumidor
-        WorkloadPattern pcPattern =
-            WorkloadPattern.producerConsumer(OPERATIONS, THREADS, 0.7);
-        runScenario("Producer-Consumer (70% producers)", pcPattern);
+        // 1) No explicit workload (random)
+        results.add(runScenario(
+            "Random",
+            null
+        ));
 
-        // 3) Patrón read-heavy
-        WorkloadPattern readPattern =
-            WorkloadPattern.readHeavy(OPERATIONS, THREADS, 0.8);
-        runScenario("Read-heavy (80% reads)", readPattern);
+        // 2) Producer–consumer
+        results.add(runScenario(
+            "Producer-Consumer (70% prod)",
+            WorkloadPattern.producerConsumer(OPERATIONS, THREADS, 0.7)
+        ));
 
-        // 4) Patrón write-heavy
-        WorkloadPattern writePattern =
-            WorkloadPattern.writeHeavy(OPERATIONS, THREADS, 0.8);
-        runScenario("Write-heavy (80% writes)", writePattern);
+        // 3) Read-heavy
+        results.add(runScenario(
+            "Read-heavy (80% reads)",
+            WorkloadPattern.readHeavy(OPERATIONS, THREADS, 0.8)
+        ));
 
-        System.out.println("\n=== Patterns demo finished ===");
+        // 4) Write-heavy
+        results.add(runScenario(
+            "Write-heavy (80% writes)",
+            WorkloadPattern.writeHeavy(OPERATIONS, THREADS, 0.8)
+        ));
+
+        waitForLogs();
+        printSummary(results);
     }
 
-    private static void runScenario(String label, WorkloadPattern pattern) {
-        System.out.println("\n┌─ Scenario: " + label + " ─────────────────────────────");
+    // ------------------------------------------------------------
+    // Run one scenario
+    // ------------------------------------------------------------
+    private static Result runScenario(String label, WorkloadPattern pattern) {
 
-        // Builder base: misma implementación, mismos métodos
         VerificationFramework.VerificationBuilder builder =
             VerificationFramework
                 .verify(ConcurrentLinkedQueue.class)
                 .withThreads(THREADS)
                 .withOperations(OPERATIONS)
-                .withObjectType("queue")          // para typelin
-                .withMethods("offer", "poll")     // métodos expuestos por A
-                .withSnapshot("gAIsnap");         // o "rAwsnap" si quieres probar RAW
+                .withObjectType("queue")
+                .withMethods("offer", "poll")
+                .withSnapshot("gAIsnap");
 
-        // Si hay workload, lo usamos; si es null, se usa taskProducers() aleatorio
         if (pattern != null) {
             builder = builder.withWorkload(pattern);
         }
 
-        // Ejecutar verificación
         VerificationResult result = builder.run();
 
-        System.out.println("│  Linearizable : " + result.isLinearizable());
-        System.out.println("│  Total time   : " + result.getExecutionTime().toMillis() + " ms");
-        System.out.println("│  Operations   : " + result.getStatistics().getTotalOperations());
-        System.out.println("└──────────────────────────────────────────────────────");
+        long prodMs = result.getProdExecutionTime().toMillis();
+        long verMs  = result.getVerifierExecutionTime().toMillis();
+        long total  = result.getExecutionTime().toMillis();
+
+        double throughput =
+            (total > 0) ? (OPERATIONS * 1000.0) / total : 0.0;
+
+        return new Result(
+            label,
+            result.isLinearizable(),
+            prodMs,
+            verMs,
+            total,
+            throughput
+        );
+    }
+
+    // ------------------------------------------------------------
+    // Final summary table
+    // ------------------------------------------------------------
+    private static void printSummary(List<Result> results) {
+
+        System.out.println("\n=== Patterns Comparison Summary ===");
+        System.out.println("Threads    : " + THREADS);
+        System.out.println("Operations : " + OPERATIONS + "\n");
+
+        System.out.println("┌────────────────────────────┬────────────┬────────────┬────────────┬────────────┐");
+        System.out.println("│ Pattern                    │ Producers  │ Verifier   │ Total      │ Throughput │");
+        System.out.println("├────────────────────────────┼────────────┼────────────┼────────────┼────────────┤");
+
+        for (Result r : results) {
+            System.out.printf(
+                "│ %-26s │ %10d ms │ %10d ms │ %10d ms │ %10.0f │\n",
+                r.name,
+                r.prodMs,
+                r.verMs,
+                r.totalMs,
+                r.throughput
+            );
+        }
+
+        System.out.println("└────────────────────────────┴────────────┴────────────┴────────────┴────────────┘");
+
+        long ok = results.stream().filter(r -> r.linearizable).count();
+        System.out.println("\nSummary:");
+        System.out.println("  Linearizable: " + ok + " / " + results.size());
+        System.out.println("  Throughput computed as: operations / total_time");
+    }
+
+    // ------------------------------------------------------------
+    // Result record
+    // ------------------------------------------------------------
+    private static class Result {
+        final String name;
+        final boolean linearizable;
+        final long prodMs;
+        final long verMs;
+        final long totalMs;
+        final double throughput;
+
+        Result(String name,
+               boolean linearizable,
+               long prodMs,
+               long verMs,
+               long totalMs,
+               double throughput) {
+            this.name = name;
+            this.linearizable = linearizable;
+            this.prodMs = prodMs;
+            this.verMs = verMs;
+            this.totalMs = totalMs;
+            this.throughput = throughput;
+        }
+    }
+
+    // ------------------------------------------------------------
+    // Small delay for async logs
+    // ------------------------------------------------------------
+    private static void waitForLogs() {
+        try {
+            Thread.sleep(200);
+            System.out.flush();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

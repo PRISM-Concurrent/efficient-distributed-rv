@@ -1,6 +1,6 @@
 # Installation Guide
 
-**Version:** 1.0  
+**Version:** 1.0
 **Last Updated:** December 2025
 
 ---

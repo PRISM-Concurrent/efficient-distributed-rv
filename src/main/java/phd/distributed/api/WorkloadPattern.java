@@ -181,8 +181,8 @@ public class WorkloadPattern {
     private boolean isReadMethod(String objectType, String name) {
         return switch (objectType) {
             case "queue" -> switch (name) {
-                case "poll", "peek" -> true;
-                default -> false;
+            case "poll" -> true;
+            default -> false;
             };
             case "deque" -> switch (name) {
                 case "pollFirst", "pollLast", "peekFirst", "peekLast" -> true;

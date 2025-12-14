@@ -1,19 +1,22 @@
 # Efficient Distributed Runtime Verification
 
-A JIT-based linearizability checker for concurrent data structures using undo operations and efficient snapshot collection.
+A linearizability checker for concurrent data structures that uses non-linearizable snapshot (collect) objects to obtain the current concurrent execution, and checks it using a backtracking-based linearizability testing algorithm.
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
 [![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)]()
 [![Java](https://img.shields.io/badge/Java-21-blue)]()
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)]()
+[![GitHub](https://img.shields.io/badge/GitHub-public-green)](https://github.com/miguelpinia/efficient-distributed-rv)
 
 ---
 
 ## Overview
 
 This tool verifies linearizability of concurrent data structures through:
-- **JIT-based checking** with undo operations for efficient backtracking
-- **Dual snapshot strategies** (GAI and RAW) for concurrent event collection
+
+- **Theoretically analyzed distributed instrumentation** if the current execution is not linearizable, then the system under inspection is not linearizable
+- **Two non-linearizable snapshot strategies** (GAI and RAW) used to obtain the current concurrent execution.
+- **JIT-based linearizability checking** based on Gavin Lowe’s undo algorithm, enabling efficient backtracking
 - **Clean API** for easy integration with Java concurrent collections
 - **Extensible architecture** supporting future optimizations
 
@@ -62,7 +65,7 @@ import phd.distributed.api.*;
 VerificationResult result = VerificationFramework
     .verify(ConcurrentLinkedQueue.class)
     .withThreads(4)
-    .withOperations(100)
+    .withOperations(50)
     .withObjectType("queue")
     .run();
 
@@ -76,10 +79,9 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 
 ### Core Capabilities ✅
 
-- **JIT-based Linearizability Checking** - Efficient state space exploration with undo operations
 - **Dual Snapshot Strategies** - GAI (Fetch-And-Increment) and RAW (Read-After-Write)
+- **Gavin Lowe's JIT-based Linearizability Checking** - Efficient state space exploration with undo operations
 - **Java Concurrent Collections** - Verified support for 9+ standard collections
-- **Gavin Lowe's Algorithms** - 40+ concurrent algorithm implementations included
 - **Clean API** - Fluent builder pattern for easy integration
 
 ### Verified Algorithms
@@ -92,32 +94,12 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 - `LinkedTransferQueue`
 - `ConcurrentSkipListMap`
 - `LinkedBlockingDeque`
-- Plus 40+ algorithms from Gavin Lowe's collection
+
 
 ### Architecture
 
-```
-┌─────────────────────────────────────┐
-│    VerificationFramework (API)     │
-│    - Fluent builder pattern         │
-└─────────────┬───────────────────────┘
-              │
-    ┌─────────┴─────────┐
-    │                   │
-┌───▼────────┐  ┌──────▼──────┐
-│ Executioner│  │  Verifier   │
-│ - Producers│  │  - JitLin   │
-│ - Snapshot │  │  - Checker  │
-└───┬────────┘  └──────┬──────┘
-    │                   │
-    └─────────┬─────────┘
-              │
-    ┌─────────▼─────────┐
-    │  JITLinUndoTester │
-    │  - Undo operations│
-    │  - State space    │
-    └───────────────────┘
-```
+![Verification Framework](summary.svg)
+
 
 ---
 
@@ -127,6 +109,8 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 - **[INSTALL.md](INSTALL.md)** - Installation instructions
 - **[API_USAGE_GUIDE.org](API_USAGE_GUIDE.org)** - Detailed API reference
 - **[API_EXAMPLES.md](API_EXAMPLES.md)** - Code examples
+- **[QUICK_START.md](QUICK_START.md)** - Ready to execute examples
+
 
 ---
 
@@ -134,7 +118,7 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 
 See working examples in `src/main/java/`:
 - `Test.java` - Basic verification
-- `HighPerformanceLinearizabilityTest.java` - Multiple algorithms
+- `BatchExexcution.java` - Multiple algorithms
 - `NonLinearizableTest.java` - Non-linearizable example
 
 Run examples:
@@ -142,9 +126,8 @@ Run examples:
 # Basic test
 ./run-test.sh
 
-# High-performance test
-java -cp "target/classes:$(mvn dependency:build-classpath -q)" \
-  HighPerformanceLinearizabilityTest
+# All algorithms test
+./run-example BatchExecution
 ```
 
 ---
@@ -188,6 +171,7 @@ mvn package -DskipTests
 ## Contributing
 
 Contributions welcome! Please:
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -207,11 +191,18 @@ Apache License 2.0 - See LICENSE file for details
 If you use this tool in your research, please cite:
 
 ```bibtex
-@inproceedings{rv2024-jitlin,
-  title={Efficient Distributed Runtime Verification with JIT-based Linearizability Checking},
-  author={Your Name},
-  booktitle={Runtime Verification 2024},
-  year={2024}
+@InProceedings{
+    10.1007/978-3-031-74234-7_17,
+    author="Rodr{\'i}guez, Gilde Valeria and Casta{\~{n}}eda, Armando",
+    editor="{\'A}brah{\'a}m, Erika and Abbas, Houssam",
+    title="Towards Efficient Runtime Verified Linearizable Algorithms",
+    booktitle="Runtime Verification",
+    year="2025",
+    publisher="Springer Nature Switzerland",
+    address="Cham",
+    pages="262--281",
+    abstract="An asynchronous, fault-tolerant, sound and complete algorithm for runtime verification of linearizability of concurrent algorithms was proposed in [7]. This solution relies on the snapshot abstraction in distributed computing. The fastest known snapshot algorithms use complex constructions, hard to implement, and the simplest ones provide large step complexity bounds or only weak termination guarantees. Thus, the snapshot-based verification algorithm is not completely satisfactory. In this paper, we propose an alternative solution, based on the collect abstraction, which can be optimally implemented in a simple manner. As a final result, we offer a simple and generic methodology that takes any presumably linearizable algorithm and produces a lightweight runtime verified linearizable version of it.",
+    isbn="978-3-031-74234-7"
 }
 ```
 
@@ -219,12 +210,15 @@ If you use this tool in your research, please cite:
 
 ## Contact
 
-- **Issues:** [GitHub Issues](repository-url/issues)
-- **Email:** your.email@example.com
+- **Issues:** [GitHub Issues]r(https://github.com/gilde-valeria/rv_collects/issues) - We're following an internal development flow, where all changes are made and tested in Gilde's repository and then in a public repository.
+- **Maintainers:**
+  - **Miguel Piña** — `miguelpinia1@gmail.com`
+  - **Gilde Valeria Rodríguez** — `gildevroji@gmail.com`
+
 
 ---
 
 ## Acknowledgments
 
-- Gavin Lowe for concurrent algorithm implementations
-- RV 2024 community for feedback and support
+- The RV 2024 community for insightful feedback and constructive discussions.
+- Gavin Lowe for foundational work on linearizability checking and for making his tools and documentation easily accessible.

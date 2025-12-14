@@ -16,7 +16,6 @@
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <exec.mainClass>phd.distributed.App</exec.mainClass>
-    <scala.version>2.13.12</scala.version>
   </properties>
 
   <dependencyManagement>
@@ -71,18 +70,6 @@
 
 
   <dependencies>
-    <!-- Scala runtime library -->
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.scala-lang.modules</groupId>
-      <artifactId>scala-collection-compat_2.13</artifactId>
-      <version>2.11.0</version>
-    </dependency>
-
     <!-- Log4j dependencies -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
@@ -157,13 +144,12 @@
       <scope>test</scope>
     </dependency>
 
-
-      <!-- Clojure runtime -->
-      <dependency>
-        <groupId>org.clojure</groupId>
-        <artifactId>clojure</artifactId>
-        <version>1.11.1</version>
-      </dependency>
+    <!-- Clojure runtime -->
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>clojure</artifactId>
+      <version>1.11.1</version>
+    </dependency>
 
   </dependencies>
   <build>
@@ -180,21 +166,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>4.8.1</version>
-        <executions>
-          <execution>
-            <id>scala-compile-first</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>add-source</goal>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
 
       <plugin>
         <groupId>com.theoryinpractise</groupId>
@@ -309,28 +280,6 @@
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>3.1.2</version>
-        </plugin>
-        <plugin>
-          <groupId>net.alchim31.maven</groupId>
-          <artifactId>scala-maven-plugin</artifactId>
-          <version>4.8.1</version>
-          <executions>
-            <execution>
-              <id>scala-compile-first</id>
-              <phase>process-resources</phase>
-              <goals>
-                <goal>add-source</goal>
-                <goal>compile</goal>
-              </goals>
-            </execution>
-            <execution>
-              <id>scala-test-compile</id>
-              <phase>process-test-resources</phase>
-              <goals>
-                <goal>testCompile</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>

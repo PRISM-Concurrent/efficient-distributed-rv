@@ -1,0 +1,2064 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   contentStyleType="text/css"
+   data-diagram-type="CLASS"
+   height="1239px"
+   preserveAspectRatio="none"
+   style="width:1300px;height:1239px;background:#FFFFFF;"
+   version="1.1"
+   viewBox="0 0 1300 1239"
+   width="1300px"
+   zoomAndPan="magnify"
+   id="svg90"
+   sodipodi:docname="systemArquitecture.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview90"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.64"
+     inkscape:cx="650"
+     inkscape:cy="619.53125"
+     inkscape:window-width="976"
+     inkscape:window-height="1186"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="link_Wrapper_OperationCall" />
+  <defs
+     id="defs1" />
+  <g
+     id="g90">
+    <!--cluster System Arquitecture-->
+    <g
+       class="cluster"
+       data-entity="System Arquitecture"
+       data-source-line="4"
+       data-uid="ent0002"
+       id="cluster_System Arquitecture">
+      <path
+         d="M11.61,6 L159.2135,6 A3.75,3.75 0 0 1 161.7135,8.5 L168.7135,28.4883 L1290.61,28.4883 A2.5,2.5 0 0 1 1293.11,30.9883 L1293.11,1229.54 A2.5,2.5 0 0 1 1290.61,1232.04 L11.61,1232.04 A2.5,2.5 0 0 1 9.11,1229.54 L9.11,8.5 A2.5,2.5 0 0 1 11.61,6"
+         fill="none"
+         style="stroke:#000000;stroke-width:1.5;"
+         id="path1" />
+      <line
+         style="stroke:#000000;stroke-width:1.5;"
+         x1="9.11"
+         x2="168.7135"
+         y1="28.4883"
+         y2="28.4883"
+         id="line1" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="146.6035"
+         x="13.11"
+         y="21.5352"
+         id="text1">System Arquitecture</text>
+    </g>
+    <!--class DistAlgorithm-->
+    <g
+       class="entity"
+       data-entity="DistAlgorithm"
+       data-source-line="9"
+       data-uid="ent0003"
+       id="entity_DistAlgorithm">
+      <rect
+         fill="#F1F1F1"
+         height="80.9766"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="328.292"
+         x="24.96"
+         y="613.01"
+         id="rect1" />
+      <ellipse
+         cx="137.5"
+         cy="629.01"
+         fill="#B4A7E5"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse1" />
+      <path
+         d="M133.9278,625.2751 L133.9278,623.1169 L141.3072,623.1169 L141.3072,625.2751 L138.8418,625.2751 L138.8418,633.3518 L141.3072,633.3518 L141.3072,635.51 L133.9278,635.51 L133.9278,633.3518 L136.3931,633.3518 L136.3931,625.2751 Z "
+         fill="#000000"
+         id="path2" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         font-style="italic"
+         lengthAdjust="spacing"
+         textLength="94.7119"
+         x="158"
+         y="634.301"
+         id="text2">DistAlgorithm</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="25.96"
+         x2="352.252"
+         y1="645.01"
+         y2="645.01"
+         id="line2" />
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="25.96"
+         x2="352.252"
+         y1="653.01"
+         y2="653.01"
+         id="line3" />
+      <ellipse
+         cx="35.96"
+         cy="666.7541"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="188.084"
+         x="44.96"
+         y="670.5452"
+         id="text3">List&lt;MethodInf&gt; methods()</text>
+      <ellipse
+         cx="35.96"
+         cy="683.2424"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse4" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="302.292"
+         x="44.96"
+         y="687.0334"
+         id="text4">Object apply(Method method, Object... args)</text>
+    </g>
+    <!--class A-->
+    <g
+       class="entity"
+       data-entity="A"
+       data-source-line="14"
+       data-uid="ent0004"
+       id="entity_A">
+      <rect
+         fill="#F1F1F1"
+         height="146.9297"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="328.292"
+         x="61.96"
+         y="380.83"
+         id="rect4" />
+      <ellipse
+         cx="217.0264"
+         cy="396.83"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse5" />
+      <path
+         d="M219.4996,402.9731 Q218.9185,403.2719 218.2793,403.4213 Q217.6402,403.5707 216.9346,403.5707 Q214.4278,403.5707 213.1079,401.9189 Q211.7881,400.267 211.7881,397.1459 Q211.7881,394.0165 213.1079,392.3647 Q214.4278,390.7128 216.9346,390.7128 Q217.6402,390.7128 218.2876,390.8622 Q218.9351,391.0116 219.4996,391.3105 L219.4996,394.0331 Q218.8687,393.4521 218.2752,393.1823 Q217.6817,392.9125 217.0508,392.9125 Q215.7061,392.9125 215.0213,393.9792 Q214.3365,395.0458 214.3365,397.1459 Q214.3365,399.2377 215.0213,400.3044 Q215.7061,401.371 217.0508,401.371 Q217.6817,401.371 218.2752,401.1012 Q218.8687,400.8315 219.4996,400.2504 Z "
+         fill="#000000"
+         id="path5" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="9.6592"
+         x="237.5264"
+         y="402.121"
+         id="text5">A</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="62.96"
+         x2="389.252"
+         y1="412.83"
+         y2="412.83"
+         id="line5" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="69.96"
+         y="423.5741"
+         id="rect5" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="195.7266"
+         x="81.96"
+         y="430.3652"
+         id="text6">List&lt;MethodInf&gt; methodList</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="69.96"
+         y="440.0624"
+         id="rect6" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="105.082"
+         x="81.96"
+         y="446.8534"
+         id="text7">Object instance</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="62.96"
+         x2="389.252"
+         y1="453.8066"
+         y2="453.8066"
+         id="line7" />
+      <ellipse
+         cx="72.96"
+         cy="467.5507"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse7" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="135.3311"
+         x="81.96"
+         y="471.3417"
+         id="text8">A(String className)</text>
+      <ellipse
+         cx="72.96"
+         cy="484.039"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse8" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="300.166"
+         x="81.96"
+         y="487.83"
+         id="text9">A(String className, String... methodNames)</text>
+      <ellipse
+         cx="72.96"
+         cy="500.5273"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse9" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="188.084"
+         x="81.96"
+         y="504.3183"
+         id="text10">List&lt;MethodInf&gt; methods()</text>
+      <ellipse
+         cx="72.96"
+         cy="517.0155"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse10" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="302.292"
+         x="81.96"
+         y="520.8066"
+         id="text11">Object apply(Method method, Object... args)</text>
+    </g>
+    <!--class MethodInf-->
+    <g
+       class="entity"
+       data-entity="MethodInf"
+       data-source-line="23"
+       data-uid="ent0005"
+       id="entity_MethodInf">
+      <rect
+         fill="#F1F1F1"
+         height="196.3945"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="215"
+         x="132.61"
+         y="1019.65"
+         id="rect11" />
+      <ellipse
+         cx="201.3283"
+         cy="1035.65"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse11" />
+      <path
+         d="M203.8014,1041.7931 Q203.2204,1042.0919 202.5812,1042.2413 Q201.942,1042.3907 201.2365,1042.3907 Q198.7296,1042.3907 197.4098,1040.7389 Q196.09,1039.087 196.09,1035.9659 Q196.09,1032.8365 197.4098,1031.1847 Q198.7296,1029.5328 201.2365,1029.5328 Q201.942,1029.5328 202.5895,1029.6822 Q203.237,1029.8316 203.8014,1030.1305 L203.8014,1032.8531 Q203.1705,1032.2721 202.577,1032.0023 Q201.9835,1031.7325 201.3527,1031.7325 Q200.0079,1031.7325 199.3231,1032.7992 Q198.6383,1033.8658 198.6383,1035.9659 Q198.6383,1038.0577 199.3231,1039.1244 Q200.0079,1040.191 201.3527,1040.191 Q201.9835,1040.191 202.577,1039.9212 Q203.1705,1039.6515 203.8014,1039.0704 Z "
+         fill="#000000"
+         id="path11" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="69.0635"
+         x="221.8283"
+         y="1040.941"
+         id="text12">MethodInf</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="133.61"
+         x2="346.61"
+         y1="1051.65"
+         y2="1051.65"
+         id="line12" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="140.61"
+         y="1062.3941"
+         id="rect12" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="107.8301"
+         x="152.61"
+         y="1069.1852"
+         id="text13">Method method</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="140.61"
+         y="1078.8824"
+         id="rect13" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="81.6895"
+         x="152.61"
+         y="1085.6734"
+         id="text14">String name</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="140.61"
+         y="1095.3707"
+         id="rect14" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="154.5127"
+         x="152.61"
+         y="1102.1617"
+         id="text15">List&lt;Type&gt; typeParam</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="140.61"
+         y="1111.859"
+         id="rect15" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="111.3643"
+         x="152.61"
+         y="1118.65"
+         id="text16">Type typeReturn</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="133.61"
+         x2="346.61"
+         y1="1125.6031"
+         y2="1125.6031"
+         id="line16" />
+      <ellipse
+         cx="143.61"
+         cy="1139.3473"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse16" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="185.999"
+         x="152.61"
+         y="1143.1383"
+         id="text17">MethodInf(Method method)</text>
+      <ellipse
+         cx="143.61"
+         cy="1155.8355"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse17" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="137.6895"
+         x="152.61"
+         y="1159.6266"
+         id="text18">Method getMethod()</text>
+      <ellipse
+         cx="143.61"
+         cy="1172.3238"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse18" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="114.2148"
+         x="152.61"
+         y="1176.1148"
+         id="text19">String getName()</text>
+      <ellipse
+         cx="143.61"
+         cy="1188.8121"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse19" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="189"
+         x="152.61"
+         y="1192.6031"
+         id="text20">List&lt;Type&gt; getTypeParam()</text>
+      <ellipse
+         cx="143.61"
+         cy="1205.3004"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse20" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="145.8516"
+         x="152.61"
+         y="1209.0914"
+         id="text21">Type getTypeReturn()</text>
+    </g>
+    <!--class OperationCall-->
+    <g
+       class="entity"
+       data-entity="OperationCall"
+       data-source-line="35"
+       data-uid="ent0006"
+       id="entity_OperationCall">
+      <rect
+         fill="#F1F1F1"
+         height="163.418"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="340.6035"
+         x="235.81"
+         y="779.23"
+         id="rect21" />
+      <ellipse
+         cx="355.3466"
+         cy="795.23"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse21" />
+      <path
+         d="M357.8198,801.3731 Q357.2387,801.6719 356.5996,801.8213 Q355.9604,801.9707 355.2548,801.9707 Q352.748,801.9707 351.4282,800.3189 Q350.1083,798.667 350.1083,795.5459 Q350.1083,792.4165 351.4282,790.7647 Q352.748,789.1128 355.2548,789.1128 Q355.9604,789.1128 356.6079,789.2622 Q357.2553,789.4116 357.8198,789.7105 L357.8198,792.4331 Q357.1889,791.8521 356.5954,791.5823 Q356.0019,791.3125 355.371,791.3125 Q354.0263,791.3125 353.3415,792.3792 Q352.6567,793.4458 352.6567,795.5459 Q352.6567,797.6377 353.3415,798.7044 Q354.0263,799.771 355.371,799.771 Q356.0019,799.771 356.5954,799.5012 Q357.1889,799.2315 357.8198,798.6504 Z "
+         fill="#000000"
+         id="path21" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="93.0303"
+         x="375.8466"
+         y="800.521"
+         id="text22">OperationCall</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="236.81"
+         x2="575.4135"
+         y1="811.23"
+         y2="811.23"
+         id="line22" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="243.81"
+         y="821.9741"
+         id="rect22" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="77.9092"
+         x="255.81"
+         y="828.7652"
+         id="text23">Object args</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="243.81"
+         y="838.4624"
+         id="rect23" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="125.6992"
+         x="255.81"
+         y="845.2534"
+         id="text24">MethodInf method</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="236.81"
+         x2="575.4135"
+         y1="852.2066"
+         y2="852.2066"
+         id="line24" />
+      <ellipse
+         cx="246.81"
+         cy="865.9507"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse24" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="314.6035"
+         x="255.81"
+         y="869.7417"
+         id="text25">OperationCall(Object args, MethodInf method)</text>
+      <ellipse
+         cx="246.81"
+         cy="882.439"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse25" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="87.0146"
+         x="255.81"
+         y="886.23"
+         id="text26">Object args()</text>
+      <ellipse
+         cx="246.81"
+         cy="898.9273"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse26" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="139.5967"
+         x="255.81"
+         y="902.7183"
+         id="text27">String argsAsString()</text>
+      <ellipse
+         cx="246.81"
+         cy="915.4155"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse27" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="134.8047"
+         x="255.81"
+         y="919.2066"
+         id="text28">MethodInf method()</text>
+      <ellipse
+         cx="246.81"
+         cy="931.9038"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse28" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="107.3105"
+         x="255.81"
+         y="935.6948"
+         id="text29">String toString()</text>
+    </g>
+    <!--class Snapshot-->
+    <g
+       class="entity"
+       data-entity="Snapshot"
+       data-source-line="48"
+       data-uid="ent0007"
+       id="entity_Snapshot">
+      <rect
+         fill="#F1F1F1"
+         height="97.4648"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="284.6719"
+         x="566.77"
+         y="604.76"
+         id="rect29" />
+      <ellipse
+         cx="673.6396"
+         cy="620.76"
+         fill="#A9DCDF"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse29" />
+      <path
+         d="M673.5029,616.1081 L672.3491,621.1799 L674.665,621.1799 Z M672.0088,613.8669 L675.0054,613.8669 L678.3506,626.26 L675.9018,626.26 L675.1382,623.197 L671.8594,623.197 L671.1123,626.26 L668.6636,626.26 Z "
+         fill="#000000"
+         id="path29" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         font-style="italic"
+         lengthAdjust="spacing"
+         textLength="62.4326"
+         x="694.1396"
+         y="626.051"
+         id="text30">Snapshot</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="567.77"
+         x2="850.4419"
+         y1="636.76"
+         y2="636.76"
+         id="line30" />
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="567.77"
+         x2="850.4419"
+         y1="644.76"
+         y2="644.76"
+         id="line31" />
+      <ellipse
+         cx="577.77"
+         cy="658.5041"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse31" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="238.5947"
+         x="586.77"
+         y="662.2952"
+         id="text31">void write(int id, Object invocation)</text>
+      <ellipse
+         cx="577.77"
+         cy="674.9924"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse32" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="258.6719"
+         x="586.77"
+         y="678.7834"
+         id="text32">void snapshot(int id, Object response)</text>
+      <ellipse
+         cx="577.77"
+         cy="691.4807"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse33" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="178.5615"
+         x="586.77"
+         y="695.2717"
+         id="text33">IPersistentVector buildXE()</text>
+    </g>
+    <!--class CollectFAInc-->
+    <g
+       class="entity"
+       data-entity="CollectFAInc"
+       data-source-line="54"
+       data-uid="ent0008"
+       id="entity_CollectFAInc">
+      <rect
+         fill="#F1F1F1"
+         height="146.9297"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="284.6719"
+         x="611.77"
+         y="787.47"
+         id="rect33" />
+      <ellipse
+         cx="708.0337"
+         cy="803.47"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse34" />
+      <path
+         d="M710.5068,809.6131 Q709.9258,809.9119 709.2866,810.0613 Q708.6474,810.2107 707.9419,810.2107 Q705.435,810.2107 704.1152,808.5589 Q702.7954,806.907 702.7954,803.7859 Q702.7954,800.6565 704.1152,799.0047 Q705.435,797.3528 707.9419,797.3528 Q708.6474,797.3528 709.2949,797.5022 Q709.9424,797.6516 710.5068,797.9505 L710.5068,800.6731 Q709.876,800.0921 709.2825,799.8223 Q708.6889,799.5525 708.0581,799.5525 Q706.7134,799.5525 706.0285,800.6192 Q705.3437,801.6858 705.3437,803.7859 Q705.3437,805.8777 706.0285,806.9444 Q706.7134,808.011 708.0581,808.011 Q708.6889,808.011 709.2825,807.7412 Q709.876,807.4715 710.5068,806.8904 Z "
+         fill="#000000"
+         id="path34" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="83.6445"
+         x="728.5337"
+         y="808.761"
+         id="text34">CollectFAInc</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="612.77"
+         x2="895.4419"
+         y1="819.47"
+         y2="819.47"
+         id="line34" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="619.77"
+         y="830.2141"
+         id="rect34" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="200.5117"
+         x="631.77"
+         y="837.0052"
+         id="text35">AtomicInteger atomicCounter</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="619.77"
+         y="846.7024"
+         id="rect35" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="240.7686"
+         x="631.77"
+         y="853.4934"
+         id="text36">List&lt;IPersistentVector&gt; threadLogs</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="612.77"
+         x2="895.4419"
+         y1="860.4466"
+         y2="860.4466"
+         id="line36" />
+      <ellipse
+         cx="622.77"
+         cy="874.1907"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse36" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="200.3477"
+         x="631.77"
+         y="877.9817"
+         id="text37">CollectFAInc(int numThreads)</text>
+      <ellipse
+         cx="622.77"
+         cy="890.679"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse37" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="238.5947"
+         x="631.77"
+         y="894.47"
+         id="text38">void write(int id, Object invocation)</text>
+      <ellipse
+         cx="622.77"
+         cy="907.1673"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse38" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="258.6719"
+         x="631.77"
+         y="910.9583"
+         id="text39">void snapshot(int id, Object response)</text>
+      <ellipse
+         cx="622.77"
+         cy="923.6555"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse39" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="178.5615"
+         x="631.77"
+         y="927.4466"
+         id="text40">IPersistentVector buildXE()</text>
+    </g>
+    <!--class CollectRAW-->
+    <g
+       class="entity"
+       data-entity="CollectRAW"
+       data-source-line="63"
+       data-uid="ent0009"
+       id="entity_CollectRAW">
+      <rect
+         fill="#F1F1F1"
+         height="146.9297"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="284.6719"
+         x="931.77"
+         y="787.47"
+         id="rect40" />
+      <ellipse
+         cx="1031.3183"
+         cy="803.47"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse40" />
+      <path
+         d="M1033.7915,809.6131 Q1033.2104,809.9119 1032.5713,810.0613 Q1031.9321,810.2107 1031.2265,810.2107 Q1028.7197,810.2107 1027.3999,808.5589 Q1026.0801,806.907 1026.0801,803.7859 Q1026.0801,800.6565 1027.3999,799.0047 Q1028.7197,797.3528 1031.2265,797.3528 Q1031.9321,797.3528 1032.5796,797.5022 Q1033.227,797.6516 1033.7915,797.9505 L1033.7915,800.6731 Q1033.1606,800.0921 1032.5671,799.8223 Q1031.9736,799.5525 1031.3428,799.5525 Q1029.998,799.5525 1029.3132,800.6192 Q1028.6284,801.6858 1028.6284,803.7859 Q1028.6284,805.8777 1029.3132,806.9444 Q1029.998,808.011 1031.3428,808.011 Q1031.9736,808.011 1032.5671,807.7412 Q1033.1606,807.4715 1033.7915,806.8904 Z "
+         fill="#000000"
+         id="path40" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="77.0752"
+         x="1051.8183"
+         y="808.761"
+         id="text41">CollectRAW</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="932.77"
+         x2="1215.4419"
+         y1="819.47"
+         y2="819.47"
+         id="line41" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="939.77"
+         y="830.2141"
+         id="rect41" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="216.7539"
+         x="951.77"
+         y="837.0052"
+         id="text42">List&lt;IPersistentVector&gt; invLogs</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="939.77"
+         y="846.7024"
+         id="rect42" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="217.4375"
+         x="951.77"
+         y="853.4934"
+         id="text43">List&lt;IPersistentVector&gt; resLogs</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="932.77"
+         x2="1215.4419"
+         y1="860.4466"
+         y2="860.4466"
+         id="line43" />
+      <ellipse
+         cx="942.77"
+         cy="874.1907"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse43" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="193.7783"
+         x="951.77"
+         y="877.9817"
+         id="text44">CollectRAW(int numThreads)</text>
+      <ellipse
+         cx="942.77"
+         cy="890.679"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse44" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="238.5947"
+         x="951.77"
+         y="894.47"
+         id="text45">void write(int id, Object invocation)</text>
+      <ellipse
+         cx="942.77"
+         cy="907.1673"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse45" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="258.6719"
+         x="951.77"
+         y="910.9583"
+         id="text46">void snapshot(int id, Object response)</text>
+      <ellipse
+         cx="942.77"
+         cy="923.6555"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse46" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="178.5615"
+         x="951.77"
+         y="927.4466"
+         id="text47">IPersistentVector buildXE()</text>
+    </g>
+    <!--class Wrapper-->
+    <g
+       class="entity"
+       data-entity="Wrapper"
+       data-source-line="75"
+       data-uid="ent0010"
+       id="entity_Wrapper">
+      <rect
+         fill="#F1F1F1"
+         height="113.9531"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="349.0938"
+         x="462.56"
+         y="397.32"
+         id="rect47" />
+      <ellipse
+         cx="604.5629"
+         cy="413.32"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse47" />
+      <path
+         d="M607.0361,419.4631 Q606.455,419.7619 605.8159,419.9113 Q605.1767,420.0607 604.4711,420.0607 Q601.9643,420.0607 600.6445,418.4089 Q599.3246,416.757 599.3246,413.6359 Q599.3246,410.5065 600.6445,408.8547 Q601.9643,407.2028 604.4711,407.2028 Q605.1767,407.2028 605.8242,407.3522 Q606.4716,407.5016 607.0361,407.8005 L607.0361,410.5231 Q606.4052,409.9421 605.8117,409.6723 Q605.2182,409.4025 604.5873,409.4025 Q603.2426,409.4025 602.5578,410.4692 Q601.873,411.5358 601.873,413.6359 Q601.873,415.7277 602.5578,416.7944 Q603.2426,417.861 604.5873,417.861 Q605.2182,417.861 605.8117,417.5912 Q606.4052,417.3215 607.0361,416.7404 Z "
+         fill="#000000"
+         id="path47" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="56.5879"
+         x="625.0629"
+         y="418.611"
+         id="text48">Wrapper</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="463.56"
+         x2="810.6538"
+         y1="429.32"
+         y2="429.32"
+         id="line48" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="470.56"
+         y="440.0641"
+         id="rect48" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="74.0332"
+         x="482.56"
+         y="446.8552"
+         id="text49">Snapshot c</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="470.56"
+         y="456.5524"
+         id="rect49" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="119.6494"
+         x="482.56"
+         y="463.3434"
+         id="text50">DistAlgorithm alg</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="463.56"
+         x2="810.6538"
+         y1="470.2966"
+         y2="470.2966"
+         id="line50" />
+      <ellipse
+         cx="473.56"
+         cy="484.0407"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse50" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="323.0938"
+         x="482.56"
+         y="487.8317"
+         id="text51">Wrapper(DistAlgorithm alg, Snapshot snapshot)</text>
+      <ellipse
+         cx="473.56"
+         cy="500.529"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse51" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="312.2656"
+         x="482.56"
+         y="504.32"
+         id="text52">void execute(int processId, OperationCall call)</text>
+    </g>
+    <!--class Verifier-->
+    <g
+       class="entity"
+       data-entity="Verifier"
+       data-source-line="82"
+       data-uid="ent0011"
+       id="entity_Verifier">
+      <rect
+         fill="#F1F1F1"
+         height="97.4648"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="380.4844"
+         x="883.87"
+         y="405.57"
+         id="rect52" />
+      <ellipse
+         cx="1045.1366"
+         cy="421.57"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse52" />
+      <path
+         d="M1047.6097,427.7131 Q1047.0287,428.0119 1046.3895,428.1613 Q1045.7504,428.3107 1045.0448,428.3107 Q1042.538,428.3107 1041.2181,426.6589 Q1039.8983,425.007 1039.8983,421.8859 Q1039.8983,418.7565 1041.2181,417.1047 Q1042.538,415.4528 1045.0448,415.4528 Q1045.7504,415.4528 1046.3978,415.6022 Q1047.0453,415.7516 1047.6097,416.0505 L1047.6097,418.7731 Q1046.9789,418.1921 1046.3854,417.9223 Q1045.7919,417.6525 1045.161,417.6525 Q1043.8163,417.6525 1043.1315,418.7192 Q1042.4467,419.7858 1042.4467,421.8859 Q1042.4467,423.9777 1043.1315,425.0444 Q1043.8163,426.111 1045.161,426.111 Q1045.7919,426.111 1046.3854,425.8412 Q1046.9789,425.5715 1047.6097,424.9904 Z "
+         fill="#000000"
+         id="path52" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="49.4512"
+         x="1065.6366"
+         y="426.861"
+         id="text53">Verifier</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="884.87"
+         x2="1263.3544"
+         y1="437.57"
+         y2="437.57"
+         id="line53" />
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="891.87"
+         y="448.3141"
+         id="rect53" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="74.0332"
+         x="903.87"
+         y="455.1052"
+         id="text54">Snapshot c</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="884.87"
+         x2="1263.3544"
+         y1="462.0583"
+         y2="462.0583"
+         id="line54" />
+      <ellipse
+         cx="894.87"
+         cy="475.8024"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse54" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="187.4482"
+         x="903.87"
+         y="479.5934"
+         id="text55">Verifier(Snapshot snapshot)</text>
+      <ellipse
+         cx="894.87"
+         cy="492.2907"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse55" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="354.4844"
+         x="903.87"
+         y="496.0817"
+         id="text56">boolean checkLinearizabilityJitLin(String objectType)</text>
+    </g>
+    <!--class Executioner-->
+    <g
+       class="entity"
+       data-entity="Executioner"
+       data-source-line="88"
+       data-uid="ent0012"
+       id="entity_Executioner">
+      <rect
+         fill="#F1F1F1"
+         height="278.8359"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="364.0303"
+         x="455.09"
+         y="41"
+         id="rect56" />
+      <ellipse
+         cx="592.8888"
+         cy="57"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse56" />
+      <path
+         d="M595.362,63.1431 Q594.7809,63.4419 594.1418,63.5913 Q593.5026,63.7407 592.797,63.7407 Q590.2902,63.7407 588.9704,62.0889 Q587.6505,60.437 587.6505,57.3159 Q587.6505,54.1865 588.9704,52.5347 Q590.2902,50.8828 592.797,50.8828 Q593.5026,50.8828 594.1501,51.0322 Q594.7975,51.1816 595.362,51.4805 L595.362,54.2031 Q594.7311,53.6221 594.1376,53.3523 Q593.5441,53.0825 592.9132,53.0825 Q591.5685,53.0825 590.8837,54.1492 Q590.1989,55.2158 590.1989,57.3159 Q590.1989,59.4077 590.8837,60.4744 Q591.5685,61.541 592.9132,61.541 Q593.5441,61.541 594.1376,61.2712 Q594.7311,61.0015 595.362,60.4204 Z "
+         fill="#000000"
+         id="path56" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="79.9326"
+         x="613.3888"
+         y="62.291"
+         id="text57">Executioner</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="456.09"
+         x2="818.1203"
+         y1="73"
+         y2="73"
+         id="line57" />
+      <ellipse
+         cx="466.09"
+         cy="86.7441"
+         fill="none"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse57" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="89.7217"
+         x="475.09"
+         y="90.5352"
+         id="text58">int processes</text>
+      <ellipse
+         cx="466.09"
+         cy="103.2324"
+         fill="none"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse58" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="80.0762"
+         x="475.09"
+         y="107.0234"
+         id="text59">int totalOps</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="116.7207"
+         id="rect59" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="119.0547"
+         x="475.09"
+         y="123.5117"
+         id="text60">String objectType</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="133.209"
+         id="rect60" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="74.0332"
+         x="475.09"
+         y="140"
+         id="text61">Snapshot c</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="149.6973"
+         id="rect61" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="108.8008"
+         x="475.09"
+         y="156.4883"
+         id="text62">DistAlgorithm A</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="166.1855"
+         id="rect62" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="101.4248"
+         x="475.09"
+         y="172.9766"
+         id="text63">Verifier verifier</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="182.6738"
+         id="rect63" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="116.416"
+         x="475.09"
+         y="189.4648"
+         id="text64">Wrapper wrapper</text>
+      <rect
+         fill="none"
+         height="6"
+         style="stroke:#C82930;stroke-width:1;"
+         width="6"
+         x="463.09"
+         y="199.1621"
+         id="rect64" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="124.5371"
+         x="475.09"
+         y="205.9531"
+         id="text65">long verifierNanos</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="241.1445"
+         x="475.09"
+         y="222.4414"
+         id="text66">DistAlgorithm A, String objectType,</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="456.09"
+         x2="818.1203"
+         y1="229.3945"
+         y2="229.3945"
+         id="line66" />
+      <ellipse
+         cx="466.09"
+         cy="243.1387"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse66" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="267.5723"
+         x="475.09"
+         y="246.9297"
+         id="text67">Executioner(int processes, int totalOps,</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="114.0986"
+         x="475.09"
+         y="263.418"
+         id="text68">String snapType)</text>
+      <ellipse
+         cx="466.09"
+         cy="276.1152"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse68" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="137.9287"
+         x="475.09"
+         y="279.9063"
+         id="text69">void taskProducers()</text>
+      <ellipse
+         cx="466.09"
+         cy="292.6035"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse69" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="338.0303"
+         x="475.09"
+         y="296.3945"
+         id="text70">void taskProducersSeed(List&lt;OperationCall&gt; ops)</text>
+      <ellipse
+         cx="466.09"
+         cy="309.0918"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse70" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="152.6875"
+         x="475.09"
+         y="312.8828"
+         id="text71">boolean taskVerifiers()</text>
+    </g>
+    <!--class JitLinChecker-->
+    <g
+       class="entity"
+       data-entity="JitLinChecker"
+       data-source-line="105"
+       data-uid="ent0013"
+       id="entity_JitLinChecker">
+      <rect
+         fill="#F1F1F1"
+         height="97.4648"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5;"
+         width="390.6973"
+         x="886.76"
+         y="604.76"
+         id="rect71" />
+      <ellipse
+         cx="1033.4114"
+         cy="620.76"
+         fill="#ADD1B2"
+         rx="11"
+         ry="11"
+         style="stroke:#181818;stroke-width:1;"
+         id="ellipse71" />
+      <path
+         d="M1035.8845,626.9031 Q1035.3035,627.2019 1034.6643,627.3513 Q1034.0251,627.5007 1033.3196,627.5007 Q1030.8127,627.5007 1029.4929,625.8489 Q1028.1731,624.197 1028.1731,621.0759 Q1028.1731,617.9465 1029.4929,616.2947 Q1030.8127,614.6428 1033.3196,614.6428 Q1034.0251,614.6428 1034.6726,614.7922 Q1035.3201,614.9416 1035.8845,615.2405 L1035.8845,617.9631 Q1035.2537,617.3821 1034.6601,617.1123 Q1034.0666,616.8425 1033.4358,616.8425 Q1032.0911,616.8425 1031.4062,617.9092 Q1030.7214,618.9758 1030.7214,621.0759 Q1030.7214,623.1677 1031.4062,624.2344 Q1032.0911,625.301 1033.4358,625.301 Q1034.0666,625.301 1034.6601,625.0312 Q1035.2537,624.7615 1035.8845,624.1804 Z "
+         fill="#000000"
+         id="path71" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="88.8945"
+         x="1053.9114"
+         y="626.051"
+         id="text72">JitLinChecker</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="887.76"
+         x2="1276.4573"
+         y1="636.76"
+         y2="636.76"
+         id="line72" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="99.5449"
+         x="892.76"
+         y="654.2952"
+         id="text73">Logger logger,</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5;"
+         x1="887.76"
+         x2="1276.4573"
+         y1="661.2483"
+         y2="661.2483"
+         id="line73" />
+      <ellipse
+         cx="897.76"
+         cy="674.9924"
+         fill="#84BE84"
+         rx="3"
+         ry="3"
+         style="stroke:#038048;stroke-width:1;"
+         id="ellipse73" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="364.6973"
+         x="906.76"
+         y="678.7834"
+         id="text74">static boolean checkLinearizable(IPersistentVector xe,</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14"
+         lengthAdjust="spacing"
+         textLength="123.6074"
+         x="906.76"
+         y="695.2717"
+         id="text75">String objectType)</text>
+    </g>
+    <!--link A to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="A"
+       data-entity-2="DistAlgorithm"
+       data-source-line="117"
+       data-uid="lnk14"
+       id="link_A_DistAlgorithm">
+      <path
+         codeLine="117"
+         d="M212.44,528.17 C207.09,556.69 204.4676,570.6184 199.9276,594.8284"
+         fill="none"
+         id="A-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;" />
+      <polygon
+         fill="none"
+         points="196.61,612.52,205.8248,595.9343,194.0304,593.7225,196.61,612.52"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon75" />
+    </g>
+    <!--link DistAlgorithm to MethodInf-->
+    <g
+       class="link"
+       data-entity-1="DistAlgorithm"
+       data-entity-2="MethodInf"
+       data-source-line="119"
+       data-uid="lnk15"
+       id="link_DistAlgorithm_MethodInf">
+      <path
+         codeLine="119"
+         d="M188.71,694.38 C188.48,718.86 188.22,750.86 188.11,779.23 C187.82,851.86 177.61,870.78 188.11,942.65 C191.81,967.94 196.6836,988.9119 203.9236,1013.6319"
+         fill="none"
+         id="DistAlgorithm-to-MethodInf"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="205.61,1019.39,206.9191,1009.6285,204.2046,1014.5916,199.2416,1011.8771,205.61,1019.39"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon76" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="28.5645"
+         x="189.11"
+         y="866.0084"
+         id="text76">uses</text>
+    </g>
+    <!--link OperationCall to MethodInf-->
+    <g
+       class="link"
+       data-entity-1="OperationCall"
+       data-entity-2="MethodInf"
+       data-source-line="120"
+       data-uid="lnk16"
+       id="link_OperationCall_MethodInf">
+      <path
+         codeLine="120"
+         d="M353.36,942.94 C337.5,967.29 323.2129,989.2213 306.7529,1014.5113"
+         fill="none"
+         id="OperationCall-to-MethodInf"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="303.48,1019.54,311.7419,1014.1789,306.2074,1015.3494,305.0369,1009.815,303.48,1019.54"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon77" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="21.874"
+         x="334.05"
+         y="986.2184"
+         id="text77">has</text>
+    </g>
+    <!--reverse link Snapshot to CollectFAInc-->
+    <g
+       class="link"
+       data-entity-1="Snapshot"
+       data-entity-2="CollectFAInc"
+       data-source-line="122"
+       data-uid="lnk17"
+       id="link_Snapshot_CollectFAInc">
+      <path
+         codeLine="122"
+         d="M723.5136,720.2426 C729.0236,745.3826 732.02,759.09 738.16,787.12"
+         fill="none"
+         id="Snapshot-backto-CollectFAInc"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="none"
+         points="719.66,702.66,717.6528,721.5272,729.3745,718.9581,719.66,702.66"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon78" />
+    </g>
+    <!--reverse link Snapshot to CollectRAW-->
+    <g
+       class="link"
+       data-entity-1="Snapshot"
+       data-entity-2="CollectRAW"
+       data-source-line="123"
+       data-uid="lnk18"
+       id="link_Snapshot_CollectRAW">
+      <path
+         codeLine="123"
+         d="M810.3764,711.4882 C855.0464,736.6282 894.94,759.09 944.74,787.12"
+         fill="none"
+         id="Snapshot-backto-CollectRAW"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="none"
+         points="794.69,702.66,807.4337,716.717,813.3191,706.2594,794.69,702.66"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon79" />
+    </g>
+    <!--link Wrapper to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Wrapper"
+       data-entity-2="Snapshot"
+       data-source-line="125"
+       data-uid="lnk19"
+       id="link_Wrapper_Snapshot">
+      <path
+         codeLine="125"
+         d="M657.65,511.54 C668.37,540.91 679.2913,570.8342 689.5413,598.8942"
+         fill="none"
+         id="Wrapper-to-Snapshot"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="691.6,604.53,692.2692,594.7039,689.8844,599.8335,684.7548,597.4488,691.6,604.53"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon80" />
+    </g>
+    <!--link Wrapper to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="Wrapper"
+       data-entity-2="DistAlgorithm"
+       data-source-line="126"
+       data-uid="lnk20"
+       id="link_Wrapper_DistAlgorithm">
+      <path
+         codeLine="126"
+         d="M509.03,511.67 C435.85,543.89 351.3216,581.093 285.4316,610.093"
+         fill="none"
+         id="Wrapper-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="279.94,612.51,289.7888,612.5456,284.5164,610.4958,286.5661,605.2234,279.94,612.51"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon81" />
+    </g>
+    <!--link Wrapper to OperationCall-->
+    <g
+       class="link"
+       data-entity-1="Wrapper"
+       data-entity-2="OperationCall"
+       data-source-line="127"
+       data-uid="lnk21"
+       id="link_Wrapper_OperationCall">
+      <path
+         codeLine="127"
+         d="M560.69,511.51 C530.8,536.99 498.6,569.34 477.11,604.76 C444.79,658.03 427.8876,720.5012 418.1076,773.0612"
+         fill="none"
+         id="Wrapper-to-OperationCall"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="417.01,778.96,422.5889,770.8436,417.9247,774.0444,414.7239,769.3801,417.01,778.96"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon82" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="70.084503"
+         x="478.10999"
+         y="658.56842"
+         id="text82"
+         transform="translate(-16,-12)">execute(...)</text>
+    </g>
+    <!--link Verifier to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Verifier"
+       data-entity-2="Snapshot"
+       data-source-line="129"
+       data-uid="lnk22"
+       id="link_Verifier_Snapshot">
+      <path
+         codeLine="129"
+         d="M987.47,503.5 C947.83,525.43 900.19,551.59 857.11,574.76 C839.09,584.45 825.0781,591.9028 806.5381,601.6728"
+         fill="none"
+         id="Verifier-to-Snapshot"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="801.23,604.47,811.0569,603.8129,805.6534,602.139,807.3273,596.7355,801.23,604.47"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon83" />
+    </g>
+    <!--link Verifier to JitLinChecker-->
+    <g
+       class="link"
+       data-entity-1="Verifier"
+       data-entity-2="JitLinChecker"
+       data-source-line="130"
+       data-uid="lnk23"
+       id="link_Verifier_JitLinChecker">
+      <path
+         codeLine="130"
+         d="M1076.06,503.29 C1077.3,533.95 1078.6679,567.5849 1079.9079,598.2949"
+         fill="none"
+         id="Verifier-to-JitLinChecker"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;" />
+      <polygon
+         fill="#181818"
+         points="1080.15,604.29,1083.7836,595.1359,1079.9483,599.2941,1075.7902,595.4587,1080.15,604.29"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon84" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="28.564501"
+         x="1079.83"
+         y="571.32843"
+         id="text84"
+         transform="translate(4)">uses</text>
+    </g>
+    <!--link Executioner to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Snapshot"
+       data-source-line="132"
+       data-uid="lnk24"
+       id="link_Executioner_Snapshot">
+      <path
+         codeLine="132"
+         d="M794.31,320.06 C808.34,339.05 820.48,359.44 829.11,380.83 C853.53,441.4 853.52,467.19 829.11,527.76 C817.26,557.17 799.1875,579.4274 776.8675,600.2474"
+         fill="none"
+         id="Executioner-to-Snapshot"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="772.48,604.34,781.7897,601.126,776.1363,600.9295,776.3328,595.276,772.48,604.34"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon85" />
+    </g>
+    <!--link Executioner to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="DistAlgorithm"
+       data-source-line="133"
+       data-uid="lnk25"
+       id="link_Executioner_DistAlgorithm">
+      <path
+         codeLine="133"
+         d="M454.71,188.82 C317.14,205.15 136.82,251.84 44.11,380.83 C6,433.86 16.88,468.41 44.11,527.76 C60.11,562.62 86.3111,587.9137 115.6111,609.0137"
+         fill="none"
+         id="Executioner-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="120.48,612.52,115.5142,604.0147,116.4226,609.5981,110.8392,610.5065,120.48,612.52"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon86" />
+    </g>
+    <!--link Executioner to Wrapper-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Wrapper"
+       data-source-line="134"
+       data-uid="lnk26"
+       id="link_Executioner_Wrapper">
+      <path
+         codeLine="134"
+         d="M637.11,320.14 C637.11,347.37 637.11,368.46 637.11,391.02"
+         fill="none"
+         id="Executioner-to-Wrapper"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="637.11,397.02,641.11,388.02,637.11,392.02,633.11,388.02,637.11,397.02"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon87" />
+    </g>
+    <!--link Executioner to Verifier-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Verifier"
+       data-source-line="135"
+       data-uid="lnk27"
+       id="link_Executioner_Verifier">
+      <path
+         codeLine="135"
+         d="M819.59,294.95 C881.61,333.53 942.5155,371.4305 991.7655,402.0705"
+         fill="none"
+         id="Executioner-to-Verifier"
+         style="stroke:#181818;stroke-width:1;" />
+      <polygon
+         fill="#181818"
+         points="996.86,405.24,991.3312,397.0894,992.6145,402.5988,987.1052,403.8821,996.86,405.24"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon88" />
+    </g>
+    <!--link Executioner to OperationCall-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="OperationCall"
+       data-source-line="136"
+       data-uid="lnk28"
+       id="link_Executioner_OperationCall">
+      <path
+         codeLine="136"
+         d="M482.15,320.23 C467.61,339.26 454.74,359.61 445.11,380.83 C413.87,449.71 407.3797,655.2203 406.2097,772.8603"
+         fill="none"
+         id="Executioner-to-OperationCall"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;" />
+      <polygon
+         fill="#181818"
+         points="406.15,778.86,410.2393,769.9002,406.1997,773.8602,402.2397,769.8207,406.15,778.86"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon89" />
+    </g>
+    <!--link Snapshot to OperationCall-->
+    <g
+       class="link"
+       data-entity-1="Snapshot"
+       data-entity-2="OperationCall"
+       data-source-line="138"
+       data-uid="lnk29"
+       id="link_Snapshot_OperationCall">
+      <path
+         codeLine="138"
+         d="M638.07,702.66 C604.57,725.37 568.6459,749.7325 530.5859,775.5425"
+         fill="none"
+         id="Snapshot-to-OperationCall"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;" />
+      <polygon
+         fill="#181818"
+         points="525.62,778.91,535.3138,777.1693,529.7582,776.1037,530.8237,770.5481,525.62,778.91"
+         style="stroke:#181818;stroke-width:1;"
+         id="polygon90" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13"
+         lengthAdjust="spacing"
+         textLength="77.4351"
+         x="594.66"
+         y="745.7984"
+         id="text90">stores/casts</text>
+    </g>
+    <!--SRC=[rLTRRzCm57xdLnpnGgfUU9-WKbIOL3JOj4qRRyXDprepnmwskwt0_Zl7SPBPkUpoWY1IsyJVkNu-vpW5iAgW3woKjIg7DTUOMQxaAm0cXBhzblCxBZUlwBbWsJNR8Bm-snkBEQJwnuvR4jzfV0s_d0Z06tW_T5NuGcc4z6JvB74kBUehbY5yuCQcOgCqjzkSl45rZU68a7UVqMxLUYclvf2NjoOP1JB7g-yKAB2Y4Fl4orPoamgRpMR0zCPuhNkVJIQOCP06xgO3xjng85Jvuz9O9ZCC8acJCwk9KM_x2yjnz2Ww0R_YulEktAeP_Kq26jiH4P6LOBtAG5AORThEzmNEmTBt2TCi3s27bC0fKZt98FB6UHpsg2C26xJ-Bigy2eT0HrpI8Sx7HF1v7LOaKmPMeJwsf8UXum8rStspeAw9MAg99sOxt3b6M_IDOrD9e3xfQFLjC0dsfU_MK-CVab4VlPNDFcMh8iNxvxRwcMI5sIeBWkrHFqk9hOpLZ1Bnl3OMmeQ_KNmDjpG8CA7v0BmfOUgt6vMLv8tQygQor5RHQ0ebJTI5onFKXce3fRqW6QLXjUDY_VLZtzOlb10aT9WkPHRjV4e3bMTBcc0RrC3AfuNQkOdMxekEGsgIhKQsFb91sOmZNsKYSfUVbu9czAyJT9fUTkTeJ-8KOfJri2H5riyFkVeFs7cwVqwfM7YEBsWVp_YbfZbFDHVItNHI5Yp6XoeJco2BoaZIaPaysAfPwT25TvZjAe8BhJ8qPkb8YyPaHbyzzNA1cb_nfyCVDvB9em6jb1B896HRpAwFk4Ic-K-sueBR_ITkQQK-T5MvfsxIzuJriKo9OeyY6qEG8fhMkbMMYUF2T4_71rSlswCqG1gYRggR0AjBuDR_1eXGvBxM-CAa2eCEaaoYn2PHFfD69RvQiKwwsGvfLe9k_nxu3mhACdDzejLwbr5l9O_3PuZhf1mQKRtDGHMchp2SSisbwPjWlaeMhdwYpNyp1Ng_ipo3vQ44mUMX7C2kSN-hzFemVB6fu87o59XqvyZT87-z5qr7T_I8ykT5ciCDyTpHXQ8atcnvLVvFwQGmc_sUnoNalSLLDPtEWvUM0zZLRHSFbxRObXblhMcoTx-dq-X47ORfGF7ATLivwxLa1uXJQADnc0VDgAJtxv5tqlHrnqk3p6RpLbLMH9HYuQZgs6Y3tMZR4fV136bZ5-7e2K4NOPngY_wkm06r1FqvD6ypPcoPolqV]-->
+  </g>
+</svg>

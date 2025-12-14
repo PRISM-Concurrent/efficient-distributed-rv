@@ -7,15 +7,20 @@ import java.util.List;
 public class VerificationResult {
     private final boolean correct;
     private final Duration executionTime;
+    private final Duration producersTime;
+    private final Duration verifiersTime;
     private final List<Violation> violations;
     private final ExecutionStatistics statistics;
 
-    public VerificationResult(boolean correct, Duration executionTime,
+
+    public VerificationResult(boolean correct, Duration executionTime, Duration producersTime, Duration verifierTime,
                             List<Violation> violations, ExecutionStatistics statistics) {
         this.correct = correct;
         this.executionTime = executionTime;
         this.violations = violations != null ? violations : new ArrayList<>();
         this.statistics = statistics;
+        this.producersTime = producersTime;
+        this.verifiersTime = verifierTime;
     }
 
     public boolean isCorrect() {
@@ -28,6 +33,13 @@ public class VerificationResult {
 
     public Duration getExecutionTime() {
         return executionTime;
+    }
+
+    public Duration getProdExecutionTime() {
+        return producersTime;
+    }
+    public Duration getVerifierExecutionTime() {
+        return verifiersTime;
     }
 
     public List<Violation> getViolations() {

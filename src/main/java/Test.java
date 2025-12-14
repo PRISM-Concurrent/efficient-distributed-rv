@@ -15,13 +15,13 @@ public class Test {
         int THREADS = 3;
 
         // ============================================================
-        // 1. Crear DistAlgorithm con solo offer() y poll()
+        // 1. Create a DistAlgorithm with only offer() and poll()
         // ============================================================
         String className = ConcurrentLinkedQueue.class.getName();
         A alg = new A(className, "offer", "poll");
 
         // ============================================================
-        // 2. Obtener MethodInf
+        // 2. Obtain MethodInf objects
         // ============================================================
         MethodInf offerMethod = null;
         MethodInf pollMethod  = null;
@@ -32,7 +32,7 @@ public class Test {
         }
 
         // ============================================================
-        // 3. Construir lista explícita de OperationCall (sin corchetes)
+        // 3. Build an explicit list of OperationCall (without brackets)
         // ============================================================
         List<OperationCall> schedule = new ArrayList<>();
 
@@ -45,7 +45,7 @@ public class Test {
         int OPS = schedule.size();
 
         // ============================================================
-        // 4. Verificar usando el nuevo VerificationFramework
+        // 4. Verify using the new VerificationFramework
         // ============================================================
         VerificationResult result = VerificationFramework
             .verify(ConcurrentLinkedQueue.class)
@@ -57,6 +57,11 @@ public class Test {
             .run();
 
         System.out.println("Linearizable? " + result.isLinearizable());
-        System.out.println("Tiempo total: " + result.getExecutionTime().toMillis() + " ms");
+        System.out.println("Producer execution time: "
+                + result.getProdExecutionTime().toMillis() + " ms");
+        System.out.println("Verifier execution time: "
+                + result.getVerifierExecutionTime().toMillis() + " ms");
+        System.out.println("Total execution time: "
+                + result.getExecutionTime().toMillis() + " ms");
     }
 }
