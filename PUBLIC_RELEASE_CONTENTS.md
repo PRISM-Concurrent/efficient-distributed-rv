@@ -139,7 +139,7 @@ src/
 **What they can do:**
 ```bash
 # Clone and install
-git clone https://github.com/miguelpinia/efficient-distributed-rv.git
+git clone https://github.com/PRISM-Concurrent/efficient-distributed-rv.git
 cd efficient-distributed-rv
 ./install.sh
 
@@ -148,7 +148,7 @@ java -jar efficient-distributed-rv.jar
 ```
 
 ### Repository URL
-https://github.com/miguelpinia/efficient-distributed-rv
+https://github.com/PRISM-Concurrent/efficient-distributed-rv
 
 ---
 

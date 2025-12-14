@@ -6,7 +6,7 @@ A linearizability checker for concurrent data structures that uses non-lineariza
 [![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)]()
 [![Java](https://img.shields.io/badge/Java-21-blue)]()
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)]()
-[![GitHub](https://img.shields.io/badge/GitHub-public-green)](https://github.com/miguelpinia/efficient-distributed-rv)
+[![GitHub](https://img.shields.io/badge/GitHub-public-green)](https://github.com/PRISM-Concurrent/efficient-distributed-rv)
 
 ---
 
@@ -222,3 +222,6 @@ If you use this tool in your research, please cite:
 
 - The RV 2024 community for insightful feedback and constructive discussions.
 - Gavin Lowe for foundational work on linearizability checking and for making his tools and documentation easily accessible.
+
+---
+*Updated: December 2024*

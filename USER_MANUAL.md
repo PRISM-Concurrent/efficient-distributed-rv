@@ -67,7 +67,7 @@ sufficient to detect linearizability violations at runtime.
 
 ```bash
 # Clone repository
-git clone https://github.com/miguelpinia/efficient-distributed-rv.git
+git clone https://github.com/PRISM-Concurrent/efficient-distributed-rv.git
 cd efficient-distributed-rv
 
 # Build
