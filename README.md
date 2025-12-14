@@ -65,7 +65,7 @@ import phd.distributed.api.*;
 VerificationResult result = VerificationFramework
     .verify(ConcurrentLinkedQueue.class)
     .withThreads(4)
-    .withOperations(100)
+    .withOperations(50)
     .withObjectType("queue")
     .run();
 
@@ -94,32 +94,12 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 - `LinkedTransferQueue`
 - `ConcurrentSkipListMap`
 - `LinkedBlockingDeque`
-'- Plus 40+ algorithms from Gavin Lowe's collection
+
 
 ### Architecture
 
-```
-┌─────────────────────────────────────┐
-│    VerificationFramework (API)     │
-│    - Fluent builder pattern         │
-└─────────────┬───────────────────────┘
-              │
-    ┌─────────┴─────────┐
-    │                   │
-┌───▼────────┐  ┌──────▼──────┐
-│ Executioner│  │  Verifier   │
-│ - Producers│  │  - JitLin   │
-│ - Snapshot │  │  - Checker  │
-└───┬────────┘  └──────┬──────┘
-    │                   │
-    └─────────┬─────────┘
-              │
-    ┌─────────▼─────────┐
-    │  JITLinUndoTester │
-    │  - Undo operations│
-    │  - State space    │
-    └───────────────────┘
-```
+![Verification Framework](summary.svg)
+
 
 ---
 
@@ -129,6 +109,8 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 - **[INSTALL.md](INSTALL.md)** - Installation instructions
 - **[API_USAGE_GUIDE.org](API_USAGE_GUIDE.org)** - Detailed API reference
 - **[API_EXAMPLES.md](API_EXAMPLES.md)** - Code examples
+- **[QUICK_START.md](QUICK_START.md)** - Ready to execute examples
+
 
 ---
 
@@ -136,7 +118,7 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 
 See working examples in `src/main/java/`:
 - `Test.java` - Basic verification
-- `HighPerformanceLinearizabilityTest.java` - Multiple algorithms
+- `BatchExexcution.java` - Multiple algorithms
 - `NonLinearizableTest.java` - Non-linearizable example
 
 Run examples:
@@ -144,9 +126,8 @@ Run examples:
 # Basic test
 ./run-test.sh
 
-# High-performance test
-java -cp "target/classes:$(mvn dependency:build-classpath -q)" \
-  HighPerformanceLinearizabilityTest
+# All algorithms test
+./run-example BatchExecution
 ```
 
 ---

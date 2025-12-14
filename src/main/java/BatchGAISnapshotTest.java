@@ -6,7 +6,7 @@ import phd.distributed.api.VerificationResult;
  * High-performance linearizability testing using the alternative snapshot
  * implementation (e.g., "gAIsnap", typically CollectFAInc).
  */
-public class HighPerformanceLinearizabilityGAISnapshotTest {
+public class BatchGAISnapshotTest {
 
     private static final int OPERATIONS = 10;
     private static final int THREADS = 3;

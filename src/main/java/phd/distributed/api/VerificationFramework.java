@@ -128,10 +128,25 @@ public class VerificationFramework {
                 try {
                     // 1) Construir DistAlgorithm usando tu wrapper A
                     String implClassName = algorithmClass.getName();
+                    // 1) Build DistAlgorithm using wrapper A (safe defaults if methods is not provided)
+
+                    String[] effectiveMethods = this.methods;
+                    if (effectiveMethods == null || effectiveMethods.length == 0) {
+                        effectiveMethods = switch (objectType) {
+                            case "queue" -> new String[]{"offer", "poll"}; // peek NOT supported by your sequential spec
+                            case "map"   -> new String[]{"put", "get", "remove"};
+                            case "set"   -> new String[]{"add", "remove", "contains"};
+                            case "deque" -> new String[]{"offerFirst", "offerLast", "pollFirst", "pollLast"};
+                            default -> throw new IllegalArgumentException(
+                                "Unsupported objectType '" + objectType + "'. " +
+                                "Please set withObjectType(...) to one of: queue, map, set, deque " +
+                                "or provide an explicit withMethods(...)."
+                            );
+                        };
+                    }
+
                     DistAlgorithm algorithm =
-                        (methods == null || methods.length == 0)
-                            ? new A(implClassName)
-                            : new A(implClassName, methods);
+                        new A(implClassName, effectiveMethods);
 
                     // 2) Crear Executioner (usa snapshot según snapType + JitLin)
                     Executioner executioner =
@@ -174,9 +189,9 @@ public class VerificationFramework {
                             0L  // si luego lees el tamaño de X_E puedes poner aquí los eventos procesados
                         );
 
-                    System.out.println("  ↳ Producer phase time : " + producersTime.toMillis() + " ms");
-                    System.out.println("  ↳ Verifier phase time : " + verifierTime.toMillis() + " ms");
-                    System.out.println("  ↳ Total verification   : " + totalTime.toMillis() + " ms");
+                    //System.out.println("  ↳ Producer phase time : " + producersTime.toMillis() + " ms");
+                    //System.out.println("  ↳ Verifier phase time : " + verifierTime.toMillis() + " ms");
+                    //System.out.println("  ↳ Total verification   : " + totalTime.toMillis() + " ms");
 
                     return new VerificationResult(correct, totalTime, producersTime, verifierTime, null, stats);
 

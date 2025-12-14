@@ -1,1017 +1,485 @@
-#+TITLE: Efficient Distributed Runtime Verification - API Usage Guide
-#+AUTHOR: Generated Documentation
-#+DATE: 2025-11-23
-#+OPTIONS: toc:3 num:t
+#+TITLE: API Usage Guide - Efficient Distributed Runtime Verification
+#+AUTHOR: Efficient Distributed RV Project
+#+DATE: December 2025
+#+OPTIONS: toc:2 num:t
 
 * Overview
 
-This guide provides comprehensive documentation for using the Efficient
-Distributed Runtime Verification framework. The system verifies linearizability
-of concurrent data structures with high performance and scalability.
+This document is a *developer-facing* API guide for the Efficient Distributed
+Runtime Verification framework.
 
-** Key Features
-- ✅ Parallel verification (5-8x speedup)
-- ✅ Reactive/streaming support for large datasets
-- ✅ Smart caching (364x speedup on hits)
-- ✅ State space pruning strategies
-- ✅ Handles 10M+ events with constant memory
-- ✅ Clean fluent API
+The framework offers two complementary ways to run a verification:
 
-** Performance Highlights
-| Feature              | Performance                    |
-|----------------------+--------------------------------|
-| Parallel Verification| 7.81 ms for 10K events        |
-| Batch Processing     | 1.24M events/sec              |
-| Cache Hits           | 364x speedup                  |
-| Streaming            | 98% memory reduction          |
-| Pruning              | 0.86 ms for 10K events        |
+1. *Low-level workflow* via =Executioner=
+   (explicit execution and verification phases).
+2. *High-level fluent API* via =VerificationFramework=
+   (recommended for most users).
 
-* Quick Start
+Terminology used throughout this document:
 
-** Installation
-
-Add to your =pom.xml=:
-
-#+BEGIN_SRC xml
-<dependency>
-    <groupId>phd.distributed</groupId>
-    <artifactId>efficient-distributed-rv</artifactId>
-    <version>1.0.0</version>
-</dependency>
-#+END_SRC
-
-** Simplest Example
-
-#+BEGIN_SRC java
-import phd.distributed.api.VerificationFramework;
-import phd.distributed.datamodel.Event;
-import phd.distributed.verifier.SeqUndoableQueue;
-import java.util.Arrays;
-import java.util.List;
-
-public class SimpleExample {
-    public static void main(String[] args) throws Exception {
-        // Create events: Thread 0 enqueues 5, Thread 1 dequeues 5
-        List<Event> events = Arrays.asList(
-            new Event(0, "enqueue(5)", 1),
-            new Event(1, "dequeue() -> 5", 1)
-        );
-
-        // Verify linearizability
-        Boolean isValid = VerificationFramework
-            .verify(SeqUndoableQueue.class)
-            .withThreads(4)
-            .runAsync(events)
-            .get();
-
-        System.out.println("Valid: " + isValid);
-    }
-}
-#+END_SRC
+- *Implementation under inspection*:
+  the concurrent object being tested
+  (e.g., =ConcurrentLinkedQueue=).
+- *Object type*:
+  logical label selecting the sequential specification
+  (e.g., ="queue"=, ="map"=).
+- *Snapshot strategy*:
+  instrumentation mechanism used to obtain the execution
+  (e.g., ="gAIsnap"= or ="rawsnap"=).
+- *Workload*:
+  strategy used to generate operations
+  (random, pattern-based, or explicit).
+- *Schedule*:
+  a fixed list of operations (=OperationCall=) *without thread IDs*;
+  thread assignment is performed by the execution layer.
 
 * Core Concepts
 
-** Event Model
+This section explains the conceptual and algorithmic foundations of the
+framework.  It is intended for developers who want to understand how
+executions are collected and how linearizability is checked.
 
-Events represent operations on concurrent data structures:
+** Runtime Verification Architecture
 
-#+BEGIN_SRC java
-public class Event {
-    private Object event;      // The operation (e.g., "enqueue(5)")
-    private int id;            // Thread ID
-    private int counter;       // Sequence number
+The framework follows the classical three-layer architecture of runtime
+verification:
 
-    public Event(int id, Object event, int counter) {
-        this.id = id;
-        this.event = event;
-        this.counter = counter;
-    }
-}
-#+END_SRC
+1. *Instrumentation* – obtain the current concurrent execution.
+2. *Monitoring* – decide whether the execution satisfies the property.
+3. *Specification* – define correct sequential behavior.
 
-** Creating Events
+This guide focuses on the *instrumentation* and *monitoring* layers for
+linearizability.
 
-#+BEGIN_SRC java
-List<Event> events = new ArrayList<>();
+[[file:systemArquitecture.svg]]
 
-// Thread 0 enqueues value 5
-events.add(new Event(0, "enqueue(5)", 1));
+** Instrumentation: Wrappers (Happens-before detection objects)
 
-// Thread 1 dequeues value 5
-events.add(new Event(1, "dequeue() -> 5", 1));
+A *wrapper* is a distributed instrumentation mechanism that intercepts
+method calls on the implementation under inspection in order to construct
+a partial order of operations using shared memory.
 
-// Thread 0 enqueues value 10
-events.add(new Event(0, "enqueue(10)", 2));
-#+END_SRC
+Each operation execution follows three conceptual steps:
 
-** Verification Result
+1. The invocation is written into a shared snapshot object.
+2. The operation is applied to the concrete implementation to obtain a response.
+3. The response and observed invocations are written back to the snapshot.
 
-All verification methods return =Boolean=:
-- =true= - The execution is linearizable
-- =false= - The execution violates linearizability
+The snapshot does *not* need to be linearizable.  It is sufficient that it
+captures enough ordering information to detect violations.
 
-* API Reference
+If the execution collected by the wrapper is not linearizable, then the
+implementation under inspection is also not linearizable.  This property
+is known as *predictive soundness*.
 
-** VerificationFramework (Recommended)
+This approach was introduced by Castañeda and Rodríguez (PODC 2023).
 
-The high-level fluent API for most use cases.
+** Snapshot Strategies
 
-*** Basic Usage
+The framework uses *non-linearizable snapshot objects* based on a
+decoupled collect mechanism, shown to be sufficient for runtime
+verification of linearizability (Rodríguez & Castañeda, RV 2024).
+
+Two snapshot strategies are provided.
+
+*** GAI (Get-And-Increment)
+
+- Uses an atomic fetch-and-increment operation to order events.
+- Provides a total order over collected events.
+- Has low overhead, making it suitable for lightweight instrumentation.
+
+*** RAW (Read-After-Write)
+
+- Uses a read-after-write mechanism to order events.
+- Returns pointers to immutable vectors (Clojure persistent data structures).
+- Captures happens-before relationships between events.
+- Provides more precise causality information than GAI.
+
+** Specification: Linearizability
+
+A concurrent execution is *linearizable* if:
+
+1. Each operation appears to take effect atomically at some point between
+   its invocation and its response.
+2. The real-time order of non-overlapping operations is preserved.
+3. The resulting sequential execution satisfies the sequential specification.
+
+The framework checks linearizability with respect to a sequential
+specification determined by the selected *object type* (e.g., queue, set,
+map).
+
+** JIT-based Linearizability Checking
+
+The monitoring component checks whether a collected concurrent history is
+linearizable with respect to the chosen sequential specification.
+
+The checker is based on the *Just-In-Time* tree search algorithm for
+linearizability testing proposed by Lowe (2017), adapted to a functional
+setting in Clojure.
+
+Key properties:
+
+- Works incrementally and supports partial histories, including pending operations.
+- Uses a backtrackable sequential specification.
+- Sequential states are immutable, so backtracking is achieved by reusing
+  previous states rather than explicitly undoing operations.
+
+
+* High-Level API: VerificationFramework
+
+** Entry points: =verify(...)=
+
+=VerificationFramework= provides three factory methods that return a
+=VerificationBuilder=.
+
+*** =verify(Class<?> algorithmClass)=
+
+Use this variant when the implementation is available as a Java class.
+
+*** =verify(String className)=
+
+Use this variant when only a fully-qualified class name is available.
+The class is loaded via reflection.
+
+Throws =IllegalArgumentException= if the class cannot be found.
+
+*** =verify(Object instance)=
+
+Use this variant when you already have an object instance.
+
+*Important:* the current implementation uses =instance.getClass()= only;
+the provided instance itself is not executed.
+
+** Minimal example (recommended)
 
 #+BEGIN_SRC java
 import phd.distributed.api.VerificationFramework;
-
-// Async mode (returns CompletableFuture)
-CompletableFuture<Boolean> future = VerificationFramework
-    .verify(MyAlgorithm.class)
-    .withThreads(8)
-    .runAsync(events);
-
-Boolean result = future.get();
-#+END_SRC
-
-*** Reactive Mode
-
-#+BEGIN_SRC java
-import reactor.core.publisher.Mono;
-
-// Reactive mode (returns Mono)
-Mono<Boolean> mono = VerificationFramework
-    .verify(MyAlgorithm.class)
-    .withThreads(8)
-    .runReactive(events);
-
-mono.subscribe(
-    result -> System.out.println("Valid: " + result),
-    error -> System.err.println("Error: " + error)
-);
-#+END_SRC
-
-*** Configuration Options
-
-#+BEGIN_SRC java
-import phd.distributed.verifier.*;
-
-VerificationCache cache = new VerificationCache();
-PruningStrategy pruning = new AdaptivePruning();
-
-VerificationFramework
-    .verify(algorithm)
-    .withThreads(16)              // Thread pool size
-    .withCache(cache)             // Enable caching
-    .withPruning(pruning)         // Pruning strategy
-    .runAsync(events);
-#+END_SRC
-
-** ParallelVerifier
-
-Direct access to parallel verification for fine-grained control.
-
-*** Basic Usage
-
-#+BEGIN_SRC java
-import phd.distributed.verifier.ParallelVerifier;
-
-// Create verifier with 8 threads
-ParallelVerifier verifier = new ParallelVerifier(8);
-
-// Verify asynchronously
-CompletableFuture<Boolean> result = verifier.verifyAsync(events);
-
-// Wait for result
-boolean isValid = result.get();
-
-// Always cleanup
-verifier.shutdown();
-#+END_SRC
-
-*** Optimal Thread Count
-
-#+BEGIN_SRC java
-// Match CPU cores
-int cores = Runtime.getRuntime().availableProcessors();
-ParallelVerifier verifier = new ParallelVerifier(cores);
-
-// Or use more for I/O-bound tasks
-ParallelVerifier ioVerifier = new ParallelVerifier(cores * 2);
-#+END_SRC
-
-*** Batch Verification
-
-#+BEGIN_SRC java
-ParallelVerifier verifier = new ParallelVerifier(8);
-
-List<CompletableFuture<Boolean>> futures = testCases.stream()
-    .map(verifier::verifyAsync)
-    .collect(Collectors.toList());
-
-// Wait for all
-CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-    .thenRun(() -> System.out.println("All verified"));
-
-verifier.shutdown();
-#+END_SRC
-
-** ReactiveVerifier
-
-Non-blocking verification using Project Reactor.
-
-*** Basic Usage
-
-#+BEGIN_SRC java
-import phd.distributed.reactive.ReactiveVerifier;
-import reactor.core.publisher.Mono;
-
-ReactiveVerifier verifier = new ReactiveVerifier(cache, pruning, 8);
-
-Mono<Boolean> result = verifier.verify(events);
-
-result.subscribe(
-    isValid -> System.out.println("Valid: " + isValid),
-    error -> System.err.println("Error: " + error),
-    () -> System.out.println("Complete")
-);
-#+END_SRC
-
-*** With Timeout
-
-#+BEGIN_SRC java
-import java.time.Duration;
-
-verifier.verifyWithTimeout(events, Duration.ofSeconds(30))
-    .subscribe(result -> handleResult(result));
-#+END_SRC
-
-*** With Retry
-
-#+BEGIN_SRC java
-verifier.verifyWithRetry(events, 3)  // Retry up to 3 times
-    .subscribe(result -> handleResult(result));
-#+END_SRC
-
-*** Complete Error Handling
-
-#+BEGIN_SRC java
-verifier.verify(events)
-    .timeout(Duration.ofSeconds(30))
-    .retry(3)
-    .onErrorResume(error -> {
-        logger.error("Verification failed", error);
-        return Mono.just(false);  // Default to invalid
-    })
-    .subscribe(result -> handleResult(result));
-#+END_SRC
-
-** StreamingVerifier
-
-For large datasets that don't fit in memory.
-
-*** Basic Streaming
-
-#+BEGIN_SRC java
-import phd.distributed.reactive.StreamingVerifier;
-import reactor.core.publisher.Flux;
-
-StreamingVerifier verifier = new StreamingVerifier(1000, 16);
-
-Flux<Event> eventStream = Flux.fromIterable(largeDataset);
-
-verifier.verifyStream(eventStream)
-    .subscribe(result -> {
-        System.out.printf("Batch: %d events, passed: %b, time: %d ms%n",
-            result.eventCount(),
-            result.passed(),
-            result.durationMs());
-    });
-#+END_SRC
-
-*** Get Summary
-
-#+BEGIN_SRC java
-verifier.verifySummary(eventStream)
-    .subscribe(summary -> {
-        System.out.printf("Total events: %d%n", summary.getTotalEvents());
-        System.out.printf("Passed batches: %d%n", summary.getPassedBatches());
-        System.out.printf("Failed batches: %d%n", summary.getFailedBatches());
-        System.out.printf("Total time: %d ms%n", summary.getTotalDuration());
-        System.out.println("All passed: " + summary.allPassed());
-    });
-#+END_SRC
-
-*** Filter Failed Batches
-
-#+BEGIN_SRC java
-verifier.verifyStream(eventStream)
-    .filter(result -> !result.passed())
-    .subscribe(failed -> alertOnFailure(failed));
-#+END_SRC
-
-*** Process in Time Windows
-
-#+BEGIN_SRC java
-verifier.verifyStream(eventStream)
-    .window(Duration.ofSeconds(1))
-    .flatMap(window -> window.count())
-    .subscribe(count ->
-        System.out.println("Batches per second: " + count));
-#+END_SRC
-
-* Advanced Features
-
-** Caching
-
-Smart caching provides 364x speedup on cache hits.
-
-*** Basic Caching
-
-#+BEGIN_SRC java
-import phd.distributed.verifier.VerificationCache;
-
-VerificationCache cache = new VerificationCache();
-
-// Check cache first
-Optional<CachedResult> cached = cache.get(events);
-if (cached.isPresent()) {
-    return cached.get().passed();
-}
-
-// Verify and cache result
-long start = System.currentTimeMillis();
-boolean result = verify(events);
-long duration = System.currentTimeMillis() - start;
-cache.put(events, result, duration);
-#+END_SRC
-
-*** Monitor Cache Effectiveness
-
-#+BEGIN_SRC java
-double hitRate = cache.getHitRate();
-System.out.printf("Cache hit rate: %.1f%%%n", hitRate * 100);
-
-if (hitRate < 0.5) {
-    System.err.println("Low cache hit rate - consider cache warming");
+import phd.distributed.api.VerificationResult;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class MinimalVerifyDemo {
+  public static void main(String[] args) {
+    VerificationResult result = VerificationFramework
+        .verify(ConcurrentLinkedQueue.class)
+        .withThreads(4)
+        .withOperations(100)
+        .withObjectType("queue")
+        .withMethods("offer", "poll")
+        .withSnapshot("gAIsnap")
+        .run();
+
+    System.out.println("Linearizable: " + result.isLinearizable());
+    System.out.println("Total time: "
+        + result.getExecutionTime().toMillis() + " ms");
+  }
 }
 #+END_SRC
 
-*** Cache Warming
+* Builder configuration
 
-Pre-populate cache with common test cases:
+** Concurrency and execution parameters
 
+*** =withThreads(int threads)=
+
+Sets the number of concurrent worker threads that invoke operations.
+
+- Typical values: 2–16.
+- Higher values increase interleavings but may increase overhead.
+
+*** =withOperations(int operations)=
+
+Sets the total number of operations executed *across all threads*.
+
+*** =withTimeout(Duration timeout)=
+
+Sets the maximum allowed time for =run()=.
+Internally, =run()= waits for =runAsync()= using this timeout.
+
+Example:
 #+BEGIN_SRC java
-// Warm cache with common scenarios
-for (List<Event> commonCase : getCommonTestCases()) {
-    boolean result = verify(commonCase);
-    cache.put(commonCase, result, 0);
-}
+.withTimeout(java.time.Duration.ofSeconds(30))
 #+END_SRC
 
-** Pruning Strategies
+If the timeout expires, =run()= throws a runtime exception.
 
-Reduce state space while preserving correctness.
+** Object and method configuration
 
-*** Adaptive Pruning (Recommended)
+*** =withObjectType(String type)=
 
-Automatically selects the best strategy:
+Selects the sequential specification and the read/write classification.
 
+Supported object types and expected method names:
+
+- ="queue"=
+  - write: =offer, add, put=
+  - read:  =poll, peek=
+- ="deque"=
+  - write: =offerFirst, offerLast, addFirst, addLast=
+  - read:  =pollFirst, pollLast, peekFirst, peekLast=
+- ="set"=
+  - write: =add, remove=
+  - read:  =contains=
+- ="map"=
+  - write: =put, remove=
+  - read:  =get, containsKey, containsValue=
+
+*** =withMethods(String... methods)=
+
+Restricts the set of methods that can be invoked during execution.
+
+This is *strongly recommended* for:
+- reproducibility,
+- meaningful workloads,
+- avoiding irrelevant API methods.
+
+Example:
 #+BEGIN_SRC java
-import phd.distributed.verifier.PruningStrategy;
-import static phd.distributed.verifier.AdvancedPruningStrategies.*;
-
-PruningStrategy strategy = new AdaptivePruning();
-List<Event> pruned = strategy.prune(events);
-
-System.out.printf("Pruned: %d -> %d events (%.1f%% reduction)%n",
-    events.size(),
-    pruned.size(),
-    100.0 * (events.size() - pruned.size()) / events.size());
+.withMethods("offer", "poll")
 #+END_SRC
 
-*** Dependency-Aware Pruning
+** Snapshot strategy
 
-Keeps first/last per thread + unique operations:
+*** =withSnapshot(String snapType)=
 
+Selects the instrumentation strategy used to collect the execution.
+
+Supported identifiers (case-insensitive):
+
+- ="gAIsnap"= → CollectFAInc
+  - Total order of events
+  - Fetch-and-increment based
+  - Low overhead
+- ="rawsnap"= → CollectRAW
+  - Read-after-write ordering
+  - Captures happens-before relations
+  - More precise causality
+
+Example:
 #+BEGIN_SRC java
-PruningStrategy strategy = new DependencyAwarePruning();
-List<Event> pruned = strategy.prune(events);
+.withSnapshot("rawsnap")
 #+END_SRC
 
-*** Sampling Pruning
+If an unknown value is provided, the system falls back to GAI.
 
-Random sampling for aggressive reduction:
+* Workload control
 
-#+BEGIN_SRC java
-// 50% sampling
-PruningStrategy strategy = new SamplingPruning(0.5);
+The framework supports three ways to generate operations:
 
-// 30% sampling for more aggressive reduction
-PruningStrategy aggressive = new SamplingPruning(0.3);
-#+END_SRC
+1) Default internal random selection.
+2) A =WorkloadPattern= (controlled read/write distribution).
+3) An explicit schedule (=List<OperationCall>=).
 
-*** No Pruning (Debugging)
+A workload controls *which operations* are generated, but *not* which
+thread executes them. Thread assignment is handled by the execution layer
+(=Executioner=).
 
-Disable pruning for debugging:
+** =withWorkload(WorkloadPattern pattern)=
 
-#+BEGIN_SRC java
-PruningStrategy strategy = new NoPruning();
-List<Event> unpruned = strategy.prune(events);  // Returns same list
-#+END_SRC
+Attaches a workload generator that produces a list of =OperationCall= objects.
 
-** Batch Processing
+Properties:
 
-Process events in batches for better throughput.
+- Exactly =operations= calls are generated.
+- Each call is a method invocation (=MethodInf= + arguments).
+- *No thread IDs are assigned.*
+- Read vs write choice is workload-dependent.
+- Concrete methods depend on =objectType= and method name.
 
-*** Basic Batch Processing
+The resulting list is executed using =taskProducersSeed(...)=.
 
-#+BEGIN_SRC java
-import phd.distributed.core.BatchProcessor;
+** How =WorkloadPattern= generates operations
 
-// Create processor with batch size 100
-BatchProcessor<Event> processor = new BatchProcessor<>(100, batch -> {
-    System.out.println("Processing batch of " + batch.size());
-    writeToDisk(batch);
-});
+For each operation index *i*, the pattern decides:
 
-// Add events (automatically batches)
-for (Event event : events) {
-    processor.add(event);
-}
+1) Whether the operation is a *write* or a *read*.
+2) Which method name matches that category for the given =objectType=.
+3) Which arguments are generated
+   (via =OperationCall.fromMethod(...)=).
 
-// Flush remaining events
-processor.flush();
-#+END_SRC
+The =threads= parameter stored in =WorkloadPattern= is currently kept for
+convenience/documentation; it does *not* assign thread IDs.
 
-*** Custom Batch Handler
+** Method classification by object type
 
-#+BEGIN_SRC java
-BatchProcessor<Event> processor = new BatchProcessor<>(50, batch -> {
-    long start = System.currentTimeMillis();
-    processEvents(batch);
-    long duration = System.currentTimeMillis() - start;
-    System.out.printf("Processed %d events in %d ms%n",
-        batch.size(), duration);
-});
-#+END_SRC
+| Object type | Write methods                            | Read methods                               |
+|-------------+------------------------------------------+--------------------------------------------|
+| queue       | offer, add, put                          | poll, peek                                |
+| deque       | offerFirst, offerLast, addFirst, addLast | pollFirst, pollLast, peekFirst, peekLast  |
+| set         | add, remove                              | contains                                  |
+| map         | put, remove                              | get, containsKey, containsValue           |
 
-*** Variable Batch Sizes
+If =withMethods(...)= is used, only that subset is considered.
+Otherwise, methods are discovered via reflection and then filtered
+by this classification.
 
-#+BEGIN_SRC java
-// Small batches for low latency
-BatchProcessor<Event> lowLatency = new BatchProcessor<>(10, handler);
+** Workload patterns
 
-// Large batches for high throughput
-BatchProcessor<Event> highThroughput = new BatchProcessor<>(1000, handler);
-#+END_SRC
+*** UNIFORM
 
-** Performance Monitoring
+Factory:
+- =WorkloadPattern.uniform(operations, threads)=
 
-Track performance metrics with minimal overhead.
+Behavior:
+- 50% write, 50% read.
+- Methods chosen uniformly from the corresponding sets.
 
-*** Basic Metrics
+*** PRODUCER–CONSUMER
 
-#+BEGIN_SRC java
-import phd.distributed.monitoring.PerformanceMetrics;
+Factory:
+- =WorkloadPattern.producerConsumer(operations, threads, producerRatio)=
 
-PerformanceMetrics metrics = PerformanceMetrics.getInstance();
+Behavior:
+- With probability =producerRatio=: write
+- With probability =1 - producerRatio=: read
 
-// After some operations
-System.out.println(metrics.report());
-#+END_SRC
+Models enqueue/dequeue or put/get workloads.
 
-*** Custom Metrics
+*** READ-HEAVY
 
-#+BEGIN_SRC java
-// Increment counter
-metrics.incrementCounter("my.operation");
+Factory:
+- =WorkloadPattern.readHeavy(operations, threads, readRatio)=
 
-// Record timing
-long start = System.nanoTime();
-performOperation();
-metrics.recordTime("my.operation.time", System.nanoTime() - start);
+Behavior:
+- Mostly reads
+- Writes with probability =1 - readRatio=
 
-// Get metrics
-long count = metrics.getCounter("my.operation");
-long totalTime = metrics.getTime("my.operation.time");
-#+END_SRC
+*** WRITE-HEAVY
 
-*** Periodic Reporting
+Factory:
+- =WorkloadPattern.writeHeavy(operations, threads, writeRatio)=
 
-#+BEGIN_SRC java
-ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+Behavior:
+- Mostly writes
+- Reads with probability =1 - writeRatio=
 
-scheduler.scheduleAtFixedRate(() -> {
-    System.out.println(metrics.report());
-}, 0, 60, TimeUnit.SECONDS);
-#+END_SRC
-
-* Configuration
-
-** System Properties
-
-Configure features via =system.properties=:
-
-#+BEGIN_SRC properties
-# Parallel Verification
-feature.parallel.verification=true
-thread.pool.size=8
-
-# Caching
-feature.result.caching=true
-cache.max.size=10000
-
-# Pruning
-feature.smart.pruning=true
-pruning.strategy=adaptive
-
-# Logging
-feature.async.logging=true
-log.buffer.size=8192
-log.flush.interval.ms=100
-
-# Monitoring
-feature.performance.monitoring=true
-metrics.report.interval.seconds=60
-#+END_SRC
-
-** Feature Flags
-
-| Feature                      | Property                        | Default |
-|------------------------------+---------------------------------+---------|
-| Parallel Verification        | feature.parallel.verification   | true    |
-| Result Caching               | feature.result.caching          | true    |
-| Smart Pruning                | feature.smart.pruning           | true    |
-| Async Logging                | feature.async.logging           | true    |
-| Performance Monitoring       | feature.performance.monitoring  | true    |
-
-** Runtime Configuration
-
-Override at runtime:
-
-#+BEGIN_SRC java
-System.setProperty("feature.parallel.verification", "true");
-System.setProperty("thread.pool.size", "16");
-#+END_SRC
-
-* Complete Examples
-
-** Example 1: Simple Verification
+** Example: producer–consumer queue workload
 
 #+BEGIN_SRC java
 import phd.distributed.api.VerificationFramework;
-import phd.distributed.datamodel.Event;
-import phd.distributed.verifier.SeqUndoableQueue;
-import java.util.*;
+import phd.distributed.api.VerificationResult;
+import phd.distributed.api.WorkloadPattern;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class SimpleExample {
-    public static void main(String[] args) throws Exception {
-        // Create events
-        List<Event> events = Arrays.asList(
-            new Event(0, "enqueue(5)", 1),
-            new Event(1, "dequeue() -> 5", 1),
-            new Event(0, "enqueue(10)", 2)
-        );
+public class WorkloadQueueDemo {
+  public static void main(String[] args) {
+    WorkloadPattern pattern =
+        WorkloadPattern.producerConsumer(100, 4, 0.7);
 
-        // Verify
-        Boolean isValid = VerificationFramework
-            .verify(SeqUndoableQueue.class)
-            .withThreads(8)
-            .runAsync(events)
-            .get();
+    VerificationResult result = VerificationFramework
+        .verify(ConcurrentLinkedQueue.class)
+        .withThreads(4)
+        .withOperations(100)
+        .withObjectType("queue")
+        .withMethods("offer", "poll")
+        .withSnapshot("gAIsnap")
+        .withWorkload(pattern)
+        .run();
 
-        System.out.println("Valid: " + isValid);
-    }
+    System.out.println("Linearizable: " + result.isLinearizable());
+  }
 }
 #+END_SRC
 
-** Example 2: With Caching and Pruning
+** Explicit schedules
+
+*** =withSchedule(List<OperationCall> schedule)=
+
+Uses a fixed, deterministic sequence of operations.
+
+Useful for:
+- debugging,
+- reproducing failures,
+- publishing minimal counterexamples.
 
 #+BEGIN_SRC java
-import phd.distributed.api.VerificationFramework;
-import phd.distributed.verifier.*;
-import phd.distributed.datamodel.Event;
-import java.util.*;
-
-public class OptimizedExample {
-    public static void main(String[] args) throws Exception {
-        // Setup
-        VerificationCache cache = new VerificationCache();
-        PruningStrategy pruning = AdvancedPruningStrategies.adaptive();
-
-        // Generate events
-        List<Event> events = generateLargeEventSet();
-
-        // Verify with optimizations
-        Boolean isValid = VerificationFramework
-            .verify(SeqUndoableQueue.class)
-            .withThreads(16)
-            .withCache(cache)
-            .withPruning(pruning)
-            .runAsync(events)
-            .get();
-
-        System.out.println("Valid: " + isValid);
-        System.out.printf("Cache hit rate: %.1f%%%n",
-            cache.getHitRate() * 100);
-    }
-
-    private static List<Event> generateLargeEventSet() {
-        // Your event generation logic
-        return new ArrayList<>();
-    }
-}
+// Fixed schedule example omitted for brevity; see User Manual
 #+END_SRC
 
-** Example 3: Reactive Streaming
+* Low-Level API: Executioner + DistAlgorithm
+
+The explicit workflow:
+
+1. Create a =DistAlgorithm= wrapper (=A=).
+2. Execute concurrent operations.
+3. Verify linearizability.
+
+** DistAlgorithm wrapper
 
 #+BEGIN_SRC java
-import phd.distributed.reactive.*;
-import phd.distributed.datamodel.Event;
-import reactor.core.publisher.Flux;
-import java.time.Duration;
+import phd.distributed.api.A;
+import phd.distributed.api.DistAlgorithm;
 
-public class StreamingExample {
-    public static void main(String[] args) {
-        StreamingVerifier verifier = new StreamingVerifier(1000, 16);
-
-        // Create event stream
-        Flux<Event> eventStream = Flux.fromIterable(generateEvents())
-            .delayElements(Duration.ofMillis(1));
-
-        // Verify with streaming
-        verifier.verifySummary(eventStream)
-            .subscribe(summary -> {
-                System.out.printf("Total events: %d%n",
-                    summary.getTotalEvents());
-                System.out.printf("Passed: %d, Failed: %d%n",
-                    summary.getPassedBatches(),
-                    summary.getFailedBatches());
-                System.out.printf("Total time: %d ms%n",
-                    summary.getTotalDuration());
-                System.out.println("All passed: " +
-                    summary.allPassed());
-            });
-    }
-
-    private static List<Event> generateEvents() {
-        // Your event generation logic
-        return new ArrayList<>();
-    }
-}
+DistAlgorithm algorithm =
+    new A("java.util.concurrent.ConcurrentLinkedQueue",
+          "offer", "poll");
 #+END_SRC
 
-** Example 4: Complete Integration
+** Executioner (random workload)
 
 #+BEGIN_SRC java
-import phd.distributed.api.VerificationFramework;
-import phd.distributed.reactive.*;
-import phd.distributed.verifier.*;
-import phd.distributed.monitoring.PerformanceMetrics;
-import phd.distributed.datamodel.Event;
-import reactor.core.publisher.Flux;
-import java.util.*;
+import phd.distributed.core.Executioner;
 
-public class CompleteExample {
-    public static void main(String[] args) throws Exception {
-        // Setup
-        VerificationCache cache = new VerificationCache();
-        PruningStrategy pruning = AdvancedPruningStrategies.adaptive();
-        PerformanceMetrics metrics = PerformanceMetrics.getInstance();
+Executioner exec =
+    new Executioner(4, 100, algorithm, "queue", "gAIsnap");
 
-        // Small dataset - use parallel verification
-        List<Event> smallDataset = generateEvents(10000);
-
-        VerificationFramework
-            .verify(SeqUndoableQueue.class)
-            .withThreads(8)
-            .withCache(cache)
-            .withPruning(pruning)
-            .runAsync(smallDataset)
-            .thenAccept(result ->
-                System.out.println("Small dataset valid: " + result));
-
-        // Large dataset - use streaming
-        Flux<Event> largeDataset = generateEventStream(1000000);
-        StreamingVerifier streaming = new StreamingVerifier(1000, 16);
-
-        streaming.verifySummary(largeDataset)
-            .subscribe(summary -> {
-                System.out.printf("Large dataset: %d events in %d ms%n",
-                    summary.getTotalEvents(),
-                    summary.getTotalDuration());
-                System.out.println("All passed: " +
-                    summary.allPassed());
-            });
-
-        // Print metrics
-        Thread.sleep(2000);  // Wait for async operations
-        System.out.println("\n" + metrics.report());
-        System.out.printf("Cache hit rate: %.1f%%%n",
-            cache.getHitRate() * 100);
-    }
-
-    private static List<Event> generateEvents(int count) {
-        List<Event> events = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            events.add(new Event(i % 4, "op(" + i + ")", i));
-        }
-        return events;
-    }
-
-    private static Flux<Event> generateEventStream(int count) {
-        return Flux.fromIterable(generateEvents(count));
-    }
-}
+exec.taskProducers();
+boolean linearizable = exec.taskVerifiers();
 #+END_SRC
 
-* Best Practices
-
-** Choosing the Right API
-
-| Use Case                    | Recommended API        | Reason                          |
-|-----------------------------+------------------------+---------------------------------|
-| Small datasets (<100K)      | VerificationFramework  | Simple, fast                    |
-| Large datasets (>1M)        | StreamingVerifier      | Constant memory                 |
-| Real-time verification      | ReactiveVerifier       | Non-blocking                    |
-| Batch processing            | ParallelVerifier       | Fine-grained control            |
-| Quick prototyping           | VerificationFramework  | One-liner API                   |
-
-** Performance Tips
-
-1. *Use appropriate thread count*
-   - CPU-bound: =Runtime.getRuntime().availableProcessors()=
-   - I/O-bound: =cores * 2=
-
-2. *Enable caching for repeated patterns*
-   #+BEGIN_SRC java
-   VerificationCache cache = new VerificationCache();
-   // Reuse cache across verifications
-   #+END_SRC
-
-3. *Use pruning for large state spaces*
-   #+BEGIN_SRC java
-   PruningStrategy pruning = new AdaptivePruning();
-   #+END_SRC
-
-4. *Stream large datasets*
-   #+BEGIN_SRC java
-   // Don't load all in memory
-   StreamingVerifier verifier = new StreamingVerifier(1000, 16);
-   #+END_SRC
-
-5. *Monitor performance*
-   #+BEGIN_SRC java
-   PerformanceMetrics metrics = PerformanceMetrics.getInstance();
-   System.out.println(metrics.report());
-   #+END_SRC
-
-** Memory Management
-
-*** For Small Datasets
-#+BEGIN_SRC java
-// Load all in memory - simple and fast
-List<Event> events = loadAllEvents();
-VerificationFramework.verify(algorithm).runAsync(events);
-#+END_SRC
-
-*** For Large Datasets
-#+BEGIN_SRC java
-// Stream from source - constant memory
-Flux<Event> stream = Flux.fromStream(Files.lines(path))
-    .map(this::parseEvent);
-StreamingVerifier verifier = new StreamingVerifier(1000, 16);
-verifier.verifySummary(stream);
-#+END_SRC
-
-** Error Handling
-
-*** Synchronous
-#+BEGIN_SRC java
-try {
-    Boolean result = verifier.verifyAsync(events).get();
-} catch (ExecutionException e) {
-    logger.error("Verification failed", e.getCause());
-} catch (InterruptedException e) {
-    Thread.currentThread().interrupt();
-}
-#+END_SRC
-
-*** Reactive
-#+BEGIN_SRC java
-verifier.verify(events)
-    .timeout(Duration.ofSeconds(30))
-    .retry(3)
-    .onErrorResume(error -> {
-        logger.error("Verification failed", error);
-        return Mono.just(false);
-    })
-    .subscribe(result -> handleResult(result));
-#+END_SRC
-
-* Troubleshooting
-
-** Common Issues
-
-*** OutOfMemoryError
-
-*Problem:* Loading too many events in memory
-
-*Solution:* Use =StreamingVerifier=
-#+BEGIN_SRC java
-StreamingVerifier verifier = new StreamingVerifier(1000, 16);
-verifier.verifyStream(eventStream);
-#+END_SRC
-
-*** Slow Verification
-
-*Problem:* Not using parallelization
-
-*Solution:* Enable parallel verification
-#+BEGIN_SRC java
-VerificationFramework
-    .verify(algorithm)
-    .withThreads(16)  // Increase threads
-    .runAsync(events);
-#+END_SRC
-
-*** High Memory Usage
-
-*Problem:* Cache growing too large
-
-*Solution:* Configure cache size
-#+BEGIN_SRC properties
-cache.max.size=5000
-#+END_SRC
-
-*** Timeout Errors
-
-*Problem:* Verification taking too long
-
-*Solution:* Use pruning and increase timeout
-#+BEGIN_SRC java
-verifier.verifyWithTimeout(events, Duration.ofMinutes(5))
-    .subscribe(result -> handleResult(result));
-#+END_SRC
-
-** Debug Mode
-
-Enable detailed logging:
-
-#+BEGIN_SRC properties
-feature.async.logging=false
-log.level=DEBUG
-#+END_SRC
-
-** Performance Profiling
+** Executioner (seeded workload)
 
 #+BEGIN_SRC java
-PerformanceMetrics metrics = PerformanceMetrics.getInstance();
+WorkloadPattern p = WorkloadPattern.readHeavy(100, 4, 0.8);
+List<OperationCall> ops = p.generateOperations(algorithm, "queue");
 
-// Run verification
-verifier.verify(events);
+Executioner exec =
+    new Executioner(4, 100, algorithm, "queue", "gAIsnap");
 
-// Check metrics
-System.out.println(metrics.report());
-System.out.printf("Cache hit rate: %.1f%%%n",
-    cache.getHitRate() * 100);
+exec.taskProducersSeed(ops);
+boolean linearizable = exec.taskVerifiers();
 #+END_SRC
 
-* Migration Guide
+* VerificationResult
 
-** From Legacy Code
+Returned by =run()= or =runAsync()=.
 
-*** Step 1: Enable Features
+Common methods:
+- =isLinearizable()=
+- =getExecutionTime()=
+- =getProdExecutionTime()=
+- =getVerifierExecutionTime()=
+- =getStatistics().getTotalOperations()=
 
-Add =system.properties=:
-#+BEGIN_SRC properties
-feature.parallel.verification=true
-feature.result.caching=true
-feature.smart.pruning=true
-#+END_SRC
+* AlgorithmLibrary
 
-*** Step 2: Replace Manual Parallelization
-
-*Before:*
-#+BEGIN_SRC java
-ExecutorService executor = Executors.newFixedThreadPool(8);
-List<Future<Boolean>> futures = new ArrayList<>();
-for (List<Event> partition : partitions) {
-    futures.add(executor.submit(() -> verify(partition)));
-}
-#+END_SRC
-
-*After:*
-#+BEGIN_SRC java
-ParallelVerifier verifier = new ParallelVerifier(8);
-CompletableFuture<Boolean> result = verifier.verifyAsync(events);
-#+END_SRC
-
-*** Step 3: Add Caching
+Helper registry for built-in implementations.
 
 #+BEGIN_SRC java
-VerificationCache cache = new VerificationCache();
+import phd.distributed.api.AlgorithmLibrary;
 
-VerificationFramework
-    .verify(algorithm)
-    .withCache(cache)
-    .runAsync(events);
+AlgorithmLibrary.AlgorithmInfo info =
+    AlgorithmLibrary.getInfo("ConcurrentLinkedQueue");
 #+END_SRC
 
-*** Step 4: Use Pruning
+* Non-linearizable examples
+
+Some distributions include intentionally broken implementations to
+validate detection of violations.
 
 #+BEGIN_SRC java
-PruningStrategy pruning = new AdaptivePruning();
-
-VerificationFramework
-    .verify(algorithm)
-    .withPruning(pruning)
-    .runAsync(events);
+VerificationResult result = VerificationFramework
+    .verify("phd.distributed.verifier.BrokenQueue")
+    .withThreads(4)
+    .withOperations(100)
+    .withObjectType("queue")
+    .withMethods("offer", "poll")
+    .run();
 #+END_SRC
 
-** Backward Compatibility
+* Recommended conventions
 
-All existing code continues to work:
-- ✅ No breaking changes
-- ✅ Features are opt-in
-- ✅ Legacy APIs still supported
-- ✅ Gradual migration path
-
-* API Summary
-
-** Quick Reference
-
-| API                   | Use Case              | Returns              |
-|-----------------------+-----------------------+----------------------|
-| VerificationFramework | General purpose       | CompletableFuture    |
-| ParallelVerifier      | Fine-grained control  | CompletableFuture    |
-| ReactiveVerifier      | Non-blocking          | Mono<Boolean>        |
-| StreamingVerifier     | Large datasets        | Flux<Result>         |
-
-** Method Signatures
-
-#+BEGIN_SRC java
-// VerificationFramework
-VerificationFramework.verify(Class<?> algorithm)
-    .withThreads(int threads)
-    .withCache(VerificationCache cache)
-    .withPruning(PruningStrategy strategy)
-    .runAsync(List<Event> events) -> CompletableFuture<Boolean>
-    .runReactive(List<Event> events) -> Mono<Boolean>
-
-// ParallelVerifier
-new ParallelVerifier(int parallelism)
-    .verifyAsync(List<Event> events) -> CompletableFuture<Boolean>
-    .shutdown() -> void
-
-// ReactiveVerifier
-new ReactiveVerifier(cache, pruning, parallelism)
-    .verify(List<Event> events) -> Mono<Boolean>
-    .verifyWithTimeout(events, Duration) -> Mono<Boolean>
-    .verifyWithRetry(events, int maxAttempts) -> Mono<Boolean>
-
-// StreamingVerifier
-new StreamingVerifier(int batchSize, int parallelism)
-    .verifyStream(Flux<Event> stream) -> Flux<VerificationResult>
-    .verifySummary(Flux<Event> stream) -> Mono<VerificationSummary>
-#+END_SRC
-
-* Additional Resources
-
-** Documentation Files
-- =PROJECT_SUMMARY.md= - Project overview and achievements
-- =API_EXAMPLES.md= - Comprehensive code examples
-- =MIGRATION_GUIDE.md= - Detailed migration instructions
-- =CONFIGURATION_GUIDE.md= - Configuration reference
-- =PHASE2_COMPLETE.md= - Phase 2 implementation details
-- =PHASE3_COMPLETE.md= - Phase 3 reactive features
-
-** Performance Benchmarks
-- =PHASE2_BENCHMARK_RESULTS.md= - Detailed performance metrics
-- =TEST_OPTIMIZATION_GUIDE.md= - Test optimization strategies
-
-** Implementation Details
-- =ASYNC_LOGGING_IMPLEMENTATION.md= - Async logging design
-- =BACKWARD_COMPATIBILITY.md= - Compatibility guarantees
-
-* Appendix
-
-** System Requirements
-- Java 17 or higher
-- Maven 3.6+
-- 4GB RAM minimum (8GB recommended)
-- Multi-core CPU recommended
-
-** Dependencies
-- Project Reactor 3.x
-- Log4j2 2.x
-- JUnit 5 (for testing)
-
-** License
-See project LICENSE file for details.
-
-** Support
-For issues and questions, see project repository.
-
----
-
-*Generated:* 2025-11-23
-*Version:* 1.0.0
-*Status:* Production Ready
+- Prefer the fluent API unless low-level control is required.
+- Always specify =objectType= and =withMethods(...)=.
+- Use workloads for realism and schedules for debugging.
+- Use timeouts for large executions.

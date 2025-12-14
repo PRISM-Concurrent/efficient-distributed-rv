@@ -1,0 +1,1742 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   contentStyleType="text/css"
+   data-diagram-type="CLASS"
+   height="972"
+   preserveAspectRatio="none"
+   version="1.1"
+   viewBox="0 0 1091 972"
+   width="1091"
+   zoomAndPan="magnify"
+   id="svg63"
+   sodipodi:docname="summary.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview63"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.65718799"
+     inkscape:cx="633"
+     inkscape:cy="486.16226"
+     inkscape:window-width="1520"
+     inkscape:window-height="1186"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="link_AlgorithmLibrary_VerificationFramework" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowTriangleStylized"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Stylized triangle arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"
+         id="path65" />
+    </marker>
+  </defs>
+  <g
+     id="g63">
+    <!--cluster Verification API-->
+    <g
+       class="cluster"
+       data-entity="Verification API"
+       data-source-line="3"
+       data-uid="ent0002"
+       id="cluster_Verification API"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         d="m 224.5,167 h 112.4531 a 3.75,3.75 0 0 1 2.5,2.5 l 7,19.9883 H 581.5 a 2.5,2.5 0 0 1 2.5,2.5 V 602.45 a 2.5,2.5 0 0 1 -2.5,2.5 h -357 a 2.5,2.5 0 0 1 -2.5,-2.5 V 169.5 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="none"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path1" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="222"
+         x2="346.45309"
+         y1="189.4883"
+         y2="189.4883"
+         id="line1" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="111.4531"
+         x="226"
+         y="182.5352"
+         id="text1">Verification API</text>
+    </g>
+    <!--cluster System Arquitecture-->
+    <g
+       class="cluster"
+       data-entity="System Arquitecture"
+       data-source-line="10"
+       data-uid="ent0007"
+       id="cluster_System Arquitecture"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         d="m 610.5,505.95 h 147.6035 a 3.75,3.75 0 0 1 2.5,2.5 l 7,19.9883 H 1186.5 a 2.5,2.5 0 0 1 2.5,2.5 V 963.45 a 2.5,2.5 0 0 1 -2.5,2.5 h -576 a 2.5,2.5 0 0 1 -2.5,-2.5 v -455 a 2.5,2.5 0 0 1 2.5,-2.5"
+         fill="none"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path2" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="608"
+         x2="767.60352"
+         y1="528.43829"
+         y2="528.43829"
+         id="line2" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="146.6035"
+         x="612"
+         y="521.48523"
+         id="text2">System Arquitecture</text>
+    </g>
+    <!--cluster Catalog & Config-->
+    <g
+       class="cluster"
+       data-entity="Catalog . Config"
+       data-source-line="24"
+       data-uid="ent0019"
+       id="cluster_Catalog . Config"
+       transform="translate(83.689901,484.13942)">
+      <path
+         d="m 8.5,6 h 123.1924 a 3.75,3.75 0 0 1 2.5,2.5 l 7,19.9883 H 195.5 a 2.5,2.5 0 0 1 2.5,2.5 V 454.45 a 2.5,2.5 0 0 1 -2.5,2.5 H 8.5 A 2.5,2.5 0 0 1 6,454.45 V 8.5 A 2.5,2.5 0 0 1 8.5,6"
+         fill="none"
+         style="stroke:#000000;stroke-width:1.5"
+         id="path3" />
+      <line
+         style="stroke:#000000;stroke-width:1.5"
+         x1="6"
+         x2="141.1924"
+         y1="28.4883"
+         y2="28.4883"
+         id="line3" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-weight="bold"
+         lengthAdjust="spacing"
+         textLength="122.1924"
+         x="10"
+         y="21.5352"
+         id="text3">Catalog &amp; Config</text>
+    </g>
+    <!--class VerificationFramework-->
+    <g
+       class="entity"
+       data-entity="VerificationFramework"
+       data-source-line="4"
+       data-uid="ent0003"
+       id="entity_VerificationFramework"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="184.5303"
+         x="237.73"
+         y="202"
+         id="rect3" />
+      <circle
+         cx="252.73"
+         cy="218"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse3"
+         r="11" />
+      <path
+         d="m 255.2031,224.1431 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path4" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="152.5303"
+         x="266.73001"
+         y="223.291"
+         id="text4">VerificationFramework</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="238.73"
+         x2="421.26031"
+         y1="234"
+         y2="234"
+         id="line4" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="238.73"
+         x2="421.26031"
+         y1="242"
+         y2="242"
+         id="line5" />
+    </g>
+    <!--class VerificationBuilder-->
+    <g
+       class="entity"
+       data-entity="VerificationBuilder"
+       data-source-line="5"
+       data-uid="ent0004"
+       id="entity_VerificationBuilder"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="156.5713"
+         x="411.70999"
+         y="359.97"
+         id="rect5" />
+      <circle
+         cx="426.70999"
+         cy="375.97"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse5"
+         r="11" />
+      <path
+         d="m 429.1831,382.1131 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path5" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="124.5713"
+         x="440.70999"
+         y="381.26099"
+         id="text5">VerificationBuilder</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="412.70999"
+         x2="567.28131"
+         y1="391.97"
+         y2="391.97"
+         id="line6" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="412.70999"
+         x2="567.28131"
+         y1="399.97"
+         y2="399.97"
+         id="line7" />
+    </g>
+    <!--class VerificationResult-->
+    <g
+       class="entity"
+       data-entity="VerificationResult"
+       data-source-line="6"
+       data-uid="ent0005"
+       id="entity_VerificationResult"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="151.1572"
+         x="238.42"
+         y="540.95001"
+         id="rect7" />
+      <circle
+         cx="253.42"
+         cy="556.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse7"
+         r="11" />
+      <path
+         d="m 255.8931,563.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path7" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="119.1572"
+         x="267.42001"
+         y="562.24103"
+         id="text7">VerificationResult</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="239.42"
+         x2="388.57721"
+         y1="572.95001"
+         y2="572.95001"
+         id="line8" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="239.42"
+         x2="388.57721"
+         y1="580.95001"
+         y2="580.95001"
+         id="line9" />
+    </g>
+    <!--class WorkloadPattern-->
+    <g
+       class="entity"
+       data-entity="WorkloadPattern"
+       data-source-line="7"
+       data-uid="ent0006"
+       id="entity_WorkloadPattern"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="143.83591"
+         x="424.07999"
+         y="540.95001"
+         id="rect9" />
+      <circle
+         cx="439.07999"
+         cy="556.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse9"
+         r="11" />
+      <path
+         d="m 441.5531,563.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path9" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="111.8359"
+         x="453.07999"
+         y="562.24103"
+         id="text9">WorkloadPattern</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="425.07999"
+         x2="566.91589"
+         y1="572.95001"
+         y2="572.95001"
+         id="line10" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="425.07999"
+         x2="566.91589"
+         y1="580.95001"
+         y2="580.95001"
+         id="line11" />
+    </g>
+    <!--class Executioner-->
+    <g
+       class="entity"
+       data-entity="Executioner"
+       data-source-line="11"
+       data-uid="ent0008"
+       id="entity_Executioner"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="111.9326"
+         x="839.03003"
+         y="540.95001"
+         id="rect11" />
+      <circle
+         cx="854.03003"
+         cy="556.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse11"
+         r="11" />
+      <path
+         d="m 856.5031,563.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path11" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="79.932602"
+         x="868.03003"
+         y="562.24103"
+         id="text11">Executioner</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="840.03003"
+         x2="949.96259"
+         y1="572.95001"
+         y2="572.95001"
+         id="line12" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="840.03003"
+         x2="949.96259"
+         y1="580.95001"
+         y2="580.95001"
+         id="line13" />
+    </g>
+    <!--class OperationCall-->
+    <g
+       class="entity"
+       data-entity="OperationCall"
+       data-source-line="12"
+       data-uid="ent0009"
+       id="entity_OperationCall"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="125.0303"
+         x="624.47998"
+         y="667.95001"
+         id="rect13" />
+      <circle
+         cx="639.47998"
+         cy="683.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse13"
+         r="11" />
+      <path
+         d="m 641.9531,690.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path13" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="93.030296"
+         x="653.47998"
+         y="689.24103"
+         id="text13">OperationCall</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="625.47998"
+         x2="748.51031"
+         y1="699.95001"
+         y2="699.95001"
+         id="line14" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="625.47998"
+         x2="748.51031"
+         y1="707.95001"
+         y2="707.95001"
+         id="line15" />
+    </g>
+    <!--class Wrapper-->
+    <g
+       class="entity"
+       data-entity="Wrapper"
+       data-source-line="13"
+       data-uid="ent0010"
+       id="entity_Wrapper"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="88.587898"
+         x="951.71002"
+         y="667.95001"
+         id="rect15" />
+      <circle
+         cx="966.71002"
+         cy="683.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse15"
+         r="11" />
+      <path
+         d="m 969.1831,690.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path15" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="56.587898"
+         x="980.71002"
+         y="689.24103"
+         id="text15">Wrapper</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="952.71002"
+         x2="1039.2979"
+         y1="699.95001"
+         y2="699.95001"
+         id="line16" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="952.71002"
+         x2="1039.2979"
+         y1="707.95001"
+         y2="707.95001"
+         id="line17" />
+    </g>
+    <!--class Verifier-->
+    <g
+       class="entity"
+       data-entity="Verifier"
+       data-source-line="14"
+       data-uid="ent0011"
+       id="entity_Verifier"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="81.451202"
+         x="798.27002"
+         y="667.95001"
+         id="rect17" />
+      <circle
+         cx="813.27002"
+         cy="683.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse17"
+         r="11" />
+      <path
+         d="m 815.7431,690.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path17" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="49.451199"
+         x="827.27002"
+         y="689.24103"
+         id="text17">Verifier</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="799.27002"
+         x2="878.72119"
+         y1="699.95001"
+         y2="699.95001"
+         id="line18" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="799.27002"
+         x2="878.72119"
+         y1="707.95001"
+         y2="707.95001"
+         id="line19" />
+    </g>
+    <!--class Snapshot-->
+    <g
+       class="entity"
+       data-entity="Snapshot"
+       data-source-line="15"
+       data-uid="ent0012"
+       id="entity_Snapshot"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="94.432602"
+         x="916.78003"
+         y="792.95001"
+         id="rect19" />
+      <circle
+         cx="931.78003"
+         cy="808.95001"
+         fill="#a9dcdf"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse19"
+         r="11" />
+      <path
+         d="m 931.6433,804.2981 -1.1538,5.0718 h 2.3159 z m -1.4942,-2.2412 h 2.9966 l 3.3452,12.3931 h -2.4487 l -0.7637,-3.063 h -3.2788 l -0.747,3.063 h -2.4488 z"
+         fill="#000000"
+         id="path19" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-style="italic"
+         lengthAdjust="spacing"
+         textLength="62.432598"
+         x="945.78003"
+         y="814.24103"
+         id="text19">Snapshot</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="917.78003"
+         x2="1010.2126"
+         y1="824.95001"
+         y2="824.95001"
+         id="line20" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="917.78003"
+         x2="1010.2126"
+         y1="832.95001"
+         y2="832.95001"
+         id="line21" />
+    </g>
+    <!--class CollectFAInc-->
+    <g
+       class="entity"
+       data-entity="CollectFAInc"
+       data-source-line="16"
+       data-uid="ent0013"
+       id="entity_CollectFAInc"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="115.6445"
+         x="850.17999"
+         y="901.95001"
+         id="rect21" />
+      <circle
+         cx="865.17999"
+         cy="917.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse21"
+         r="11" />
+      <path
+         d="m 867.6531,924.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path21" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="83.644501"
+         x="879.17999"
+         y="923.24103"
+         id="text21">CollectFAInc</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="851.17999"
+         x2="964.82452"
+         y1="933.95001"
+         y2="933.95001"
+         id="line22" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="851.17999"
+         x2="964.82452"
+         y1="941.95001"
+         y2="941.95001"
+         id="line23" />
+    </g>
+    <!--class CollectRAW-->
+    <g
+       class="entity"
+       data-entity="CollectRAW"
+       data-source-line="17"
+       data-uid="ent0014"
+       id="entity_CollectRAW"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="109.0752"
+         x="1000.46"
+         y="901.95001"
+         id="rect23" />
+      <circle
+         cx="1015.46"
+         cy="917.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse23"
+         r="11" />
+      <path
+         d="m 1017.9331,924.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path23" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="77.075203"
+         x="1029.46"
+         y="923.24103"
+         id="text23">CollectRAW</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1001.46"
+         x2="1108.5352"
+         y1="933.95001"
+         y2="933.95001"
+         id="line24" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1001.46"
+         x2="1108.5352"
+         y1="941.95001"
+         y2="941.95001"
+         id="line25" />
+    </g>
+    <!--class DistAlgorithm-->
+    <g
+       class="entity"
+       data-entity="DistAlgorithm"
+       data-source-line="18"
+       data-uid="ent0015"
+       id="entity_DistAlgorithm"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="126.7119"
+         x="1046.64"
+         y="792.95001"
+         id="rect25" />
+      <circle
+         cx="1061.64"
+         cy="808.95001"
+         fill="#b4a7e5"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse25"
+         r="11" />
+      <path
+         d="m 1058.0677,805.2151 v -2.1582 h 7.3794 v 2.1582 h -2.4653 v 8.0767 h 2.4653 v 2.1582 h -7.3794 v -2.1582 h 2.4654 v -8.0767 z"
+         fill="#000000"
+         id="path25" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         font-style="italic"
+         lengthAdjust="spacing"
+         textLength="94.711899"
+         x="1075.64"
+         y="814.24103"
+         id="text25">DistAlgorithm</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1047.64"
+         x2="1172.3519"
+         y1="824.95001"
+         y2="824.95001"
+         id="line26" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1047.64"
+         x2="1172.3519"
+         y1="832.95001"
+         y2="832.95001"
+         id="line27" />
+    </g>
+    <!--class A-->
+    <g
+       class="entity"
+       data-entity="A"
+       data-source-line="19"
+       data-uid="ent0016"
+       id="entity_A"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="41.659199"
+         x="1075.17"
+         y="667.95001"
+         id="rect27" />
+      <circle
+         cx="1090.17"
+         cy="683.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse27"
+         r="11" />
+      <path
+         d="m 1092.6431,690.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path27" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="9.6591997"
+         x="1104.17"
+         y="689.24103"
+         id="text27">A</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1076.17"
+         x2="1115.8292"
+         y1="699.95001"
+         y2="699.95001"
+         id="line28" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="1076.17"
+         x2="1115.8292"
+         y1="707.95001"
+         y2="707.95001"
+         id="line29" />
+    </g>
+    <!--class JitLinChecker-->
+    <g
+       class="entity"
+       data-entity="JitLinChecker"
+       data-source-line="20"
+       data-uid="ent0017"
+       id="entity_JitLinChecker"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="120.8945"
+         x="760.54999"
+         y="792.95001"
+         id="rect29" />
+      <circle
+         cx="775.54999"
+         cy="808.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse29"
+         r="11" />
+      <path
+         d="m 778.0231,815.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path29" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="88.894501"
+         x="789.54999"
+         y="814.24103"
+         id="text29">JitLinChecker</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="761.54999"
+         x2="880.44452"
+         y1="824.95001"
+         y2="824.95001"
+         id="line30" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="761.54999"
+         x2="880.44452"
+         y1="832.95001"
+         y2="832.95001"
+         id="line31" />
+    </g>
+    <!--class MethodInf-->
+    <g
+       class="entity"
+       data-entity="MethodInf"
+       data-source-line="21"
+       data-uid="ent0018"
+       id="entity_MethodInf"
+       transform="translate(-121.73077,-153.42548)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="101.0635"
+         x="624.46997"
+         y="792.95001"
+         id="rect31" />
+      <circle
+         cx="639.46997"
+         cy="808.95001"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse31"
+         r="11" />
+      <path
+         d="m 641.9431,815.0931 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path31" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="69.063499"
+         x="653.46997"
+         y="814.24103"
+         id="text31">MethodInf</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="625.46997"
+         x2="724.53351"
+         y1="824.95001"
+         y2="824.95001"
+         id="line32" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="625.46997"
+         x2="724.53351"
+         y1="832.95001"
+         y2="832.95001"
+         id="line33" />
+    </g>
+    <!--class AlgorithmLibrary-->
+    <g
+       class="entity"
+       data-entity="AlgorithmLibrary"
+       data-source-line="25"
+       data-uid="ent0020"
+       id="entity_AlgorithmLibrary"
+       transform="translate(83.689901,484.13942)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="146.63181"
+         x="32.68"
+         y="41"
+         id="rect33" />
+      <circle
+         cx="47.68"
+         cy="57"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse33"
+         r="11" />
+      <path
+         d="m 50.1531,63.1431 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path33" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="114.6318"
+         x="61.68"
+         y="62.291"
+         id="text33">AlgorithmLibrary</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="33.68"
+         x2="178.3118"
+         y1="73"
+         y2="73"
+         id="line34" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="33.68"
+         x2="178.3118"
+         y1="81"
+         y2="81"
+         id="line35" />
+    </g>
+    <!--class AlgorithmInfo-->
+    <g
+       class="entity"
+       data-entity="AlgorithmInfo"
+       data-source-line="26"
+       data-uid="ent0021"
+       id="entity_AlgorithmInfo"
+       transform="translate(83.689901,484.13942)">
+      <rect
+         fill="#f1f1f1"
+         height="48"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="126.2744"
+         x="41.860001"
+         y="202"
+         id="rect35" />
+      <circle
+         cx="56.860001"
+         cy="218"
+         fill="#add1b2"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse35"
+         r="11" />
+      <path
+         d="m 59.3331,224.1431 q -0.581,0.2988 -1.2202,0.4482 -0.6391,0.1494 -1.3447,0.1494 -2.5068,0 -3.8267,-1.6518 -1.3198,-1.6519 -1.3198,-4.773 0,-3.1294 1.3198,-4.7812 1.3199,-1.6519 3.8267,-1.6519 0.7056,0 1.353,0.1494 0.6475,0.1494 1.2119,0.4483 v 2.7226 q -0.6308,-0.581 -1.2243,-0.8508 -0.5935,-0.2698 -1.2244,-0.2698 -1.3447,0 -2.0295,1.0667 -0.6848,1.0666 -0.6848,3.1667 0,2.0918 0.6848,3.1585 0.6848,1.0666 2.0295,1.0666 0.6309,0 1.2244,-0.2698 0.5935,-0.2697 1.2243,-0.8508 z"
+         fill="#000000"
+         id="path35" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="94.274399"
+         x="70.860001"
+         y="223.291"
+         id="text35">AlgorithmInfo</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="42.860001"
+         x2="167.1344"
+         y1="234"
+         y2="234"
+         id="line36" />
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="42.860001"
+         x2="167.1344"
+         y1="242"
+         y2="242"
+         id="line37" />
+    </g>
+    <!--class AlgorithmCategory-->
+    <g
+       class="entity"
+       data-entity="AlgorithmCategory"
+       data-source-line="28"
+       data-uid="ent0022"
+       id="entity_AlgorithmCategory"
+       transform="translate(83.689901,484.13942)">
+      <rect
+         fill="#f1f1f1"
+         height="113.9531"
+         rx="2.5"
+         ry="2.5"
+         style="stroke:#181818;stroke-width:0.5"
+         width="160.63181"
+         x="21.68"
+         y="327"
+         id="rect37" />
+      <circle
+         cx="36.68"
+         cy="343"
+         fill="#eb937f"
+         style="stroke:#181818;stroke-width:1"
+         id="ellipse37"
+         r="11" />
+      <path
+         d="m 40.2943,349.5 h -7.7198 v -12.3931 h 7.7198 v 2.1582 h -5.271 v 2.6729 h 4.7729 v 2.1582 h -4.7729 v 3.2456 h 5.271 z"
+         fill="#000000"
+         id="path37" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="128.63181"
+         x="50.68"
+         y="348.29099"
+         id="text37">AlgorithmCategory</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="22.68"
+         x2="181.3118"
+         y1="359"
+         y2="359"
+         id="line38" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="52.992199"
+         x="27.68"
+         y="376.53519"
+         id="text38">QUEUES</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="53.778301"
+         x="27.68"
+         y="393.02341"
+         id="text39">DEQUES</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="31.5205"
+         x="27.68"
+         y="409.51169"
+         id="text40">SETS</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="14px"
+         lengthAdjust="spacing"
+         textLength="36.996101"
+         x="27.68"
+         y="426"
+         id="text41">MAPS</text>
+      <line
+         style="stroke:#181818;stroke-width:0.5"
+         x1="22.68"
+         x2="181.3118"
+         y1="432.95309"
+         y2="432.95309"
+         id="line41" />
+    </g>
+    <!--reverse link AlgorithmLibrary to AlgorithmInfo-->
+    <g
+       class="link"
+       data-entity-1="AlgorithmLibrary"
+       data-entity-2="AlgorithmInfo"
+       data-source-line="38"
+       data-uid="lnk23"
+       id="link_AlgorithmLibrary_AlgorithmInfo"
+       transform="translate(83.689901,484.13942)">
+      <path
+         codeLine="38"
+         d="M 105.7744,101.4598 C 105.5844,131.6098 105.34,171.63 105.15,201.7"
+         fill="none"
+         id="AlgorithmLibrary-backto-AlgorithmInfo"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="105.85,89.46 101.8123,95.4347 105.7744,101.4598 109.8121,95.4851 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon41" />
+    </g>
+    <!--link AlgorithmInfo to AlgorithmCategory-->
+    <g
+       class="link"
+       data-entity-1="AlgorithmInfo"
+       data-entity-2="AlgorithmCategory"
+       data-source-line="39"
+       data-uid="lnk24"
+       id="link_AlgorithmInfo_AlgorithmCategory"
+       transform="translate(83.689901,484.13942)">
+      <path
+         codeLine="39"
+         d="m 104.55,250.35 c -0.39,20.14 -0.8438,44.0511 -1.3538,70.3711"
+         fill="none"
+         id="AlgorithmInfo-to-AlgorithmCategory"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="103.08,326.72 107.2536,317.7992 103.1769,321.7209 99.2551,317.6442 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon42" />
+    </g>
+    <!--link AlgorithmLibrary to VerificationFramework-->
+    <g
+       class="link"
+       data-entity-1="AlgorithmLibrary"
+       data-entity-2="VerificationFramework"
+       data-source-line="41"
+       data-uid="lnk25"
+       id="link_AlgorithmLibrary_VerificationFramework">
+      <polygon
+         fill="#181818"
+         points="287.5257,199.7521 297.18,201.7 292.1565,193.2286 293.1028,198.8057 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon43"
+         transform="translate(-121.73077,-153.42548)" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="44.566898"
+         x="269.64899"
+         y="132.56841"
+         id="text43"
+         transform="translate(-200.85577,55.038459)">choose</text>
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="132.4248"
+         x="225.72"
+         y="147.87891"
+         id="text44"
+         transform="translate(-200.85577,55.038459)">implementationClass</text>
+      <path
+         style="fill:none;stroke:#02190e;stroke-width:1.42488;stroke-dasharray:5.69952, 5.69952;stroke-dashoffset:40.1816;stroke-opacity:0.890196;marker-start:url(#ArrowTriangleStylized)"
+         d="M 109.55769,71.776439 C -75.236048,117.01547 71.113801,363.11209 114.1226,546.52644"
+         id="path63"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <!--link VerificationFramework to VerificationBuilder-->
+    <g
+       class="link"
+       data-entity-1="VerificationFramework"
+       data-entity-2="VerificationBuilder"
+       data-source-line="42"
+       data-uid="lnk26"
+       id="link_VerificationFramework_VerificationBuilder"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="42"
+         d="m 353.95,250.35 c 30.25,29.49 77.6944,75.731 107.8944,105.181"
+         fill="none"
+         id="VerificationFramework-to-VerificationBuilder"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="456.9039,356.3003 466.14,359.72 462.4892,350.5728 462.5603,356.2292 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon44" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="55.415001"
+         x="401.42001"
+         y="293.56839"
+         id="text45">verify(...)</text>
+    </g>
+    <!--link VerificationFramework to VerificationResult-->
+    <g
+       class="link"
+       data-entity-1="VerificationFramework"
+       data-entity-2="VerificationResult"
+       data-source-line="43"
+       data-uid="lnk27"
+       id="link_VerificationFramework_VerificationResult"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="43"
+         d="m 328.89,250.42 c -2.94,61.79 -10.5759,222.6567 -13.4959,284.2667"
+         fill="none"
+         id="VerificationFramework-to-VerificationResult"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="311.5406,531.5007 315.11,540.68 319.5316,531.8795 315.3467,535.6856 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon45" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="45.506302"
+         x="326.12"
+         y="389.03839"
+         id="text46">returns</text>
+    </g>
+    <!--link VerificationBuilder to WorkloadPattern-->
+    <g
+       class="link"
+       data-entity-1="VerificationBuilder"
+       data-entity-2="WorkloadPattern"
+       data-source-line="45"
+       data-uid="lnk28"
+       id="link_VerificationBuilder_WorkloadPattern"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="45"
+         d="m 490.78,408.37 c 1.15,34.3 3.089,91.8734 4.239,126.1834"
+         fill="none"
+         id="VerificationBuilder-to-WorkloadPattern"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="490.9208,531.689 495.22,540.55 498.9163,531.4211 495.0525,535.5528 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon46" />
+    </g>
+    <!--link VerificationBuilder to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="VerificationBuilder"
+       data-entity-2="DistAlgorithm"
+       data-source-line="46"
+       data-uid="lnk29"
+       id="link_VerificationBuilder_DistAlgorithm"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="46"
+         d="m 568.6,391.6 c 98.25,10.9 269.31,38.62 399.4,106.35 97.89,50.97 141.04,67.13 181,170 15.29,39.37 11.52,54.99 -2,95 -3.56,10.52 -6.3285,16.0188 -12.7585,24.6988"
+         fill="none"
+         id="VerificationBuilder-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="1132.8131,782.8571 1130.67,792.47 1139.2414,787.6191 1133.6462,788.4523 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon47" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="121.1323"
+         x="1136.91"
+         y="634.51837"
+         id="text47"
+         transform="translate(-150.64183,-139.99038)">builds A(implClass)</text>
+    </g>
+    <!--link VerificationBuilder to Executioner-->
+    <g
+       class="link"
+       data-entity-1="VerificationBuilder"
+       data-entity-2="Executioner"
+       data-source-line="47"
+       data-uid="lnk30"
+       id="link_VerificationBuilder_Executioner"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="47"
+         d="m 542.95,408.37 c 77.61,34.3 215.9721,95.4445 293.6021,129.7545"
+         fill="none"
+         id="VerificationBuilder-to-Executioner"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="832.1912,540.5704 842.04,540.55 835.4251,533.2532 837.4667,538.5288 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon48" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="38.574699"
+         x="717.75"
+         y="486.5184"
+         id="text48"
+         transform="translate(3.0432692,-4.5649038)">builds</text>
+    </g>
+    <!--link VerificationBuilder to VerificationResult-->
+    <g
+       class="link"
+       data-entity-1="VerificationBuilder"
+       data-entity-2="VerificationResult"
+       data-source-line="48"
+       data-uid="lnk31"
+       id="link_VerificationBuilder_VerificationResult"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="48"
+         d="m 466.99,408.37 c -33.73,34.3 -92.033,93.592 -125.773,127.902"
+         fill="none"
+         id="VerificationBuilder-to-VerificationResult"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="340.4684,531.3283 337.01,540.55 346.1725,536.9376 340.5158,536.985 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon49" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="29.9102"
+         x="403"
+         y="486.5184"
+         id="text49">run()</text>
+    </g>
+    <!--link WorkloadPattern to OperationCall-->
+    <g
+       class="link"
+       data-entity-1="WorkloadPattern"
+       data-entity-2="OperationCall"
+       data-source-line="50"
+       data-uid="lnk32"
+       id="link_WorkloadPattern_OperationCall"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="50"
+         d="m 520.06,589.41 c 16.13,15 38.31,34.24 59.94,48.54 16.51,10.92 30.1986,18.4576 47.6286,26.8876"
+         fill="none"
+         id="WorkloadPattern-to-OperationCall"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="623.1863,667.1324 633.03,667.45 626.6695,659.9305 628.5288,665.273 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon50" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="145.3804"
+         x="581"
+         y="634.51837"
+         id="text50"
+         transform="translate(-158,8)">generateOperations(...)</text>
+    </g>
+    <!--link Executioner to OperationCall-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="OperationCall"
+       data-source-line="51"
+       data-uid="lnk33"
+       id="link_Executioner_OperationCall"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="51"
+         d="M 848.08,589.42 C 830,598.81 809.31,609.99 791,620.95 766.54,635.6 744.8023,650.149 724.6023,664.229"
+         fill="none"
+         id="Executioner-to-OperationCall"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="724.7761,659.2321 719.68,667.66 729.3507,665.7951 723.7819,664.8009 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon51" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="63.413101"
+         x="792"
+         y="634.51837"
+         id="text51">consumes</text>
+    </g>
+    <!--link A to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="A"
+       data-entity-2="DistAlgorithm"
+       data-source-line="53"
+       data-uid="lnk34"
+       id="link_A_DistAlgorithm"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="53"
+         d="m 1098.67,716.37 c 2.49,21.89 4.1609,36.4947 6.6409,58.3547"
+         fill="none"
+         id="A-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="none"
+         points="1111.2727,774.0484 1099.3492,775.4011 1107.34,792.61 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon52" />
+    </g>
+    <!--link Executioner to Wrapper-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Wrapper"
+       data-source-line="55"
+       data-uid="lnk35"
+       id="link_Executioner_Wrapper"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="55"
+         d="m 913.76,589.17 c 18.14,22.45 41.6988,51.6133 59.8088,74.0233"
+         fill="none"
+         id="Executioner-to-Wrapper"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="968.572,663.3742 977.34,667.86 974.7943,658.3458 974.1973,663.9711 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon53" />
+    </g>
+    <!--link Executioner to Verifier-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Verifier"
+       data-source-line="56"
+       data-uid="lnk36"
+       id="link_Executioner_Verifier"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="56"
+         d="m 884.6,589.17 c -10.06,22.45 -22.7569,50.8044 -32.7969,73.2144"
+         fill="none"
+         id="Executioner-to-Verifier"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="849.3793,658.0112 849.35,667.86 856.6801,661.282 851.3943,663.297 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon54" />
+    </g>
+    <!--link Executioner to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="Snapshot"
+       data-source-line="57"
+       data-uid="lnk37"
+       id="link_Executioner_Snapshot"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="57"
+         d="m 900.81,589.41 c 7.4,29.58 20.72,81.97 33.19,126.54 7.38,26.36 14.7233,50.676 20.9533,70.896"
+         fill="none"
+         id="Executioner-to-Snapshot"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="950.2473,785.1568 956.72,792.58 957.8926,782.8012 955.2477,787.8017 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon55" />
+    </g>
+    <!--link Executioner to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="Executioner"
+       data-entity-2="DistAlgorithm"
+       data-source-line="58"
+       data-uid="lnk38"
+       id="link_Executioner_DistAlgorithm"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="58"
+         d="m 951.45,572.4 c 57,9.84 142.21,34.47 182.55,95.55 25.18,38.12 7.2208,88.1572 -8.2292,119.2372"
+         fill="none"
+         id="Executioner-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="1123.5244,782.7203 1123.1,792.56 1130.6881,786.2814 1125.3257,788.0827 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon56" />
+    </g>
+    <!--link Wrapper to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Wrapper"
+       data-entity-2="Snapshot"
+       data-source-line="60"
+       data-uid="lnk39"
+       id="link_Wrapper_Snapshot"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="60"
+         d="m 989.91,716.37 c -5.7,21.89 -12.6386,48.5735 -18.3286,70.4335"
+         fill="none"
+         id="Wrapper-to-Snapshot"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="968.4661,782.8926 970.07,792.61 976.2081,784.9078 971.3295,787.7712 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon57" />
+    </g>
+    <!--link Wrapper to DistAlgorithm-->
+    <g
+       class="link"
+       data-entity-1="Wrapper"
+       data-entity-2="DistAlgorithm"
+       data-source-line="61"
+       data-uid="lnk40"
+       id="link_Wrapper_DistAlgorithm"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="61"
+         d="m 1012.23,716.22 c 10.21,14.06 24.03,32.05 37.77,46.73 9.59,10.25 16.4086,16.7389 26.6586,25.5889"
+         fill="none"
+         id="Wrapper-to-DistAlgorithm"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="1071.7738,789.6059 1081.2,792.46 1077.0019,783.5507 1077.4155,789.1924 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon58" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="42.548302"
+         x="1051"
+         y="759.51837"
+         id="text58">apply()</text>
+    </g>
+    <!--reverse link Snapshot to CollectFAInc-->
+    <g
+       class="link"
+       data-entity-1="Snapshot"
+       data-entity-2="CollectFAInc"
+       data-source-line="62"
+       data-uid="lnk41"
+       id="link_Snapshot_CollectFAInc"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="62"
+         d="M 943.3612,857.3767 C 934.0212,875.2167 929.59,883.7 920.26,901.52"
+         fill="none"
+         id="Snapshot-backto-CollectFAInc"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="none"
+         points="938.0456,854.5938 948.6768,860.1596 951.71,841.43 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon59" />
+    </g>
+    <!--reverse link Snapshot to CollectRAW-->
+    <g
+       class="link"
+       data-entity-1="Snapshot"
+       data-entity-2="CollectRAW"
+       data-source-line="63"
+       data-uid="lnk42"
+       id="link_Snapshot_CollectRAW"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="63"
+         d="m 995.6303,855.1426 c 15.17,17.84 24.2897,28.5574 39.4497,46.3774"
+         fill="none"
+         id="Snapshot-backto-CollectRAW"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="none"
+         points="991.0595,859.0294 1000.2012,851.2558 983.97,841.43 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon60" />
+    </g>
+    <!--link OperationCall to MethodInf-->
+    <g
+       class="link"
+       data-entity-1="OperationCall"
+       data-entity-2="MethodInf"
+       data-source-line="64"
+       data-uid="lnk43"
+       id="link_OperationCall_MethodInf"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="64"
+         d="m 683.6,716.4 c -1.26,9.2 -2.61,19.85 -3.6,29.55 -1.58,15.52 -2.4563,27.0317 -3.3063,40.6517"
+         fill="none"
+         id="OperationCall-to-MethodInf"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="672.8884,783.3583 676.32,792.59 680.8728,783.8566 676.6314,787.5997 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon61" />
+    </g>
+    <!--link Verifier to Snapshot-->
+    <g
+       class="link"
+       data-entity-1="Verifier"
+       data-entity-2="Snapshot"
+       data-source-line="66"
+       data-uid="lnk44"
+       id="link_Verifier_Snapshot"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="66"
+         d="m 847.19,716.4 c 5.99,14.65 15.27,33.21 27.81,46.55 11.7,12.45 21.7542,19.9943 36.3342,28.2843"
+         fill="none"
+         id="Verifier-to-Snapshot"
+         style="stroke:#181818;stroke-width:1" />
+      <polygon
+         fill="#181818"
+         points="906.7492,793.2287 916.55,794.2 910.7034,786.2743 912.2035,791.7286 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon62" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="55.586399"
+         x="876"
+         y="759.51837"
+         id="text62">buildXE()</text>
+    </g>
+    <!--link Verifier to JitLinChecker-->
+    <g
+       class="link"
+       data-entity-1="Verifier"
+       data-entity-2="JitLinChecker"
+       data-source-line="67"
+       data-uid="lnk45"
+       id="link_Verifier_JitLinChecker"
+       transform="translate(-121.73077,-153.42548)">
+      <path
+         codeLine="67"
+         d="m 798.01,707.61 c -34.8,12.87 -79.92,30.68 -85.01,38.34 -4.18,6.29 -4,10.59 0,17 10.72,17.19 23.3189,26.5747 41.6689,34.5647"
+         fill="none"
+         id="Verifier-to-JitLinChecker"
+         style="stroke:#181818;stroke-width:1;stroke-dasharray:7, 7" />
+      <polygon
+         fill="#181818"
+         points="750.3214,799.9844 760.17,799.91 753.5152,792.6496 755.5857,797.9139 "
+         style="stroke:#181818;stroke-width:1"
+         id="polygon63" />
+      <text
+         fill="#000000"
+         font-family="sans-serif"
+         font-size="13px"
+         lengthAdjust="spacing"
+         textLength="120.7515"
+         x="714"
+         y="759.51837"
+         id="text63">checkLinearizable()</text>
+    </g>
+    <!--SRC=[ZLHTRzem57tthx3wqC4a-07JL2cZgKJLQXJMTGzxSSmbiN3ip7QsiRN_VTS1Wcs2j3p5z_YUU-wNdMweqxJGpkcQheK1xeHMX3ICRra9zEeh6B4Hd7appHRpA_gNKFouPDRI4Bqph8PVscmlu9zQ8TTWBg1BiArq0VY2J5ApzO8v1qQHjq3KQcSTr3GpFrhXK79h8DQL_mRUUjeetkS6J1TingGCGndMD0FA3YPMM6SOTmTifLXZAnrgdMafKSPTDbVytBpCNZgZK9Z8Xd6WjyAwJ9RQ25VLWKCM_DyBzo3Kh0A-ZQGzWglqUgusKKLcp36fItgDGTL6b74v-bWFeZ3Cx8OWPDIa0q2rzScEp82_kmEX_vwUy-TyrHzlywVmkCg_d0wFsM9_UFDotz4bICPzNonjZ51SD4o29IHLIDzF9ecsw4GdavjpZGCyq-dDy9JI3vHNMbluhaJTIAX1kVrm-BgGOP-KxJ3JoFNJMtUZwNGw_a_V_SIZgm4SO8L566BsNkagNBeNZHKI5nx35ezyWbrQuuk-mSRqdXSl3wVHgj6Oa4HirwXeyV1g2SeReBVRVU524KD-76-sTJSlgECroPYS-HyNExNtwvq2_MwdG1BeG1pxXCQq5OZ87PRdU9b-VCK1ZzwDGSY_7N4LFFlf3I37L28fnmv-oqVZqmtVkUXLwLO0_z02p8W_h9203ly0]-->
+  </g>
+</svg>
