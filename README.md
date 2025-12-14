@@ -222,6 +222,3 @@ If you use this tool in your research, please cite:
 
 - The RV 2024 community for insightful feedback and constructive discussions.
 - Gavin Lowe for foundational work on linearizability checking and for making his tools and documentation easily accessible.
-
----
-*Updated: December 2024*
