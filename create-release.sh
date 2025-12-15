@@ -31,7 +31,7 @@ cp README.md USER_MANUAL.md INSTALL.md LICENSE ${RELEASE_DIR}/
 echo "→ Copying examples..."
 mkdir -p ${RELEASE_DIR}/examples
 cp src/main/java/Test.java ${RELEASE_DIR}/examples/
-cp src/main/java/HighPerformanceLinearizabilityTest.java ${RELEASE_DIR}/examples/
+cp src/main/java/BatchExecution.java ${RELEASE_DIR}/examples/
 cp src/main/java/NonLinearizableTest.java ${RELEASE_DIR}/examples/
 
 # Copy run script
