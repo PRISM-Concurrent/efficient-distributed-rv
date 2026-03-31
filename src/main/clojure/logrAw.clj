@@ -32,6 +32,11 @@
 
 (defn log-invoke!
   "Append INVOCATION event to invs-var[tid].
+
+   Thread-safety (SWMR per slot): thread tid is the sole writer of slot tid
+   in invs-var (.set invs-var tid ...).  No two threads ever write to the
+   same slot, so there is no write-write conflict.
+
    Estructura:
    {:type :invoke, :op-id ..., :tid ..., :op ..., :arg ...}"
   [tid op-id op arg]
@@ -47,8 +52,16 @@
 
 (defn log-return!
   "Append RESPONSE event to returns-var[tid].
-   Toma automáticamente un snapshot de TODAS las invocaciones en invs-var
-   y lo guarda en :view.
+
+   RAW collect design – intentionally weak read:
+   This function reads ALL slots of invs-var (via (seq invs-var)) while other
+   threads may concurrently write to their own slots via log-invoke!.
+   This is intentional: CollectRAW implements a *collect* (not a linearizable
+   snapshot), so the :view it records may be momentarily inconsistent.
+   The algorithm's soundness guarantee is preserved regardless of this
+   inconsistency: if the observed execution is not linearizable, neither is
+   the real one.  The potentially stale view is an acceptable trade-off for
+   avoiding the overhead of a full atomic snapshot.
 
    Estructura:
    {:type :return, :op-id ..., :tid ..., :res ..., :view snapshot}"

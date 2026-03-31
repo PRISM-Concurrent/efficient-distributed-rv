@@ -1,0 +1,10 @@
+<aspectj>
+    <aspects>
+        <aspect name="phd.distributed.aspects.LinearizabilityMonitorAspect"/>
+    </aspects>
+
+    <weaver options="-verbose -showWeaveInfo">
+        <include within="java.util.concurrent..*"/>
+        <include within="phd.distributed..*"/>
+    </weaver>
+</aspectj>

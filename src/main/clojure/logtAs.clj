@@ -21,7 +21,15 @@
 
 (defn write-log-tAs!
   "Append event to logs-var[tid].
-   Each thread owns its own vector."
+
+   Thread-safety (SWMR per slot): each thread tid is the sole writer of
+   slot tid in logs-var (.set logs-var tid ...).  No two threads ever write
+   to the same slot, so there is no write-write conflict.
+
+   The reader (xe-for-jit / build-xe) is called only AFTER all producer
+   threads have terminated via ExecutorService/awaitTermination, which
+   establishes a happens-before edge (JSR-133) guaranteeing that all writes
+   made by producer threads are visible to the verifier thread."
   [type tid op-id op arg count]
   (let [event {:type  type
                :op-id op-id

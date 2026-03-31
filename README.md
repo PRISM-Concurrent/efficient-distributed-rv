@@ -15,7 +15,7 @@ A linearizability checker for concurrent data structures that uses non-lineariza
 This tool verifies linearizability of concurrent data structures through:
 
 - **Theoretically analyzed distributed instrumentation** if the current execution is not linearizable, then the system under inspection is not linearizable
-- **Two non-linearizable snapshot strategies** (GAI and RAW) used to obtain the current concurrent execution.
+- **Two non-linearizable snapshot strategies** (`CollectFAInc` (GAI) and `CollectRAW` (RAW)) used to obtain the current concurrent execution.
 - **JIT-based linearizability checking** based on Gavin Lowe’s undo algorithm, enabling efficient backtracking
 - **Clean API** for easy integration with Java concurrent collections
 - **Extensible architecture** supporting future optimizations
@@ -79,7 +79,7 @@ System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
 
 ### Core Capabilities ✅
 
-- **Dual Snapshot Strategies** - GAI (Fetch-And-Increment) and RAW (Read-After-Write)
+- **Dual Snapshot Strategies** - `CollectFAInc` (GAI, Fetch-And-Increment) and `CollectRAW` (RAW, Read-After-Write)
 - **Gavin Lowe's JIT-based Linearizability Checking** - Efficient state space exploration with undo operations
 - **Java Concurrent Collections** - Verified support for 9+ standard collections
 - **Clean API** - Fluent builder pattern for easy integration

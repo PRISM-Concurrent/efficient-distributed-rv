@@ -38,7 +38,7 @@ Just-In-Time (JIT) backtracking algorithm.
 
 ### Key Features
 
-- **Two snapshot strategies** for event collection: GAI (Fetch-And-Increment) and RAW (Read-After-Write)
+- **Two snapshot strategies** for event collection: `CollectFAInc` (GAI, Fetch-And-Increment) and `CollectRAW` (RAW, Read-After-Write)
 - **JIT-based verification** using undo operations for efficient backtracking
 - **Support for Java concurrent collections**
 - **Clean fluent API** for easy integration
