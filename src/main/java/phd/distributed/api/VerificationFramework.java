@@ -2,6 +2,7 @@ package phd.distributed.api;
 
 import phd.distributed.core.Executioner;
 import phd.distributed.datamodel.OperationCall;
+import phd.distributed.snapshot.Snapshot;
 
 import java.time.Duration;
 import java.util.List;
@@ -41,6 +42,12 @@ public class VerificationFramework {
         private Duration timeout = Duration.ofMinutes(5);
         private Long seed        = null;      // por si luego quieres controlar el WorkloadPattern
         private WorkloadPattern workload = null;
+        private Snapshot customSnapshot = null; // To accept any other snapshot
+
+        public VerificationBuilder withCustomSnapshot(Snapshot snapshot) {
+            this.customSnapshot = snapshot;
+            return this;
+        }
 
         // schedule fija de OperationCall (sin tids)
         private List<OperationCall> fixedSchedule = null;
@@ -149,8 +156,12 @@ public class VerificationFramework {
                         new A(implClassName, effectiveMethods);
 
                     // 2) Crear Executioner (usa snapshot según snapType + JitLin)
-                    Executioner executioner =
-                        new Executioner(threads, operations, algorithm, objectType, snapType);
+                    Executioner executioner;
+                    if (customSnapshot != null) {
+                        executioner = new Executioner(threads, operations, algorithm, objectType, customSnapshot);
+                    } else {
+                        executioner = new Executioner(threads, operations, algorithm, objectType, snapType);
+                    }
 
                     // 3) FASE PRODUCTORES
                     long producersStart = System.nanoTime();

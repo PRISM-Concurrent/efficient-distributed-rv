@@ -16,6 +16,10 @@ public class Verifier {
         this.c = snapshot;
     }
 
+    public Verifier() {
+        this.c = null;
+    }
+
 
     public boolean checkLinearizabilityJitLin(String objectType) {
 
@@ -40,6 +44,31 @@ public class Verifier {
         return ok;
     }
 
+    // === NUEVO MÉTODO DESACOPLADO ===
+    // Recibe el X_E crudo y lo verifica. Cero dependencias del Wrapper o Executioner.
+    public boolean verifyDirectTrace(IPersistentVector xe, String objectType) {
+        if (xe == null) {
+            LOGGER.error("The provided X_E trace is null!");
+            return false;
+        }
+
+        LOGGER.info("==== X_E history ({} events) ====", xe.count());
+        for (ISeq s = xe.seq(); s != null; s = s.next()) {
+            Object ev = s.first();
+            LOGGER.info("X_E event: {}", ev);
+        }
+
+        // Llamada directa al motor de Clojure
+        boolean ok = JitLinChecker.checkLinearizable(xe, LOGGER, objectType);
+
+        if (ok) {
+            LOGGER.info("\n History is LINEARIZABLE (JitLin checker).");
+        } else {
+            LOGGER.error("\n History is NOT linearizable (JitLin checker).");
+        }
+        
+        return ok;
+    }
 
 
 }

@@ -165,6 +165,21 @@
       <version>1.11.1</version>
     </dependency>
 
+    <!-- AspectJ runtime (needed to compile @Aspect / ProceedingJoinPoint) -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjrt</artifactId>
+      <version>1.9.21</version>
+    </dependency>
+
+    <!-- AspectJ weaver (needed in fat JAR for Load-Time Weaving at runtime) -->
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.9.21</version>
+      <scope>runtime</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <resources>
@@ -180,6 +195,69 @@
       </resource>
     </resources>
     <plugins>
+
+      <plugin>
+            <groupId>dev.aspectj</groupId>
+            <artifactId>aspectj-maven-plugin</artifactId>
+            <version>1.14</version>
+            <configuration>
+                <complianceLevel>21</complianceLevel>
+                <source>21</source>
+                <target>21</target>
+                <showWeaveInfo>true</showWeaveInfo>
+                <forceAjcCompile>true</forceAjcCompile>
+                <sources>
+                    <source>
+                        <basedir>src/main/java</basedir>
+                        <includes>
+                            <include>**/*.java</include>
+                        </includes>
+                    </source>
+                    <source>
+                        <basedir>src/experiments/java</basedir>
+                        <includes>
+                            <include>**/*.java</include>
+                        </includes>
+                    </source>
+                </sources>
+            </configuration>
+            <executions>
+                <execution>
+                    <phase>process-classes</phase>
+                    <goals>
+                        <goal>compile</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <dependencies>
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjtools</artifactId>
+                    <version>1.9.21</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+      <!-- Add src/experiments/java as an extra source root so that
+           phd.experiments.* compiles alongside the main sources.
+           The experiment classes are included in the fat JAR and can
+           be run directly with or without -javaagent. -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <id>add-experiment-sources</id>
+            <phase>generate-sources</phase>
+            <goals><goal>add-source</goal></goals>
+            <configuration>
+              <sources>
+                <source>src/experiments/java</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
       <plugin>
         <groupId>com.theoryinpractise</groupId>
@@ -363,11 +441,13 @@
               -Dlog4j2.contextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector
               -Dlog4j2.asyncLoggerRingBufferSize=262144
               --add-opens java.base/java.util.concurrent=ALL-UNNAMED
+              --add-opens java.base/java.lang=ALL-UNNAMED
             </argLine>
             <parallel>methods</parallel>
             <threadCount>4</threadCount>
             </configuration>
         </plugin>
+
 
       </plugins>
     </pluginManagement>

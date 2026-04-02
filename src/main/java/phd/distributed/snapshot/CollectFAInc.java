@@ -18,6 +18,9 @@ import phd.distributed.logging.AsyncEventLogger;
 import phd.distributed.logging.DisruptorEventLogger;
 import phd.distributed.logging.EventLogger;
 
+
+import clojure.lang.IDeref;
+
 public class CollectFAInc extends Snapshot {
 
     private final AtomicInteger atomicCounter;
@@ -137,6 +140,21 @@ public class CollectFAInc extends Snapshot {
      */
     @Override
     public IPersistentVector buildXE() {
+        // Diagnostic: inspect logs-var state before building XE
+        try {
+            java.util.ArrayList<?> logsVar =
+                (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logtAs", "logs-var")).deref();
+            int totalEvents = 0;
+            for (Object slot : logsVar) {
+                if (slot instanceof clojure.lang.Counted) {
+                    totalEvents += ((clojure.lang.Counted) slot).count();
+                }
+            }
+            LOGGER.info("[CollectFAInc] logs-var: {} slots, {} total buffered events",
+                        logsVar.size(), totalEvents);
+        } catch (Exception e) {
+            LOGGER.warn("[CollectFAInc] Could not inspect logs-var: {}", e.getMessage());
+        }
         return (IPersistentVector) xeForJitFn.invoke();
     }
 

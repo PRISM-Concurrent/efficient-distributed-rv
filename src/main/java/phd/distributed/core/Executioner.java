@@ -1,12 +1,17 @@
 package phd.distributed.core;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import phd.distributed.api.DistAlgorithm;
 import phd.distributed.api.WorkloadPattern;
 import phd.distributed.datamodel.OperationCall;
@@ -15,6 +20,7 @@ import phd.distributed.snapshot.CollectRAW;
 import phd.distributed.snapshot.Snapshot;
 
 public class Executioner {
+    private static final Logger LOGGER = LogManager.getLogger(Executioner.class);
     final int processes;
     final int totalOps;
     private String objectType;
@@ -67,6 +73,19 @@ public class Executioner {
         this.verifier = new Verifier(c);
     }
 
+    public Executioner(int processes, int op, DistAlgorithm A, String objectType, Snapshot snapshot) {
+        this.processes  = processes;
+        this.totalOps   = op;
+        this.A          = A;
+        this.objectType = objectType;
+        this.c          = snapshot;
+        this.wrapper    = new Wrapper(A, c);
+        this.verifier   = new Verifier(c);
+    }
+
+ 
+
+
     public void taskProducers() {
         if (processes <= 0 || this.totalOps <= 0) {
             return;
@@ -76,22 +95,33 @@ public class Executioner {
         int baseOpsPerProc = totalOps / processes;
         int remainder = totalOps % processes;
 
+        List<Future<?>> futures = new ArrayList<>();
         for (int pid = 0; pid < processes; pid++) {
             final int processId = pid;
             final int opsForThisProc = baseOpsPerProc + (pid < remainder ? 1 : 0);
 
-            pool.submit(() -> {
+            futures.add(pool.submit(() -> {
                 for (int i = 0; i < opsForThisProc; i++) {
                     OperationCall call = OperationCall.chooseOp(A, processId);
                     wrapper.execute(processId, call);
                 }
-            });
+            }));
         }
         pool.shutdown();
         try {
             pool.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        }
+        // Surface any exceptions that were silently swallowed by pool.submit()
+        for (int i = 0; i < futures.size(); i++) {
+            try {
+                futures.get(i).get();
+            } catch (ExecutionException e) {
+                LOGGER.error("Producer thread {} failed: {}", i, e.getCause().getMessage(), e.getCause());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -113,6 +143,7 @@ public class Executioner {
         int remainder      = totalOps % processes;
 
         int globalIndex = 0; // índice en la lista ops
+        List<Future<?>> futures = new ArrayList<>();
 
         for (int pid = 0; pid < processes; pid++) {
             final int processId      = pid;
@@ -121,14 +152,14 @@ public class Executioner {
 
             globalIndex += opsForThisProc;
 
-            pool.submit(() -> {
+            futures.add(pool.submit(() -> {
                 for (int i = 0; i < opsForThisProc; i++) {
                     int idx = startIndex + i;      // índice global en la lista
                     OperationCall call = ops.get(idx);
                     // aquí el tid lógico es processId, igual que en taskProducers()
                     wrapper.execute(processId, call);
                 }
-            });
+            }));
         }
 
         pool.shutdown();
@@ -136,6 +167,15 @@ public class Executioner {
             pool.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+        }
+        for (int i = 0; i < futures.size(); i++) {
+            try {
+                futures.get(i).get();
+            } catch (ExecutionException e) {
+                LOGGER.error("Producer thread {} failed: {}", i, e.getCause().getMessage(), e.getCause());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

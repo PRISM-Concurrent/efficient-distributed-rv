@@ -1,0 +1,37 @@
+<!DOCTYPE aspectj PUBLIC
+    "-//AspectJ//DTD//EN"
+    "http://www.eclipse.org/aspectj/dtd/aspectj.dtd">
+
+<!--
+    AspectJ Load-Time Weaving (LTW) configuration.
+
+    Activated by running with:
+      java -javaagent:~/.m2/repository/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar ...
+
+    Scope:
+      Only phd.distributed.api.A is woven. The aspect intercepts
+      Method.invoke() call sites that appear inside A.apply(), which is
+      where the framework calls the concurrent data structure under test.
+
+    Why A and not java.util.concurrent.*?
+      Weaving JDK bootstrap classes requires -Xbootclasspath manipulation
+      and is fragile. Intercepting the reflective call site inside A.java
+      is equivalent and simpler: every operation goes through A.apply(),
+      so every call to the data structure is captured exactly once.
+-->
+<aspectj>
+
+    <aspects>
+        <!-- The aspect must be on the classpath (included in the fat JAR). -->
+        <aspect name="phd.experiments.aspectj.LinearizabilityMonitorAspect"/>
+    </aspects>
+
+    <weaver options="-verbose -showWeaveInfo">
+        <!--
+            Only weave A.java. This keeps weaving scope minimal and avoids
+            accidental interception of framework-internal method calls.
+        -->
+        <include within="phd.distributed.api.A"/>
+    </weaver>
+
+</aspectj>

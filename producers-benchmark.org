@@ -1,0 +1,37 @@
+#+DATE: 2026-04-01 00:27
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: ProducersBenchmark — Instrumentation Overhead
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Warmup runs :: 5
+- Measured runs :: 10
+- Machine :: Mac OS X / 10 CPUs
+- JVM :: Java HotSpot(TM) 64-Bit Server VM 21.0.2
+
+* Table A — Operations sweep (threads = 4)
+
+Only taskProducers() is measured. Throughput in ops/ms (higher = better).
+
+#+CAPTION: Instrumentation cost vs number of operations (threads=4)
+| Ops | GAI mean (ms) | GAI tput | RAW mean (ms) | RAW tput | AJ mean (ms) | AJ tput |
+|-+----+----+----+----+----+-----|
+| 100 | 3 | 33.3 | 2 | 50.0 | 0 | N/A |
+| 500 | 27 | 18.5 | 26 | 19.2 | 16 | 31.3 |
+| 1000 | 51 | 19.6 | 50 | 20.0 | 37 | 27.0 |
+| 5000 | 237 | 21.1 | 231 | 21.6 | 182 | 27.5 |
+| 10000 | 664 | 15.1 | 452 | 22.1 | 350 | 28.6 |
+
+* Table B — Threads sweep (operations = 1000)
+
+Only taskProducers() is measured. Throughput in ops/ms (higher = better).
+
+#+CAPTION: Instrumentation cost vs number of threads (ops=1000)
+| Threads | GAI mean (ms) | GAI tput | RAW mean (ms) | RAW tput | AJ mean (ms) | AJ tput |
+|-+----+----+----+----+----+-----|
+| 1 | 50 | 20.0 | 50 | 20.0 | 33 | 30.3 |
+| 2 | 45 | 22.2 | 47 | 21.3 | 35 | 28.6 |
+| 4 | 47 | 21.3 | 44 | 22.7 | 33 | 30.3 |
+| 8 | 45 | 22.2 | 45 | 22.2 | 35 | 28.6 |
+| 10 | 44 | 22.7 | 45 | 22.2 | 36 | 27.8 |
+
