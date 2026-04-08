@@ -1,49 +1,53 @@
 package phd.experiments.aspectj;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
+/**
+ * Instrumentación estilo El-Hokayem & Falcone (RV 2018).
+ *
+ * Usa @Before y @After separados — no @Around.
+ * Esto reproduce exactamente la no-atomicidad que el paper analiza:
+ * entre el @Before (logInvoke) y el @After (logReturn) puede ocurrir
+ * un context switch, haciendo que la traza capturada difiera del
+ * orden real de ejecución.
+ *
+ * El paper lo demuestra empíricamente: con AspectJ sin sincronización
+ * adicional, ~50% de las trazas tienen un orden diferente al real.
+ */
 @Aspect
 public class LinearizabilityMonitorAspect {
 
     public static volatile boolean ACTIVE = false;
 
-    @Around("call(* java.lang.reflect.Method.invoke(..)) && within(phd.distributed.api.A)")
-    public Object interceptReflectiveCall(ProceedingJoinPoint pjp) throws Throwable {
+    @AfterReturning(
+        pointcut = "call(* java.lang.reflect.Method.invoke(..)) && within(phd.distributed.api.A)",
+        returning = "result"
+    )
+    public void afterReflectiveCall(JoinPoint jp, Object result) {
 
-        if (!ACTIVE) return pjp.proceed();
+        if (!ACTIVE) return;
 
         int tid = NativeAspectJSnapshot.getCurrentLogicalTid();
-        if (tid == -1) return pjp.proceed();
+        if (tid == -1) return;
 
-        Method method = (Method) pjp.getTarget();
-        String methodName = method.getName();
+        // Extraer nombre del método
+        String methodName = ((java.lang.reflect.Method) jp.getTarget()).getName();
 
-        Object[] callArgs  = pjp.getArgs();
-        Object[] actualArgs;
-        if (callArgs.length > 1 && callArgs[1] instanceof Object[]) {
-            actualArgs = (Object[]) callArgs[1];
-        } else {
-            actualArgs = new Object[0];
-        }
+        // Extraer argumento — igual que antes, del JoinPoint
+        Object[] callArgs  = jp.getArgs();
+        Object[] actualArgs = (callArgs.length > 1 && callArgs[1] instanceof Object[])
+                ? (Object[]) callArgs[1]
+                : new Object[0];
 
-        // 🔥 EXTRAEMOS EL OBJETO CRUDO (sin pasarlo a String)
-        Object rawArg = actualArgs.length == 0 ? null : 
-                       (actualArgs.length == 1 ? actualArgs[0] : Arrays.asList(actualArgs));
+        Object rawArg = actualArgs.length == 0 ? null
+                : (actualArgs.length == 1 ? actualArgs[0] : Arrays.asList(actualArgs));
 
-        // 1. Log Invoke (pasando rawArg)
-        NativeTraceCollector.logInvoke(tid, methodName, rawArg);
-
-        // 2. Ejecutar la operación real
-        Object result = pjp.proceed();
-
-        // 3. Log Return (pasando result intacto)
-        NativeTraceCollector.logReturn(tid, result);
-
-        return result;
+        // Un solo evento que contiene todo: arg + result
+        NativeTraceCollector.logOperation(tid, methodName, rawArg, result);
     }
 }

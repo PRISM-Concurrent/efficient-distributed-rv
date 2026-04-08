@@ -2,8 +2,6 @@ package phd.experiments;
 
 import clojure.lang.IPersistentVector;
 import clojure.lang.ISeq;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import phd.distributed.api.A;
 import phd.distributed.api.AlgorithmLibrary;
 import phd.distributed.api.DistAlgorithm;
@@ -15,91 +13,77 @@ import phd.experiments.aspectj.NativeTraceCollector;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Demo reproduciendo el experimento de El-Hokayem & Falcone (RV 2018).
+ *
+ * Diferencia clave respecto al demo con @Around:
+ * aquí no hay garantía de que la traza capturada refleje el orden real.
+ * El experimento corre N veces para estimar la tasa de discrepancia,
+ * igual que la Tabla de la slide 12 (10,000 ejecuciones, Variant 2).
+ */
 public class AspectJOnlyDemo {
 
-    private static final Logger LOGGER = LogManager.getLogger(AspectJOnlyDemo.class);
     private static final int OPERATIONS = 40;
-    private static final int THREADS = 4;
+    private static final int THREADS    = 4;
+    private static final int RUNS       = 100; // para estimar tasa de discrepancia
 
     public static void main(String[] args) {
         System.out.println("╔════════════════════════════════════════════════════════════╗");
-        System.out.println("║  Native AspectJ Trace Collection Demo                      ║");
+        System.out.println("║  AspectJ Before/After — Estilo El-Hokayem & Falcone        ║");
         System.out.println("╚════════════════════════════════════════════════════════════╝");
-        System.out.printf("Threads: %d | Operations: %d%n%n", THREADS, OPERATIONS);
+        System.out.printf("Threads: %d | Ops: %d | Runs: %d%n%n", THREADS, OPERATIONS, RUNS);
 
         AlgConfig config = new AlgConfig("ConcurrentLinkedQueue", "queue", "offer", "poll");
 
-        System.out.println("Running " + config.name + " with Native AspectJ ...");
-        runNativeAspectJAndPrintTrace(config);
+        int linearizable    = 0;
+        int notLinearizable = 0;
+        long totalVerMs     = 0;
+
+        for (int i = 0; i < RUNS; i++) {
+            RunResult r = runOnce(config);
+            if (r.isLinearizable) linearizable++;
+            else notLinearizable++;
+            totalVerMs += r.verTimeMs;
+        }
+
+        System.out.println("\n=== Resumen (" + RUNS + " runs) ===");
+        System.out.printf("Linearizable     : %d (%.1f%%)%n", linearizable,    100.0 * linearizable / RUNS);
+        System.out.printf("No linearizable  : %d (%.1f%%)%n", notLinearizable, 100.0 * notLinearizable / RUNS);
+        System.out.printf("Verifier promedio: %.1f ms%n", (double) totalVerMs / RUNS);
+        System.out.println();
+        System.out.println("Referencia paper (Variant 2, 2 consumers, 10k runs):");
+        System.out.println("  → JMOP: 1.28% true | 92.20% false | 6.52% timeout");
+        System.out.println("  → Comparar con tus números de arriba.");
     }
 
-    private static void runNativeAspectJAndPrintTrace(AlgConfig config) {
+    private static RunResult runOnce(AlgConfig config) {
         try {
             AlgorithmLibrary.AlgorithmInfo info = AlgorithmLibrary.getInfo(config.name);
-            if (info == null) {
-                System.err.println("Error: Algorithm " + config.name + " not registered.");
-                return;
-            }
-
             DistAlgorithm algorithm = new A(info.getImplementationClass().getName(), config.methods);
 
-            // 1. Preparar AspectJ y el Recolector Nativo
             LinearizabilityMonitorAspect.ACTIVE = true;
             NativeTraceCollector.clear();
 
-            // 2. GENERACIÓN DE CARGA (Producers)
-            // Usamos NativeAspectJSnapshot como un "dummy" para que Executioner funcione felizmente.
-            // La recolección real la hace el aspecto silenciosamente.
             NativeAspectJSnapshot dummySnap = new NativeAspectJSnapshot();
             Executioner executioner = new Executioner(THREADS, OPERATIONS, algorithm, config.type, dummySnap);
+            executioner.taskProducers();
 
-            long prodStart = System.nanoTime();
-            
-            // ¡NO BORRES ESTA LÍNEA! Aquí es donde corren los hilos y AspectJ recolecta la magia.
-            executioner.taskProducers(); 
-            
-            long prodTimeMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - prodStart);
-
-            // Apagamos el interceptor
             LinearizabilityMonitorAspect.ACTIVE = false;
 
-            // 3. CONSTRUCCIÓN DEL VECTOR (De Java a Clojure)
             IPersistentVector xe = NativeTraceCollector.buildPersistentVector();
 
-            // 4. VERIFICACIÓN DESACOPLADA
-            // Usamos tu nueva instancia limpia de Verifier sin pasar por el Wrapper
             long verStart = System.nanoTime();
-            
-            Verifier pureVerifier = new Verifier();
-            boolean isLinearizable = pureVerifier.verifyDirectTrace(xe, config.type);
-            
+            Verifier verifier = new Verifier();
+            boolean isLinearizable = verifier.verifyDirectTrace(xe, config.type);
             long verTimeMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - verStart);
 
-            // 5. Imprimir resultados
-            System.out.println("\n=== Verification Summary ===");
-            System.out.println("Linearizable : " + (isLinearizable ? "YES" : "NO"));
-            System.out.println("Producers ms : " + prodTimeMs + " ms");
-            System.out.println("Verifier ms  : " + verTimeMs + " ms");
-
-            // 6. Imprimir la traza recolectada
-            System.out.println("\n=== Execution Trace (X_E) ===");
-            
-            if (xe == null || xe.count() == 0) {
-                System.out.println("⚠️ Warning: Trace is empty! Check your pointcut or ajc compiler.");
-            } else {
-                System.out.println("Raw X_E Vector: " + xe.toString());
-                System.out.println("--------------------------------------------------");
-                int step = 1;
-                for (ISeq s = xe.seq(); s != null; s = s.next()) {
-                    System.out.printf("%3d: %s%n", step++, s.first());
-                }
-            }
+            return new RunResult(isLinearizable, verTimeMs);
 
         } catch (Exception e) {
-            System.err.println("Execution failed: " + e.getMessage());
-            e.printStackTrace();
+            return new RunResult(false, 0);
         }
     }
 
+    private record RunResult(boolean isLinearizable, long verTimeMs) {}
     private record AlgConfig(String name, String type, String... methods) {}
 }

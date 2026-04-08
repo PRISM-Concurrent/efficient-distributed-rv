@@ -1,6 +1,4 @@
-# Efficient Distributed Runtime Verification
-
-A linearizability checker for concurrent data structures that uses non-linearizable snapshot (collect) objects to obtain the current concurrent execution, and checks it using a backtracking-based linearizability testing algorithm.
+# Efficient Distributed Runtime Verification of Linearizability
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
 [![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)]()
@@ -10,215 +8,282 @@ A linearizability checker for concurrent data structures that uses non-lineariza
 
 ---
 
-## Overview
+## 1. Research Context
 
-This tool verifies linearizability of concurrent data structures through:
+<!-- TODO (author): Expand this paragraph with 2–3 sentences from the paper's introduction
+     that describe the broader problem (concurrent data structures, correctness, the role
+     of linearizability as the standard correctness condition). -->
 
-- **Theoretically analyzed distributed instrumentation** if the current execution is not linearizable, then the system under inspection is not linearizable
-- **Two non-linearizable snapshot strategies** (`CollectFAInc` (GAI) and `CollectRAW` (RAW)) used to obtain the current concurrent execution.
-- **JIT-based linearizability checking** based on Gavin Lowe’s undo algorithm, enabling efficient backtracking
-- **Clean API** for easy integration with Java concurrent collections
-- **Extensible architecture** supporting future optimizations
+Linearizability is the standard correctness condition for concurrent data structures.
+Verifying it at runtime requires observing a concurrent execution and deciding whether
+every operation appears to have taken effect atomically at some point between its
+invocation and its response.
+
+The classical approach builds this observation using a *snapshot* abstraction, but
+snapshot implementations with optimal step complexity are notoriously complex.
+This work proposes using the simpler *collect* abstraction instead.
+The key theoretical result is that, under the Single-Writer Multiple-Reader (SWMR)
+ownership discipline, a collect suffices to build a sound and complete runtime monitor
+for linearizability — with a significantly simpler implementation.
+
+> **Paper:** Rodríguez, G. V. & Castañeda, A. (2025).
+> *Towards Efficient Runtime Verified Linearizable Algorithms.*
+> In: Runtime Verification (RV 2024). LNCS 15278, pp. 262–281. Springer.
 
 ---
 
-## Quick Start
+## 2. What This Repository Provides
+
+This repository contains the **reference implementation** accompanying the paper.
+It provides:
+
+| Component | Description |
+|-----------|-------------|
+| `CollectFAInc` (GAIsnap) | Collect implementation using an atomic Fetch-And-Increment counter |
+| `CollectRAW` (RAWsnap) | Collect implementation using a non-linearizable read-after-write collect |
+| JIT-Lin checker | Gavin Lowe's JIT linearizability checker, bridged from Clojure |
+| `VerificationFramework` | High-level fluent API for one-line integration |
+| Experiment suite | Reproducible benchmarks comparing both strategies (see [EXPERIMENTS.md](EXPERIMENTS.md)) |
+
+Both collect strategies are *non-linearizable* by design.
+The paper proves that this is sufficient: if the observed execution is not
+linearizable, neither is the real one.
+
+---
+
+## 3. Architecture (Top-Down)
+
+### 3.1 Overview
+
+```
+User code / experiment
+        │
+        ▼
+VerificationFramework       ← high-level fluent API (VerificationFramework.java)
+        │
+        ▼
+   Executioner               ← orchestrates producers + verifier (Executioner.java)
+     ├── Wrapper             ← per-operation write → apply → snapshot (Wrapper.java)
+     │       ├── Snapshot    ← abstract base; CollectFAInc or CollectRAW
+     │       └── A           ← reflective wrapper for any Java class (A.java)
+     └── Verifier            ← calls JIT-Lin checker (Verifier.java)
+             └── JitLinChecker ← bridges to Clojure typelin/jitlin namespaces
+```
+
+### 3.2 Verification Pipeline
+
+Each verification run goes through three phases:
+
+1. **Instrumentation phase** (`taskProducers`)
+   Concurrent threads call operations on the target data structure.
+   Before each call, `Wrapper` invokes `Snapshot.write()` to record the invocation.
+   After each call, `Wrapper` invokes `Snapshot.snapshot()` to record the response.
+
+2. **History construction** (`Snapshot.buildXE`)
+   After all threads finish, the snapshot builds the *execution history* X_E —
+   a vector of `{:invoke, :return}` events ordered by the collect's partial order.
+   - `CollectFAInc` uses a global atomic counter to impose a total order.
+   - `CollectRAW` uses the containment relation between collected views to impose a
+     partial (topological) order.
+
+3. **Linearizability checking** (`taskVerifiers` → `JitLinChecker`)
+   The X_E history is passed to Lowe's JIT-Lin algorithm, which searches for a
+   valid sequential interleaving using DFS with early pruning.
+
+### 3.3 Snapshot Strategies
+
+| | `CollectFAInc` (GAIsnap) | `CollectRAW` (RAWsnap) |
+|---|---|---|
+| Counter mechanism | `AtomicInteger.getAndIncrement()` | None |
+| Order imposed | Total (by counter value) | Partial (by view containment) |
+| Clojure namespace | `logtAs` | `logrAw` |
+| SWMR guarantee | Each slot `i` written only by thread `i` | Same |
+| Happens-before | `awaitTermination()` after all producers | Same |
+
+Both strategies satisfy the SWMR discipline: the ArrayList holding per-thread
+event logs is pre-allocated with one slot per process, and each thread writes
+exclusively to its own slot. The verifier reads all slots only after
+`awaitTermination()`, which establishes happens-before by the Java Memory Model.
+
+### 3.4 Package Structure
+
+```
+src/
+├── main/
+│   ├── java/phd/distributed/
+│   │   ├── api/           ← VerificationFramework, DistAlgorithm, A, AlgorithmLibrary
+│   │   ├── core/          ← Executioner, Wrapper, Verifier, JitLinChecker
+│   │   ├── snapshot/      ← Snapshot (abstract), CollectFAInc, CollectRAW
+│   │   └── datamodel/     ← OperationCall, MethodInf, Event
+│   └── clojure/
+│       ├── logtAs.clj     ← per-thread event log for GAIsnap
+│       ├── logrAw.clj     ← per-thread event log for RAWsnap
+│       ├── jitlin.clj     ← JIT-Lin DFS checker
+│       └── typelin.clj    ← sequential specifications (queue, deque, set, map)
+└── experiments/
+    └── java/phd/experiments/
+        ├── BatchComparison.java       ← end-to-end strategy comparison
+        ├── ProducersBenchmark.java    ← instrumentation-only overhead benchmark
+        └── aspectj/
+            ├── AspectJSnapshot.java              ← collect via bytecode interception
+            └── LinearizabilityMonitorAspect.java ← AspectJ advice for A.apply()
+```
+
+---
+
+## 4. Supported Data Structures
+
+The framework supports any Java class that can be instantiated with a no-arg
+constructor.  The following have been exercised in experiments:
+
+**Queues:** `ConcurrentLinkedQueue`, `LinkedBlockingQueue`, `LinkedTransferQueue`
+**Deques:** `ConcurrentLinkedDeque`, `LinkedBlockingDeque`
+**Sets:** `ConcurrentSkipListSet`
+**Maps:** `ConcurrentHashMap`, `ConcurrentSkipListMap`
+
+Sequential specifications for JIT-Lin are provided for `queue`, `deque`, `set`,
+and `map` in `src/main/clojure/spec/`.
+
+---
+
+## 5. Quick Start
 
 ### Prerequisites
 
-- Java 21 or higher
-- Maven 3.x
+- Java 21+
+- Maven 3.6+
 
-### Installation
+### Build
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/PRISM-Concurrent/efficient-distributed-rv
 cd efficient-distributed-rv
-mvn clean install
+mvn clean package -DskipTests
 ```
 
-### Basic Usage
+### Minimal Example
 
 ```java
-import phd.distributed.api.*;
-import phd.distributed.core.*;
-
-// Create algorithm wrapper
-DistAlgorithm algorithm = new A("java.util.concurrent.ConcurrentLinkedQueue");
-
-// Create executioner with 4 threads, 100 operations
-Executioner exec = new Executioner(4, 100, algorithm, "queue");
-
-// Run concurrent operations
-exec.taskProducers();
-
-// Verify linearizability
-boolean isLinearizable = exec.taskVerifiers();
-System.out.println("Linearizable: " + isLinearizable);
-```
-
-### Using High-Level API
-
-```java
-import phd.distributed.api.*;
+import phd.distributed.api.VerificationFramework;
+import phd.distributed.api.VerificationResult;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 VerificationResult result = VerificationFramework
     .verify(ConcurrentLinkedQueue.class)
     .withThreads(4)
-    .withOperations(50)
+    .withOperations(100)
     .withObjectType("queue")
+    .withMethods("offer", "poll")
     .run();
 
-System.out.println("Linearizable: " + result.isCorrect());
-System.out.println("Time: " + result.getExecutionTime().toMillis() + " ms");
+System.out.println("Linearizable: " + result.isLinearizable());
+System.out.println("Producer time: " + result.getProdExecutionTime().toMillis() + " ms");
+System.out.println("Verifier time: " + result.getVerifierExecutionTime().toMillis() + " ms");
+```
+
+### Choosing a Snapshot Strategy
+
+```java
+// CollectFAInc — atomic counter (default)
+VerificationFramework.verify(ConcurrentLinkedQueue.class)
+    .withSnapshot("gAIsnap")
+    ...
+
+// CollectRAW — non-linearizable collect
+VerificationFramework.verify(ConcurrentLinkedQueue.class)
+    .withSnapshot("rawsnap")
+    ...
 ```
 
 ---
 
-## Features
+## 6. Running the Experiments
 
-### Core Capabilities ✅
+See **[EXPERIMENTS.md](EXPERIMENTS.md)** for full instructions and result tables.
 
-- **Dual Snapshot Strategies** - `CollectFAInc` (GAI, Fetch-And-Increment) and `CollectRAW` (RAW, Read-After-Write)
-- **Gavin Lowe's JIT-based Linearizability Checking** - Efficient state space exploration with undo operations
-- **Java Concurrent Collections** - Verified support for 9+ standard collections
-- **Clean API** - Fluent builder pattern for easy integration
+Quick commands:
 
-### Verified Algorithms
-
-- `ConcurrentLinkedQueue`
-- `ConcurrentHashMap`
-- `ConcurrentLinkedDeque`
-- `LinkedBlockingQueue`
-- `ConcurrentSkipListSet`
-- `LinkedTransferQueue`
-- `ConcurrentSkipListMap`
-- `LinkedBlockingDeque`
-
-
-### Architecture
-
-![Verification Framework](summary.svg)
-
-
----
-
-## Documentation
-
-- **[USER_MANUAL.md](USER_MANUAL.md)** - Complete user guide
-- **[INSTALL.md](INSTALL.md)** - Installation instructions
-- **[API_USAGE_GUIDE.org](API_USAGE_GUIDE.org)** - Detailed API reference
-- **[API_EXAMPLES.md](API_EXAMPLES.md)** - Code examples
-- **[QUICK_START.md](QUICK_START.md)** - Ready to execute examples
-
-
----
-
-## Examples
-
-See working examples in `src/main/java/`:
-- `Test.java` - Basic verification
-- `BatchExexcution.java` - Multiple algorithms
-- `NonLinearizableTest.java` - Non-linearizable example
-
-Run examples:
 ```bash
-# Basic test
-./run-test.sh
+# Strategy comparison (GAIsnap vs RAWsnap vs AspectJ)
+java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.BatchComparison
 
-# All algorithms test
-./run-example BatchExecution
+# Instrumentation-only overhead benchmark
+java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.ProducersBenchmark --format=org
+```
+
+For the AspectJ strategy, append:
+```bash
+-javaagent:$HOME/.m2/repository/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar \
+--add-opens java.base/java.lang=ALL-UNNAMED
 ```
 
 ---
 
-## Testing
+## 7. Running the Tests
 
 ```bash
-# Run all tests
+# All tests
 mvn test
 
-# Run specific test
+# Specific test class
 mvn test -Dtest=AlgorithmLibraryTest
 
-# Build without tests
+# Skip tests during package
 mvn package -DskipTests
 ```
 
-**Test Status:** 78 tests passing
+---
+
+## 8. Extending the Framework
+
+### Adding a New Sequential Specification
+
+Create `src/main/clojure/spec/mytype.clj`:
+
+```clojure
+(ns spec.mytype)
+(defn mytype-init [] <initial-state>)
+(defn mytype-step [state op arg res] {:ok? <bool> :state <new-state>})
+```
+
+Register it in `typelin.clj` under `specs`.
+
+### Adding a New Snapshot Strategy
+
+1. Extend `phd.distributed.snapshot.Snapshot`.
+2. Implement `write(int tid, Object inv)`, `snapshot(int tid, Object res)`,
+   and `buildXE()`.
+3. Pass the instance to `new Executioner(threads, ops, alg, type, mySnapshot)`.
 
 ---
 
-## Limitations
-
-- Sequential verification only (parallel infrastructure exists but not integrated)
-- Limited to in-memory datasets (streaming infrastructure exists but not functional)
-- No performance comparison with other tools yet
-- Test coverage focuses on core functionality
-
----
-
-## Future Work
-
-- Integration of parallel verification infrastructure
-- Integration of reactive streaming for large datasets
-- Performance benchmarking against existing tools
-- Extended test suite for all features
-- Web-based visualization
-
----
-
-## Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
----
-
-## License
-
-Apache License 2.0 - See LICENSE file for details
-
----
-
-## Citation
-
-If you use this tool in your research, please cite:
+## 9. Citation
 
 ```bibtex
-@InProceedings{
-    10.1007/978-3-031-74234-7_17,
-    author="Rodr{\'i}guez, Gilde Valeria and Casta{\~{n}}eda, Armando",
-    editor="{\'A}brah{\'a}m, Erika and Abbas, Houssam",
-    title="Towards Efficient Runtime Verified Linearizable Algorithms",
-    booktitle="Runtime Verification",
-    year="2025",
-    publisher="Springer Nature Switzerland",
-    address="Cham",
-    pages="262--281",
-    abstract="An asynchronous, fault-tolerant, sound and complete algorithm for runtime verification of linearizability of concurrent algorithms was proposed in [7]. This solution relies on the snapshot abstraction in distributed computing. The fastest known snapshot algorithms use complex constructions, hard to implement, and the simplest ones provide large step complexity bounds or only weak termination guarantees. Thus, the snapshot-based verification algorithm is not completely satisfactory. In this paper, we propose an alternative solution, based on the collect abstraction, which can be optimally implemented in a simple manner. As a final result, we offer a simple and generic methodology that takes any presumably linearizable algorithm and produces a lightweight runtime verified linearizable version of it.",
-    isbn="978-3-031-74234-7"
+@InProceedings{10.1007/978-3-031-74234-7_17,
+  author    = {Rodr{\'i}guez, Gilde Valeria and Casta{\~{n}}eda, Armando},
+  title     = {Towards Efficient Runtime Verified Linearizable Algorithms},
+  booktitle = {Runtime Verification},
+  year      = {2025},
+  publisher = {Springer Nature Switzerland},
+  pages     = {262--281},
+  isbn      = {978-3-031-74234-7}
 }
 ```
 
 ---
 
-## Contact
+## 10. Contact
 
-- **Issues:** [GitHub Issues](https://github.com/gilde-valeria/rv_collects/issues) - We're following an internal development flow, where all changes are made and tested in Gilde's repository and then in a public repository.
-- **Maintainers:**
-  - **Miguel Piña** — `miguelpinia1@gmail.com`
-  - **Gilde Valeria Rodríguez** — `gildevroji@gmail.com`
-
+- **Gilde Valeria Rodríguez** — `gildevroji@gmail.com`
+- **Miguel Piña** — `miguelpinia1@gmail.com`
+- **Issues:** [GitHub Issues](https://github.com/PRISM-Concurrent/efficient-distributed-rv/issues)
 
 ---
 
 ## Acknowledgments
 
-- The RV 2024 community for insightful feedback and constructive discussions.
-- Gavin Lowe for foundational work on linearizability checking and for making his tools and documentation easily accessible.
+The RV 2024 community for insightful feedback.
+Gavin Lowe for the JIT linearizability checker and accessible documentation.

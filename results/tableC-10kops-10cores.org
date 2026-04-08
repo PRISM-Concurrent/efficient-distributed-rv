@@ -1,0 +1,31 @@
+#+DATE: 2026-04-07 15:07
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Mac OS X
+- CPUs :: 10
+- JVM :: Java HotSpot(TM) 64-Bit Server VM 21.0.2
+
+* Table C — Instrumentation overhead (no verification)
+
+taskProducers() only. Threads=4 (fixed). Format: mean / min / max (ms).
+
+#+CAPTION: Instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 2 | 2 | 6 | 4 | 2 | 15 | 1 | 0 | 3 |
+| 500 | 23 | 15 | 47 | 24 | 20 | 35 | 16 | 11 | 23 |
+| 1000 | 42 | 36 | 54 | 42 | 36 | 46 | 34 | 26 | 46 |
+| 5000 | 214 | 192 | 229 | 215 | 207 | 233 | 163 | 153 | 182 |
+| 10000 | 436 | 407 | 446 | 433 | 419 | 444 | 328 | 311 | 360 |
+
+
+* Table D — Verdict comparison (ops=100)
+
+Full pipeline (instrumentation + verification). 100 runs per cell. Reference: El-Hokayem & Falcone (RV 2018).
+

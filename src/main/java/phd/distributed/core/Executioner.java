@@ -9,9 +9,12 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import clojure.lang.IPersistentVector;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import clojure.lang.IPersistentVector;
 import phd.distributed.api.DistAlgorithm;
 import phd.distributed.api.WorkloadPattern;
 import phd.distributed.datamodel.OperationCall;
@@ -192,5 +195,10 @@ public class Executioner {
 
     public long getVerifierTimeMillis() {
         return TimeUnit.NANOSECONDS.toMillis(verifierNanos);
+    }
+
+    
+    public IPersistentVector getTrace() {
+        return this.c.buildXE();
     }
 }
