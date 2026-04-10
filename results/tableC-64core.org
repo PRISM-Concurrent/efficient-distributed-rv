@@ -1,0 +1,109 @@
+#+DATE: 2026-04-08 16:22
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Linux
+- CPUs :: 64
+- JVM :: OpenJDK 64-Bit Server VM 21.0.10
+
+* Table C — Instrumentation overhead (threads=2)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=2 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 4 | 3 | 7 | 3 | 3 | 4 | 1 | 1 | 2 |
+| 500 | 6 | 5 | 10 | 8 | 7 | 10 | 4 | 4 | 4 |
+| 1000 | 15 | 10 | 22 | 16 | 15 | 21 | 12 | 10 | 16 |
+| 5000 | 77 | 64 | 87 | 80 | 78 | 88 | 63 | 59 | 74 |
+| 10000 | 160 | 143 | 167 | 159 | 131 | 175 | 133 | 125 | 146 |
+| 50000 | 810 | 779 | 847 | 804 | 788 | 832 | 695 | 681 | 715 |
+| 100000 | 1616 | 1572 | 1668 | 1614 | 1571 | 1666 | 1392 | 1357 | 1430 |
+
+
+* Table C — Instrumentation overhead (threads=4)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=4 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 0 | 0 | 1 | 2 | 2 | 2 | 2 | 1 | 7 |
+| 500 | 9 | 8 | 10 | 9 | 9 | 10 | 7 | 7 | 8 |
+| 1000 | 20 | 16 | 25 | 21 | 20 | 24 | 16 | 15 | 19 |
+| 5000 | 101 | 95 | 109 | 101 | 100 | 107 | 79 | 76 | 89 |
+| 10000 | 204 | 177 | 215 | 204 | 196 | 210 | 160 | 156 | 183 |
+| 50000 | 1031 | 1006 | 1059 | 1028 | 1009 | 1045 | 869 | 843 | 921 |
+| 100000 | 2005 | 1972 | 2061 | 2002 | 1972 | 2048 | 1757 | 1672 | 1836 |
+
+
+* Table C — Instrumentation overhead (threads=8)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=8 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 0 | 0 | 0 | 1 | 0 | 2 | 2 | 2 | 2 |
+| 500 | 15 | 14 | 16 | 15 | 13 | 17 | 11 | 9 | 14 |
+| 1000 | 30 | 20 | 36 | 31 | 22 | 39 | 20 | 16 | 26 |
+| 5000 | 163 | 138 | 176 | 178 | 167 | 192 | 125 | 112 | 154 |
+| 10000 | 373 | 288 | 390 | 379 | 362 | 391 | 250 | 227 | 297 |
+| 50000 | 1931 | 1864 | 1997 | 1906 | 1834 | 1945 | 1426 | 1369 | 1494 |
+| 100000 | 3966 | 3820 | 4022 | 3845 | 3736 | 3927 | 3014 | 2875 | 3160 |
+
+
+* Table C — Instrumentation overhead (threads=16)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=16 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 500 | 15 | 12 | 18 | 19 | 17 | 25 | 13 | 11 | 16 |
+| 1000 | 42 | 37 | 46 | 43 | 42 | 46 | 32 | 28 | 38 |
+| 5000 | 240 | 217 | 251 | 229 | 214 | 244 | 184 | 178 | 197 |
+| 10000 | 476 | 437 | 492 | 482 | 472 | 493 | 378 | 365 | 412 |
+| 50000 | 2441 | 2374 | 2490 | 2436 | 2398 | 2496 | 1967 | 1921 | 2075 |
+| 100000 | 4866 | 4756 | 5009 | 4890 | 4811 | 5049 | 3992 | 3864 | 4161 |
+
+
+* Table C — Instrumentation overhead (threads=32)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=32 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 2 | 2 | 4 | 2 | 2 | 2 | 2 | 2 | 2 |
+| 500 | 16 | 13 | 18 | 16 | 15 | 18 | 12 | 10 | 16 |
+| 1000 | 46 | 40 | 49 | 46 | 43 | 54 | 36 | 30 | 41 |
+| 5000 | 271 | 250 | 291 | 285 | 275 | 292 | 223 | 213 | 232 |
+| 10000 | 560 | 516 | 579 | 563 | 553 | 578 | 439 | 411 | 472 |
+| 50000 | 2844 | 2771 | 2871 | 2841 | 2813 | 2874 | 2360 | 2312 | 2452 |
+| 100000 | 5660 | 5518 | 5742 | 5674 | 5606 | 5777 | 4813 | 4748 | 4903 |
+
+
+* Table C — Instrumentation overhead (threads=64)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=64 — instrumentation cost vs operations
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 5 | 5 | 9 | 5 | 5 | 6 | 5 | 5 | 7 |
+| 500 | 14 | 5 | 18 | 15 | 12 | 21 | 10 | 8 | 14 |
+| 1000 | 41 | 37 | 46 | 43 | 39 | 51 | 38 | 36 | 42 |
+| 5000 | 288 | 267 | 304 | 289 | 276 | 302 | 238 | 232 | 256 |
+| 10000 | 608 | 586 | 661 | 593 | 577 | 604 | 507 | 475 | 554 |
+| 50000 | 3112 | 3000 | 3185 | 3086 | 3036 | 3137 | 2713 | 2638 | 2782 |
+| 100000 | 6218 | 6133 | 6333 | 6178 | 6095 | 6277 | 5618 | 5472 | 5792 |
+
+

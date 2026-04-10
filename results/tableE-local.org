@@ -1,0 +1,39 @@
+#+DATE: 2026-04-10 16:02
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Mac OS X
+- CPUs :: 10
+- JVM :: Java HotSpot(TM) 64-Bit Server VM 21.0.2
+
+* Table E — All implementations (threads=4, ops=30, runs=10)
+
+One verdict per cell. OK = matches expected. FAIL = unexpected verdict.
+
+#+CAPTION: All implementations — correctness and detection
+| Implementation | Expected | GAI %True | GAI %False | GAI Match | RAW %True | RAW %False | RAW Match | AJ %True | AJ %False | AJ Match |
+|-+----+----+----+----+----+----+----+----+----+-----|
+| ConcurrentLinkedQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 60.0% | 40.0% | OK |
+| LinkedBlockingQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 70.0% | 30.0% | OK |
+| LinkedTransferQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 90.0% | 10.0% | OK |
+| ConcurrentLinkedDeque | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 90.0% | 10.0% | OK |
+| LinkedBlockingDeque | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 80.0% | 20.0% | OK |
+| ConcurrentSkipListSet | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK |
+| ConcurrentHashMap | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 0.0% | 100.0% | FAIL |
+| ConcurrentSkipListMap | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 0.0% | 100.0% | FAIL |
+| BrokenQueue | NOT LIN | 10.0% | 90.0% | OK | 10.0% | 90.0% | OK | 0.0% | 100.0% | OK |
+| NonLinearizableQueue | NOT LIN | 30.0% | 70.0% | OK | 30.0% | 70.0% | OK | 10.0% | 90.0% | OK |
+
+
+Table~\ref{tab:tableE} shows that \texttt{CollectFAInc} and \texttt{CollectRAW}
+produce correct verdicts for all 8 correct implementations and detect
+violations in both broken implementations. AspectJ produces false negatives
+in queue and deque implementations (10--40\%) and fails entirely on map
+implementations (100\% false negatives), likely due to incorrect argument
+capture in \texttt{@AfterReturning} for multi-argument operations such as
+\texttt{put(key, value)}.
