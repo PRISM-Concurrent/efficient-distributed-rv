@@ -52,7 +52,7 @@ public class VerifierBenchmark {
     // Con más operaciones el verificador puede tardar minutos o no terminar.
     static final int VERDICT_OPS   = 100;
     static final int VERDICT_RUNS  = 100;
-    static final int[] THREADS_VERDICT = { 2, 4, 8, 16, 32, 64 };
+    static final int[] THREADS_VERDICT = { 2, 4};
 
     // ── Algoritmo ─────────────────────────────────────────────────────────
     static final String   ALG_CLASS = "java.util.concurrent.ConcurrentLinkedQueue";
