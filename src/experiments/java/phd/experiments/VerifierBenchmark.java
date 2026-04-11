@@ -69,6 +69,7 @@ public class VerifierBenchmark {
                       "queue",  false, "offer", "poll"),
         new AlgConfig("NonLinearizableQueue",   "phd.distributed.verifier.NonLinearizableQueue",
                       "queue",  false, "offer", "poll"),
+        new AlgConfig("PartialSyncQueue","phd.distributed.verifier.PartialSyncQueue","queue", false,"offer", "poll"),
     };
 
     enum SnapType { GAIsnap, RAWsnap, AspectJ }
@@ -109,10 +110,10 @@ public class VerifierBenchmark {
         boolean onlyC  = hasArg(args, "--only=tableC");
         boolean onlyD  = hasArg(args, "--only=tableD");
         boolean onlyE  = hasArg(args, "--only=tableE");
-        boolean broken = hasArg(args, "--broken");
-
-        // --broken cambia el algoritmo de Table D
-        String dClass   = broken ? "phd.distributed.verifier.BrokenQueue" : ALG_CLASS;
+        
+        String brokenClass = parseArg(args, "--broken");
+        boolean broken     = brokenClass != null;
+        String dClass      = broken ? brokenClass : ALG_CLASS;
         String dType    = ALG_TYPE;
         String[] dMethods = METHODS;
 
@@ -452,6 +453,15 @@ public class VerifierBenchmark {
     static boolean hasArg(String[] args, String prefix) {
         for (String a:args) if(a.startsWith(prefix)) return true;
         return false;
+    }
+    static String parseArg(String[] args, String prefix) {
+        for (String a : args) {
+            if (a.equals(prefix))
+                return "phd.distributed.verifier.BrokenQueue"; // default si no tiene valor
+            if (a.startsWith(prefix + "="))
+                return a.substring(prefix.length() + 1);
+        }
+        return null;
     }
 
     static void printHeader() {
