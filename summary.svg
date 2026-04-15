@@ -88,13 +88,13 @@
          y="182.5352"
          id="text1">Verification API</text>
     </g>
-    <!--cluster System Arquitecture-->
+    <!--cluster System Architecture-->
     <g
        class="cluster"
-       data-entity="System Arquitecture"
+       data-entity="System Architecture"
        data-source-line="10"
        data-uid="ent0007"
-       id="cluster_System Arquitecture"
+       id="cluster_System Architecture"
        transform="translate(-121.73077,-153.42548)">
       <path
          d="m 610.5,505.95 h 147.6035 a 3.75,3.75 0 0 1 2.5,2.5 l 7,19.9883 H 1186.5 a 2.5,2.5 0 0 1 2.5,2.5 V 963.45 a 2.5,2.5 0 0 1 -2.5,2.5 h -576 a 2.5,2.5 0 0 1 -2.5,-2.5 v -455 a 2.5,2.5 0 0 1 2.5,-2.5"
@@ -117,7 +117,7 @@
          textLength="146.6035"
          x="612"
          y="521.48523"
-         id="text2">System Arquitecture</text>
+         id="text2">System Architecture</text>
     </g>
     <!--cluster Catalog & Config-->
     <g

@@ -38,13 +38,13 @@
      id="defs1" />
   <g
      id="g90">
-    <!--cluster System Arquitecture-->
+    <!--cluster System Architecture-->
     <g
        class="cluster"
-       data-entity="System Arquitecture"
+       data-entity="System Architecture"
        data-source-line="4"
        data-uid="ent0002"
-       id="cluster_System Arquitecture">
+       id="cluster_System Architecture">
       <path
          d="M11.61,6 L159.2135,6 A3.75,3.75 0 0 1 161.7135,8.5 L168.7135,28.4883 L1290.61,28.4883 A2.5,2.5 0 0 1 1293.11,30.9883 L1293.11,1229.54 A2.5,2.5 0 0 1 1290.61,1232.04 L11.61,1232.04 A2.5,2.5 0 0 1 9.11,1229.54 L9.11,8.5 A2.5,2.5 0 0 1 11.61,6"
          fill="none"
@@ -66,7 +66,7 @@
          textLength="146.6035"
          x="13.11"
          y="21.5352"
-         id="text1">System Arquitecture</text>
+         id="text1">System Architecture</text>
     </g>
     <!--class DistAlgorithm-->
     <g
