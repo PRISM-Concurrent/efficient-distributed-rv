@@ -1,4 +1,4 @@
-# A Non-Intrusive Runtime Verification Framework for Linearizability
+# A Reliable Non-Intrusive Runtime Verification Framework for Linearizability
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
 [![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)]()
@@ -117,29 +117,41 @@ VerificationFramework.verify(ConcurrentLinkedQueue.class)
 
 ## 4. Running the Experiments
 
-See **[docs/EXPERIMENTS.md](docs/EXPERIMENTS.md)** for full instructions and
-result tables.
+See **[docs/EXPERIMENTS.md](docs/EXPERIMENTS.md)** for full instructions, result tables, and interpretation.
 
 ```bash
-# Full benchmark: overhead + verdict accuracy
-java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
-     phd.experiments.VerifierBenchmark \
-     --format=org --output=results/verifier.org
+# Table C — instrumentation overhead
+java -Xmx16g -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark --only=tableC --format=org --output=results/tableC.org
 
-# Instrumentation-only overhead (no verification)
-java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
-     phd.experiments.ProducersBenchmark --format=org
+# Table D — verdict accuracy (correct implementation)
+java -Xmx16g -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark --only=tableD --format=org --output=results/tableD.org
 
-# Strategy comparison (GAIsnap vs RAWsnap vs AspectJ)
-java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
-     phd.experiments.BatchComparison
+# Table D — BrokenQueue (severely broken)
+java -Xmx16g -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark --only=tableD \
+     --broken=phd.distributed.verifier.BrokenQueue --format=org --output=results/tableD-broken.org
+
+# Table D — PartialSyncQueue (subtly broken, use ops=60)
+java -Xmx16g -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark --only=tableD \
+     --broken=phd.distributed.verifier.PartialSyncQueue --format=org --output=results/tableD-partialsync.org
+
+# Table E — coverage across all data structure types
+java -Xmx16g -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark --only=tableE --format=org --output=results/tableE.org
 ```
 
-For the AspectJ strategy, prepend:
+For the AspectJ strategy, prepend `-javaagent` and `--add-opens`:
+
 ```bash
 java -javaagent:$HOME/.m2/repository/org/aspectj/aspectjweaver/1.9.21/aspectjweaver-1.9.21.jar \
-     --add-opens java.base/java.lang=ALL-UNNAMED ...
+     --add-opens java.base/java.lang=ALL-UNNAMED -Xmx16g \
+     -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark ...
 ```
+
 
 ---
 
@@ -271,4 +283,6 @@ Register it in `typelin.clj` under `specs`.
 | [QUICK_START.md](QUICK_START.md) | Everyone | Run your first verification in 5 minutes |
 | [INSTALL.md](INSTALL.md) | Everyone | Full installation instructions |
 | [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md) | Reviewers | Reproduce the paper's tables |
-| [docs/API_USAGE_GUIDE.org](docs/API_USAGE_GUIDE.org) | Developers | Extend to other data structures |
+| [docs/API_USAGE_GUIDE.org](docs/API_USAGE_GUIDE.org) | Developers | Complete API reference |
+| [docs/API_EXAMPLES.md](docs/API_EXAMPLES.md) | Developers | Runnable examples by use case |
+| [docs/USER_MANUAL.md](docs/USER_MANUAL.md) | Developers | Configuration, troubleshooting, extending |

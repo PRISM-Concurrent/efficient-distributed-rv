@@ -1,202 +1,300 @@
-# API Examples – Efficient Distributed Runtime Verification
+# API Examples
 
-This document provides **hands-on, runnable examples** of the public API.
-Each example focuses on a specific *use case* rather than API details.
+This document provides **runnable examples** of the public API, organized by use case.
+Each example corresponds to a file in `src/main/java/` that can be run directly.
 
-For API semantics and configuration options, see:
-- `API_USAGE_GUIDE.org`
-- `USER_MANUAL.md`
-
----
-
-## Contents
-
-1. Minimal one-liner verification
-2. Verify a queue with explicit methods
-3. Using different snapshot strategies
-4. Workload-based verification
-5. Read-heavy vs write-heavy workloads
-6. Deterministic verification with schedules
-7. Detecting a non-linearizable implementation
-8. Low-level execution with `Executioner`
-9. High-performance batch example
+For API semantics and configuration options, see [`docs/API_USAGE_GUIDE.org`](API_USAGE_GUIDE.org).
+For reproducing the paper's benchmark results, see [`docs/EXPERIMENTS.md`](EXPERIMENTS.md).
 
 ---
 
-## 1. Minimal one-liner verification
+## Running the Examples
 
-**Use case:** sanity check that an implementation is linearizable.
+All examples are compiled as part of the main build:
 
-```java
-import phd.distributed.api.VerificationFramework;
-import phd.distributed.api.VerificationResult;
-
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-public class MinimalExample {
-  public static void main(String[] args) {
-    VerificationResult result = VerificationFramework
-        .verify(ConcurrentLinkedQueue.class)
-        .withOperations(100)
-        .run();
-
-    System.out.println("Linearizable: " + result.isLinearizable());
-  }
-}
+```bash
+mvn clean package -DskipTests
 ```
 
-✔ Uses default settings
-✔ Suitable for quick smoke tests
+Then run with:
 
-## 2. Choosing method subsets (supported)
+```bash
+java -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar <ClassName>
+```
 
-You may restrict the verification to a *subset* of supported operations using `withMethods(...)`.
-This is useful to focus on specific behaviors and keep workloads meaningful.
+---
 
-**Examples:**
+## 1. Minimal Verification
 
-- Deque (front-only):
-  `withObjectType("deque").withMethods("offerFirst", "pollFirst")`
+**File:** `src/main/java/MinimalExample.java`
 
-- Set (updates only):
-  `withObjectType("set").withMethods("add", "remove")`
-
-- Map (updates only):
-  `withObjectType("map").withMethods("put", "remove")`
-
-**Important:** Do not include methods that are not covered by the sequential specification.
-If you do, the checker may fail or report invalid results.
-
-
-## 3. Using different snapshot strategies
-
-Use case: compare instrumentation strategies.
+The shortest possible verification — one implementation, default settings.
 
 ```java
-VerificationResult gaiResult = VerificationFramework
+VerificationResult result = VerificationFramework
     .verify(ConcurrentLinkedQueue.class)
-    .withThreads(4)
-    .withOperations(100)
-    .withObjectType("queue")
-    .withMethods("offer", "poll")
+    .withOperations(40)
+    .run();
+
+System.out.println("Linearizable: " + result.isLinearizable());
+```
+
+```bash
+java -cp target/...jar MinimalExample
+# Output: Linearizable: true
+```
+
+Use this to confirm the build is working before running longer experiments.
+
+---
+
+## 2. Batch Verification — 8 Correct Implementations
+
+**File:** `src/main/java/BatchExecution.java`
+
+Verifies all 8 supported Java concurrent collections (threads = 4,
+ops = 100) and prints a summary table with producer time, verifier
+time, and throughput per implementation.
+
+```bash
+java -cp target/...jar BatchExecution
+```
+
+Expected output (abbreviated):
+
+```
+=== Batch Execution Summary ===
+Threads    : 4
+Operations : 100
+
+┌──────────────────────────┬────────────┬────────────┬────────────┬────────────┐
+│ Algorithm                │ Producers  │ Verifier   │ Total      │ Throughput │
+├──────────────────────────┼────────────┼────────────┼────────────┼────────────┤
+│ ConcurrentLinkedQueue    │       12 ms │      168 ms │      181 ms │        552 │
+│ ConcurrentHashMap        │        6 ms │       50 ms │       56 ms │       1786 │
+...
+│ LinkedBlockingDeque      │        3 ms │       38 ms │       41 ms │       2439 │
+└──────────────────────────┴────────────┴────────────┴────────────┴────────────┘
+
+Summary:
+  Linearizable: 8 / 8
+```
+
+Use this as a sanity check that the full pipeline works across all data
+structure types before running experiments.
+
+---
+
+## 3. Choosing a Snapshot Strategy
+
+**Files:**
+- `src/main/java/BatchGAISnapshotTest.java` — uses `CollectFAInc` (`gAIsnap`)
+- `src/main/java/HighPerformanceHW.java` — uses `CollectRAW` (`rawsnap`)
+
+Both files verify the same implementations but with different snapshot
+strategies. The `gAIsnap` strategy uses an atomic fetch-and-increment
+counter to impose a total order; `rawsnap` reconstructs happens-before
+via view containment.
+
+```java
+// CollectFAInc
+VerificationFramework.verify(ConcurrentLinkedQueue.class)
+    .withThreads(4).withOperations(100)
+    .withObjectType("queue").withMethods("offer", "poll")
     .withSnapshot("gAIsnap")
     .run();
 
-VerificationResult rawResult = VerificationFramework
-    .verify(ConcurrentLinkedQueue.class)
-    .withThreads(4)
-    .withOperations(100)
-    .withObjectType("queue")
-    .withMethods("offer", "poll")
+// CollectRAW
+VerificationFramework.verify(ConcurrentLinkedQueue.class)
+    .withThreads(4).withOperations(100)
+    .withObjectType("queue").withMethods("offer", "poll")
     .withSnapshot("rawsnap")
     .run();
 ```
 
-✔ gAIsnap: lower overhead
-✔ rawsnap: more precise causality
+```bash
+java -cp target/...jar BatchGAISnapshotTest
+java -cp target/...jar HighPerformanceHW
+```
 
-## 4. Workload-based verification (producer–consumer)
+Both strategies produce sound verdicts. `CollectFAInc` has slightly lower
+overhead; `CollectRAW` captures more precise causal information.
 
-Use case: realistic enqueue/dequeue behavior.
+---
+
+## 4. Workload-Based Verification
+
+**Files:**
+- `src/main/java/BatchWorkloadTest.java`
+- `src/main/java/HighPerformanceLinearizabilityWorkloadTest.java`
+
+These examples show how to use `WorkloadPattern` to control the
+operation mix. Thread assignment is handled automatically by the
+`Executioner`.
 
 ```java
-import phd.distributed.api.WorkloadPattern;
+// Producer-consumer: 70% writes, 30% reads
+WorkloadPattern pc = WorkloadPattern.producerConsumer(100, 4, 0.7);
 
-WorkloadPattern pattern =
-    WorkloadPattern.producerConsumer(100, 4, 0.7);
+// Read-heavy: 80% reads, 20% writes
+WorkloadPattern rh = WorkloadPattern.readHeavy(100, 4, 0.8);
+
+// Write-heavy: 80% writes, 20% reads
+WorkloadPattern wh = WorkloadPattern.writeHeavy(100, 4, 0.8);
 
 VerificationResult result = VerificationFramework
     .verify(ConcurrentLinkedQueue.class)
-    .withThreads(4)
-    .withOperations(100)
-    .withObjectType("queue")
-    .withMethods("offer", "poll")
-    .withWorkload(pattern)
+    .withThreads(4).withOperations(100)
+    .withObjectType("queue").withMethods("offer", "poll")
+    .withWorkload(pc)
     .run();
 ```
 
-✔ ~70% writes, ~30% reads
-✔ Threads assigned automatically
-
-## 5. Read-heavy vs write-heavy workloads
-
-Use case: stress different access patterns.
-
-Read-heavy set
-
-```java
-WorkloadPattern readHeavy =
-    WorkloadPattern.readHeavy(200, 4, 0.8);
-
-VerificationResult result = VerificationFramework
-    .verify(java.util.concurrent.ConcurrentSkipListSet.class)
-    .withThreads(4)
-    .withOperations(200)
-    .withObjectType("set")
-    .withMethods("add", "remove", "contains")
-    .withWorkload(readHeavy)
-    .run();
+```bash
+java -cp target/...jar BatchWorkloadTest
+java -cp target/...jar HighPerformanceLinearizabilityWorkloadTest
 ```
 
-Write-heavy deque
+Read-heavy workloads tend to produce faster verification because read-only
+operations introduce fewer ordering constraints into the history passed to
+JIT-Lin. Write-heavy and producer-consumer workloads expose more
+interleavings and are therefore better for detecting violations.
 
-```java
-WorkloadPattern writeHeavy =
-    WorkloadPattern.writeHeavy(200, 4, 0.8);
+---
 
-VerificationResult result = VerificationFramework
-    .verify(java.util.concurrent.ConcurrentLinkedDeque.class)
-    .withThreads(4)
-    .withOperations(200)
-    .withObjectType("deque")
-    .withMethods("offerFirst", "offerLast", "pollFirst", "pollLast")
-    .withWorkload(writeHeavy)
-    .run();
+## 5. Stress Testing and Detection Improvement
+
+**File:** `src/main/java/ImprovedDetectionExample.java`
+
+Demonstrates three ways to increase the probability of detecting a
+linearizability violation: larger operation counts, more threads, and
+targeted workload patterns.
+
+```bash
+java -cp target/...jar ImprovedDetectionExample
 ```
 
-## 6. Deterministic verification with a fixed schedule
+The demo shows three scenarios:
 
-Use case: debugging or reproducing a failure.
+- **Low stress:** 1 000 operations, 4 threads
+- **Medium stress:** 5 000 operations, 8 threads
+- **High stress:** 10 000 operations, 8 threads
+
+More operations and threads increase the chance that a race condition
+manifests in a given run. For subtle violations (e.g., `PartialSyncQueue`),
+this is the most effective way to improve detection rate.
+
+---
+
+## 6. Detecting a Non-Linearizable Implementation
+
+**File:** `src/main/java/NonLinearizableTest.java`
+
+Validates that the framework correctly identifies violations in two
+intentionally broken implementations:
+
+- `BrokenQueue` — severe race condition, detected in 100% of runs
+- `NonLinearizableQueue` — breaks FIFO order by design
+
+```bash
+java -cp target/...jar NonLinearizableTest
+```
+
+Expected output:
+
+```
+=== Non-Linearizable Test Summary ===
+Threads    : 4
+Operations : 100
+
+┌──────────────────────────┬────────────┬────────────┬────────────┬────────────┐
+│ Algorithm                │ Producers  │ Verifier   │ Total      │ Result     │
+├──────────────────────────┼────────────┼────────────┼────────────┼────────────┤
+│ BrokenQueue              │      12 ms │     706 ms │     718 ms │ NOT LIN    │
+│ NonLinearizableQueue     │       6 ms │   13310 ms │   13316 ms │ NOT LIN    │
+└──────────────────────────┴────────────┴────────────┴────────────┴────────────┘
+
+Summary:
+  Correctly detected as NOT linearizable: 2 / 2
+```
+
+---
+
+## 7. Comprehensive API Tour
+
+**File:** `src/main/java/ComprehensiveDemo.java`
+
+A single demo that exercises all major API features in sequence:
+
+| Scenario | What it demonstrates |
+|---|---|
+| `RichResult+Timeout` | `verify(String)`, timeout, full `VerificationResult` |
+| `ConfigThreadsOps` | Effect of increasing threads and operations on cost |
+| `AlgLib+Workload` | `AlgorithmLibrary.search()` + `WorkloadPattern` |
+| `EndToEndSmall` | Minimal end-to-end check for integration testing |
+
+```bash
+java -cp target/...jar ComprehensiveDemo
+```
+
+---
+
+## 8. Low-Level API: Executioner + DistAlgorithm
+
+**File:** `src/main/java/HighPerformanceLinearizabilityTest.java`
+
+Shows how to use the low-level `Executioner` directly, bypassing the
+fluent builder. Useful when you need fine-grained control over the
+execution and verification phases.
 
 ```java
-import phd.distributed.api.A;
-import phd.distributed.datamodel.MethodInf;
-import phd.distributed.datamodel.OperationCall;
-
-import java.util.*;
-
-A alg = new A(
-    java.util.concurrent.ConcurrentLinkedQueue.class.getName(),
+DistAlgorithm alg = new A(
+    "java.util.concurrent.ConcurrentLinkedQueue",
     "offer", "poll"
 );
 
-MethodInf offer = null, poll = null;
-for (MethodInf m : alg.methods()) {
-  if (m.getName().equals("offer")) offer = m;
-  if (m.getName().equals("poll"))  poll  = m;
-}
+Executioner exec = new Executioner(4, 100, alg, "queue");
 
-List<OperationCall> schedule = new ArrayList<>();
-schedule.add(new OperationCall(1, offer));
-schedule.add(new OperationCall(null, poll));
-schedule.add(new OperationCall(2, offer));
-
-VerificationResult result = VerificationFramework
-    .verify(java.util.concurrent.ConcurrentLinkedQueue.class)
-    .withThreads(3)
-    .withOperations(schedule.size())
-    .withObjectType("queue")
-    .withMethods("offer", "poll")
-    .withSchedule(schedule)
-    .run();
+exec.taskProducers();   // instrumentation phase only
+exec.taskVerifiers();   // linearizability check
 ```
 
-✔ Fully deterministic
-✔ Ideal for minimal counterexamples
+```bash
+java -cp target/...jar HighPerformanceLinearizabilityTest
+```
 
-## 7. Detecting a non-linearizable implementation
+The low-level API is useful for integrating the framework into an
+existing test harness where you want to control when each phase runs.
 
-Use case: validate that the checker detects violations.
+---
+
+## 9. Choosing Method Subsets
+
+Not every method needs to be included in the verification. Restricting
+to a meaningful subset improves workload coherence and avoids
+operations not covered by the sequential specification.
+
+```java
+// Queue — enqueue/dequeue only
+.withObjectType("queue").withMethods("offer", "poll")
+
+// Deque — front operations only
+.withObjectType("deque").withMethods("offerFirst", "pollFirst")
+
+// Set — updates only (no reads)
+.withObjectType("set").withMethods("add", "remove")
+
+// Map — updates only
+.withObjectType("map").withMethods("put", "remove")
+```
+
+Do not include methods not covered by the sequential specification
+(e.g., `size()`, `isEmpty()`). The checker may produce incorrect
+results or fail to terminate.
+
+---
+
+## 10. Detecting a Non-Linearizable Implementation — Programmatic
 
 ```java
 VerificationResult result = VerificationFramework
@@ -207,61 +305,61 @@ VerificationResult result = VerificationFramework
     .withMethods("offer", "poll")
     .run();
 
-System.out.println("Linearizable: " + result.isLinearizable());
+System.out.println("Linearizable: " + result.isLinearizable()); // false
 ```
 
-Expected output:
+---
 
-```bash
-Linearizable: false
-```
+## 11. Deterministic Schedule (Debugging)
 
-## 8. Low-level execution with Executioner
-
-Use case: full control over execution and verification phases.
+Use a fixed sequence of operations to reproduce a specific failure or
+build a minimal counterexample.
 
 ```java
-import phd.distributed.api.A;
-import phd.distributed.api.DistAlgorithm;
-import phd.distributed.core.Executioner;
+A alg = new A(
+    ConcurrentLinkedQueue.class.getName(),
+    "offer", "poll"
+);
 
-DistAlgorithm alg =
-    new A("java.util.concurrent.ConcurrentLinkedQueue",
-          "offer", "poll");
-
-Executioner exec =
-    new Executioner(4, 100, alg, "queue", "gAIsnap");
-
-exec.taskProducers();
-boolean linearizable = exec.taskVerifiers();
-
-System.out.println("Linearizable: " + linearizable);
-```
-
-## 9. Batch example
-
-Use case: quick benchmarking across multiple implementations.
-
-```java
-String[] algorithms = {
-  "ConcurrentLinkedQueue",
-  "ConcurrentHashMap",
-  "ConcurrentSkipListSet"
-};
-
-for (String name : algorithms) {
-  VerificationResult r = VerificationFramework
-      .verify("java.util.concurrent." + name)
-      .withThreads(4)
-      .withOperations(1000)
-      .run();
-
-  System.out.println(name + " → " + r.isLinearizable());
+MethodInf offer = null, poll = null;
+for (MethodInf m : alg.methods()) {
+    if (m.getName().equals("offer")) offer = m;
+    if (m.getName().equals("poll"))  poll  = m;
 }
+
+List<OperationCall> schedule = List.of(
+    new OperationCall(1, offer),
+    new OperationCall(null, poll),
+    new OperationCall(2, offer)
+);
+
+VerificationResult result = VerificationFramework
+    .verify(ConcurrentLinkedQueue.class)
+    .withThreads(3)
+    .withOperations(schedule.size())
+    .withObjectType("queue")
+    .withMethods("offer", "poll")
+    .withSchedule(schedule)
+    .run();
 ```
 
-Notes
+Deterministic schedules are fully reproducible across runs and are the
+recommended approach for publishing minimal counterexamples alongside
+bug reports.
 
-- Examples favor clarity over maximal performance.
-- All examples use only public APIs.
-- For theoretical background and design rationale, see USER_MANUAL.md.
+---
+
+## Summary of Example Files
+
+| File | Use case | Key API |
+|---|---|---|
+| `MinimalExample.java` | Quickest verification | `verify(Class)` |
+| `BatchExecution.java` | All 8 correct implementations | `AlgorithmLibrary`, table output |
+| `BatchGAISnapshotTest.java` | `CollectFAInc` strategy | `withSnapshot("gAIsnap")` |
+| `HighPerformanceHW.java` | `CollectRAW` strategy, 8 impls | `withSnapshot("rawsnap")` |
+| `BatchWorkloadTest.java` | Workload patterns | `withWorkload(WorkloadPattern)` |
+| `HighPerformanceLinearizabilityWorkloadTest.java` | Workload + multiple impls | `WorkloadPattern` variants |
+| `ImprovedDetectionExample.java` | Stress testing | ops/threads scaling |
+| `NonLinearizableTest.java` | Violation detection | `BrokenQueue`, `NonLinearizableQueue` |
+| `ComprehensiveDemo.java` | Full API tour | All features |
+| `HighPerformanceLinearizabilityTest.java` | Low-level control | `Executioner`, `DistAlgorithm` |

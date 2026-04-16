@@ -1,0 +1,28 @@
+#+DATE: 2026-04-14 17:06
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Linux
+- CPUs :: 64
+- JVM :: OpenJDK 64-Bit Server VM 21.0.10
+
+* Table D — Verdict comparison (ops=60)
+
+Full pipeline. 100 runs per cell. Reference: El-Hokayem & Falcone (RV 2018).
+
+#+CAPTION: Verdict accuracy vs threads
+| Threads | GAI %True | GAI %False | GAI %Error | RAW %True | RAW %False | RAW %Error | AJ %True | AJ %False | AJ %Error |
+|-+----+----+----+----+----+----+----+----+-----|
+| 2 | 91.0% | 9.0% | 0.0% | 95.0% | 5.0% | 0.0% | 36.0% | 64.0% | 0.0% |
+| 4 | 85.0% | 15.0% | 0.0% | 96.0% | 4.0% | 0.0% | 67.0% | 33.0% | 0.0% |
+| 8 | 84.0% | 16.0% | 0.0% | 92.0% | 8.0% | 0.0% | 98.0% | 2.0% | 0.0% |
+| 16 | 97.0% | 3.0% | 0.0% | 94.0% | 6.0% | 0.0% | 100.0% | 0.0% | 0.0% |
+| 32 | 100.0% | 0.0% | 0.0% | 99.0% | 1.0% | 0.0% | 100.0% | 0.0% | 0.0% |
+| 64 | 100.0% | 0.0% | 0.0% | 99.0% | 1.0% | 0.0% | 100.0% | 0.0% | 0.0% |
+
+

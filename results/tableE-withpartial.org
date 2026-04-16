@@ -1,0 +1,32 @@
+#+DATE: 2026-04-14 16:33
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Linux
+- CPUs :: 64
+- JVM :: OpenJDK 64-Bit Server VM 21.0.10
+
+* Table E — All implementations (threads=4, ops=30, runs=10)
+
+One verdict per cell. OK = matches expected. FAIL = unexpected verdict.
+
+#+CAPTION: All implementations — correctness and detection
+| Implementation | Expected | GAI %True | GAI %False | GAI Match | RAW %True | RAW %False | RAW Match | AJ %True | AJ %False | AJ Match |
+|-+----+----+----+----+----+----+----+----+----+-----|
+| ConcurrentLinkedQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 90.0% | 10.0% | OK |
+| LinkedBlockingQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 90.0% | 10.0% | OK |
+| LinkedTransferQueue | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 70.0% | 30.0% | OK |
+| ConcurrentLinkedDeque | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 70.0% | 30.0% | OK |
+| LinkedBlockingDeque | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 50.0% | 50.0% | FAIL |
+| ConcurrentSkipListSet | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK |
+| ConcurrentHashMap | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 0.0% | 100.0% | FAIL |
+| ConcurrentSkipListMap | LIN | 100.0% | 0.0% | OK | 100.0% | 0.0% | OK | 0.0% | 100.0% | FAIL |
+| BrokenQueue | NOT LIN | 0.0% | 100.0% | OK | 0.0% | 100.0% | OK | 0.0% | 100.0% | OK |
+| NonLinearizableQueue | NOT LIN | 50.0% | 50.0% | FAIL | 20.0% | 80.0% | OK | 20.0% | 80.0% | OK |
+| PartialSyncQueue | NOT LIN | 100.0% | 0.0% | FAIL | 80.0% | 20.0% | FAIL | 50.0% | 50.0% | FAIL |
+
