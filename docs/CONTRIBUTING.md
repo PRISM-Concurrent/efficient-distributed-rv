@@ -10,7 +10,7 @@ extending the framework.
 Same as INSTALL.md. Run the test suite to verify your environment:
 
     mvn test
-    # Expected: Tests run: 78, Failures: 0, Errors: 0
+    # Expected: all tests pass (0 failures, 0 errors)
 
 ## Adding a New Data Structure
 
@@ -40,6 +40,6 @@ See USER_MANUAL.md Section 4 for a complete walkthrough covering:
 
 ## Submitting Changes
 
-Open a pull request against `docs/product`. Include a description of
+Open a pull request against `main`. Include a description of
 the change and, if adding a new data structure, the sequential
 specification and a brief correctness argument.

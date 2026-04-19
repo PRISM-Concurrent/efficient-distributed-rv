@@ -229,7 +229,7 @@ mechanism, not of the system under inspection.
 
 ### D.2 Supplementary — 10-core macOS, ops = 100, 100 runs per cell
 
-Consistent with D.1, but limited to 2 threads (contention regime only).
+Consistent with D.1, but limited to 2 and 4 threads (contention regime only).
 
 | Threads | GAI %T | GAI %F | GAI %E | RAW %T | RAW %F | RAW %E | AJ %T | AJ %F | AJ %E |
 |---|---|---|---|---|---|---|---|---|---|
@@ -278,7 +278,7 @@ but the violation only manifests under specific interleavings.
 64-core Linux, ops = 60, 100 runs per cell.
 
 **Note on operation count.** With ops = 100, the linearizability
-checker may not terminate within a reasonable time on trazas where the
+checker may not terminate within a reasonable time on traces where the
 violation is ambiguous, because the checker must explore all possible
 linearizations. We therefore limit to ops = 60, using a 30-minute
 per-run timeout; no run exceeded the timeout.
@@ -328,6 +328,13 @@ violations than the snapshot strategies.
 Full pipeline, threads = 4, ops = 30, 10 runs per cell.
 64-core Linux server. `OK` = verdict matches expected;
 `FAIL` = unexpected verdict.
+
+**Note.** The results below correspond to a pilot run (10 runs per
+cell) and are included here to document the coverage experiment in
+detail. The final figures reported in the paper (Table `tab:tableE`)
+use a larger sample size (100 runs per cell) and include an
+additional `PartialSyncQueue` row. The trends shown here are
+consistent with the paper's results.
 
 **Note on PartialSyncQueue.** With only 30 operations and 10 runs,
 the race condition in `PartialSyncQueue` rarely manifests, so results

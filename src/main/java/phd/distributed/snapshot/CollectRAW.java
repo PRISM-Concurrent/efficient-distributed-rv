@@ -130,29 +130,26 @@ public class CollectRAW extends Snapshot {
      */
     @Override
     public IPersistentVector buildXE() {
-        // Diagnostic: inspect invs-var / returns-var state before building XE
-        try {
-            //java.util.ArrayList<?> invsVar =
-            //    (java.util.ArrayList<?>) Clojure.var("logrAw", "invs-var").deref();
-            //java.util.ArrayList<?> retsVar =
-            //    (java.util.ArrayList<?>) Clojure.var("logrAw", "returns-var").deref();
-
-            java.util.ArrayList<?> invsVar =
-                (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logrAw", "invs-var")).deref();
-
-            java.util.ArrayList<?> retsVar =
-                (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logrAw", "returns-var")).deref();
-            int totalInvs = 0, totalRets = 0;
-            for (Object slot : invsVar) {
-                if (slot instanceof clojure.lang.Counted) totalInvs += ((clojure.lang.Counted) slot).count();
+        // Diagnostic: inspect invs-var / returns-var state before building XE.
+        // Guarded behind DEBUG to avoid reflective overhead in benchmarks.
+        if (LOGGER.isDebugEnabled()) {
+            try {
+                java.util.ArrayList<?> invsVar =
+                    (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logrAw", "invs-var")).deref();
+                java.util.ArrayList<?> retsVar =
+                    (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logrAw", "returns-var")).deref();
+                int totalInvs = 0, totalRets = 0;
+                for (Object slot : invsVar) {
+                    if (slot instanceof clojure.lang.Counted) totalInvs += ((clojure.lang.Counted) slot).count();
+                }
+                for (Object slot : retsVar) {
+                    if (slot instanceof clojure.lang.Counted) totalRets += ((clojure.lang.Counted) slot).count();
+                }
+                LOGGER.debug("[CollectRAW] invs-var: {} slots / {} invocations; returns-var: {} slots / {} returns",
+                            invsVar.size(), totalInvs, retsVar.size(), totalRets);
+            } catch (Exception e) {
+                LOGGER.warn("[CollectRAW] Could not inspect Clojure state: {}", e.getMessage());
             }
-            for (Object slot : retsVar) {
-                if (slot instanceof clojure.lang.Counted) totalRets += ((clojure.lang.Counted) slot).count();
-            }
-            LOGGER.info("[CollectRAW] invs-var: {} slots / {} invocations; returns-var: {} slots / {} returns",
-                        invsVar.size(), totalInvs, retsVar.size(), totalRets);
-        } catch (Exception e) {
-            LOGGER.warn("[CollectRAW] Could not inspect Clojure state: {}", e.getMessage());
         }
         return (IPersistentVector) xeForJitFn.invoke();
     }

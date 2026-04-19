@@ -14,7 +14,6 @@ import clojure.lang.IPersistentVector;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import clojure.lang.IPersistentVector;
 import phd.distributed.api.DistAlgorithm;
 import phd.distributed.api.WorkloadPattern;
 import phd.distributed.datamodel.OperationCall;
@@ -89,6 +88,33 @@ public class Executioner {
  
 
 
+    /** Default upper bound for waiting on the producer pool to finish. */
+    private static final long DEFAULT_POOL_TIMEOUT_SECONDS = 30;
+
+    /**
+     * Gracefully shut down the pool, awaiting termination and forcing
+     * interruption if the timeout is exceeded. Silent truncation of the
+     * run would invalidate benchmark measurements, so we log a warning
+     * and call {@code shutdownNow()} on timeout.
+     */
+    private static void shutdownAndAwait(ExecutorService pool, long timeout, TimeUnit unit) {
+        pool.shutdown();
+        try {
+            if (!pool.awaitTermination(timeout, unit)) {
+                LOGGER.warn("Producer pool did not terminate within {} {}; forcing shutdown. "
+                          + "Benchmark measurements for this run may be incomplete.",
+                          timeout, unit.name().toLowerCase());
+                pool.shutdownNow();
+                if (!pool.awaitTermination(30, TimeUnit.SECONDS)) {
+                    LOGGER.error("Producer pool did not terminate after shutdownNow().");
+                }
+            }
+        } catch (InterruptedException e) {
+            pool.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public void taskProducers() {
         if (processes <= 0 || this.totalOps <= 0) {
             return;
@@ -110,12 +136,7 @@ public class Executioner {
                 }
             }));
         }
-        pool.shutdown();
-        try {
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        shutdownAndAwait(pool, DEFAULT_POOL_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         // Surface any exceptions that were silently swallowed by pool.submit()
         for (int i = 0; i < futures.size(); i++) {
             try {
@@ -165,12 +186,7 @@ public class Executioner {
             }));
         }
 
-        pool.shutdown();
-        try {
-            pool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        shutdownAndAwait(pool, DEFAULT_POOL_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         for (int i = 0; i < futures.size(); i++) {
             try {
                 futures.get(i).get();

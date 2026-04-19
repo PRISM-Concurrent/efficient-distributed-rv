@@ -27,11 +27,13 @@ public class Verifier {
         // Construir X_E desde el snapshot (CollectFAInc o CollectRAW)
         IPersistentVector xe = this.c.buildXE();
 
-        // === Log X_E ===
-        LOGGER.info("==== X_E history ({} events) ====", xe.count());
-        for (ISeq s = xe.seq(); s != null; s = s.next()) {
-            Object ev = s.first();
-            LOGGER.info("X_E event: {}", ev);
+        // === Log X_E (solo en DEBUG para evitar O(n) I/O en benchmarks) ===
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("==== X_E history ({} events) ====", xe.count());
+            for (ISeq s = xe.seq(); s != null; s = s.next()) {
+                Object ev = s.first();
+                LOGGER.debug("X_E event: {}", ev);
+            }
         }
 
         boolean ok = JitLinChecker.checkLinearizable(xe, LOGGER,objectType);
@@ -52,10 +54,12 @@ public class Verifier {
             return false;
         }
 
-        LOGGER.info("==== X_E history ({} events) ====", xe.count());
-        for (ISeq s = xe.seq(); s != null; s = s.next()) {
-            Object ev = s.first();
-            LOGGER.info("X_E event: {}", ev);
+        LOGGER.debug("==== X_E history ({} events) ====", xe.count());
+        if (LOGGER.isDebugEnabled()) {
+            for (ISeq s = xe.seq(); s != null; s = s.next()) {
+                Object ev = s.first();
+                LOGGER.debug("X_E event: {}", ev);
+            }
         }
 
         // Llamada directa al motor de Clojure

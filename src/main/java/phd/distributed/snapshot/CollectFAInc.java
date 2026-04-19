@@ -140,20 +140,23 @@ public class CollectFAInc extends Snapshot {
      */
     @Override
     public IPersistentVector buildXE() {
-        // Diagnostic: inspect logs-var state before building XE
-        try {
-            java.util.ArrayList<?> logsVar =
-                (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logtAs", "logs-var")).deref();
-            int totalEvents = 0;
-            for (Object slot : logsVar) {
-                if (slot instanceof clojure.lang.Counted) {
-                    totalEvents += ((clojure.lang.Counted) slot).count();
+        // Diagnostic: inspect logs-var state before building XE.
+        // Guarded behind DEBUG to avoid reflective overhead in benchmarks.
+        if (LOGGER.isDebugEnabled()) {
+            try {
+                java.util.ArrayList<?> logsVar =
+                    (java.util.ArrayList<?>) ((clojure.lang.IDeref) Clojure.var("logtAs", "logs-var")).deref();
+                int totalEvents = 0;
+                for (Object slot : logsVar) {
+                    if (slot instanceof clojure.lang.Counted) {
+                        totalEvents += ((clojure.lang.Counted) slot).count();
+                    }
                 }
+                LOGGER.debug("[CollectFAInc] logs-var: {} slots, {} total buffered events",
+                            logsVar.size(), totalEvents);
+            } catch (Exception e) {
+                LOGGER.warn("[CollectFAInc] Could not inspect logs-var: {}", e.getMessage());
             }
-            LOGGER.info("[CollectFAInc] logs-var: {} slots, {} total buffered events",
-                        logsVar.size(), totalEvents);
-        } catch (Exception e) {
-            LOGGER.warn("[CollectFAInc] Could not inspect logs-var: {}", e.getMessage());
         }
         return (IPersistentVector) xeForJitFn.invoke();
     }

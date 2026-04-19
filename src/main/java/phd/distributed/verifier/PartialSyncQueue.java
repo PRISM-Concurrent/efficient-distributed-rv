@@ -20,8 +20,12 @@ public class PartialSyncQueue {
         if (list.isEmpty()) return null;
         try {
             return list.removeFirst();
-        } catch (java.util.NoSuchElementException e) {
-            // otro thread tomó el elemento entre isEmpty() y removeFirst()
+        } catch (RuntimeException e) {
+            // LinkedList is not thread-safe: concurrent modification can
+            // surface as NoSuchElementException, ConcurrentModificationException,
+            // NullPointerException (corrupted node pointers), or
+            // IndexOutOfBoundsException. Treat all of them as "another thread
+            // drained the queue between isEmpty() and removeFirst()".
             return null;
         }
     }

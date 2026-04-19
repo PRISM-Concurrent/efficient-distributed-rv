@@ -9,22 +9,35 @@ import phd.distributed.snapshot.Snapshot;
 /**
  * Snapshot implementation for the AspectJ experiment.
  *
- * Design (SWMR, same as CollectRAW):
- *   - write()    stores the logical process-id in a ThreadLocal so the aspect
- *                can later tag the intercepted call with the correct tid.
- *   - snapshot() is a no-op: the aspect already captured the return value.
- *   - logInvoke()/logReturn() are called BY the aspect when it intercepts
- *                Method.invoke() inside A.apply().
- *   - buildXE()  delegates to the same logrAw Clojure namespace as CollectRAW.
+ * @deprecated This class is obsolete. The current AspectJ experiment
+ * uses {@link NativeAspectJSnapshot} together with
+ * {@link NativeTraceCollector}, which is the path exercised by
+ * {@code LinearizabilityMonitorAspect} and all benchmarks.
+ * {@code AspectJSnapshot} remains only for historical reference and is
+ * not wired into the instrumentation pipeline.
  *
- * The difference with CollectRAW is *where* log-invoke! / log-return! are
- * called: here it is the AspectJ advice, not the Wrapper.
+ * <p>Historical design (SWMR, same as CollectRAW):
+ * <ul>
+ *   <li>{@code write()} stored the logical process-id in a ThreadLocal so the
+ *       aspect could later tag the intercepted call with the correct tid.</li>
+ *   <li>{@code snapshot()} was a no-op: the aspect already captured the
+ *       return value.</li>
+ *   <li>{@code logInvoke()} / {@code logReturn()} were called BY the aspect
+ *       when it intercepted {@code Method.invoke()} inside {@code A.apply()}.</li>
+ *   <li>{@code buildXE()} delegated to the same {@code logrAw} Clojure
+ *       namespace as CollectRAW.</li>
+ * </ul>
  *
- * Thread-safety (SWMR): identical argument as CollectRAW — slot [tid] in
- * invs-var / returns-var is written exclusively by thread tid.
- * buildXE() is called after all producers have finished (awaitTermination
- * establishes happens-before per the Java Memory Model).
+ * <p>The difference with CollectRAW was <em>where</em> {@code log-invoke!} /
+ * {@code log-return!} were called: here in the AspectJ advice, not in the
+ * Wrapper.
+ *
+ * <p>Thread-safety (SWMR): identical argument as CollectRAW — slot {@code [tid]}
+ * in {@code invs-var} / {@code returns-var} is written exclusively by thread
+ * {@code tid}. {@code buildXE()} is called after all producers have finished
+ * ({@code awaitTermination} establishes happens-before per the Java Memory Model).
  */
+@Deprecated
 public class AspectJSnapshot extends Snapshot {
 
     // ── Clojure interop (reuses the same logrAw namespace as CollectRAW) ──
@@ -42,16 +55,16 @@ public class AspectJSnapshot extends Snapshot {
     private final String[] lastOpIdPerThread;
 
     /** Per-thread monotonic operation counter for generating unique op-ids. */
+    // Thread-safety contract: each slot [tid] in localOpIndex and
+    // lastOpIdPerThread is written exclusively by the thread assigned to
+    // logical process-id tid by the Executioner. The Executioner's
+    // thread-per-process model means there is no concurrent write to the
+    // same slot. buildXE() runs after awaitTermination, which establishes
+    // the happens-before required to observe the final values.
+    // This contract must hold if AspectJSnapshot is ever re-wired into the
+    // instrumentation pipeline; see NativeAspectJSnapshot for the active
+    // implementation.
     private final int[] localOpIndex;
-
-    // ── Static reference (for the aspect) ─────────────────────────────────
-    /**
-     * The aspect needs a handle to the active snapshot.
-     * We use a volatile static so the aspect (woven at load time) can access
-     * the instance created by BatchComparison without passing it as a
-     * constructor argument through the framework chain.
-     */
-    private static volatile AspectJSnapshot current;
 
     // ── Constructor ────────────────────────────────────────────────────────
     public AspectJSnapshot(int numThreads) {
@@ -69,13 +82,6 @@ public class AspectJSnapshot extends Snapshot {
 
         this.lastOpIdPerThread = new String[numThreads];
         this.localOpIndex      = new int[numThreads];
-
-        current = this;   // register for the aspect
-    }
-
-    /** Returns the active snapshot. Called by LinearizabilityMonitorAspect. */
-    public static AspectJSnapshot getCurrent() {
-        return current;
     }
 
     // ── Snapshot API ───────────────────────────────────────────────────────

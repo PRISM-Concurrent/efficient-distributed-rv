@@ -23,7 +23,7 @@ public class AlgorithmLibrary {
                 AlgorithmCategory.QUEUES, phd.distributed.verifier.BrokenQueue.class);
         register("NonLinearizableQueue", "Queue with reordering violations (NOT linearizable)",
                 AlgorithmCategory.QUEUES, phd.distributed.verifier.NonLinearizableQueue.class);
-        register("PartialSyncQueue","phd.distributed.verifier.PartialSyncQueue", AlgorithmCategory.QUEUES, phd.distributed.verifier.PartialSyncQueue.class);
+        register("PartialSyncQueue","Queue with unsynchronized poll (NOT linearizable)", AlgorithmCategory.QUEUES, phd.distributed.verifier.PartialSyncQueue.class);
 
         // Java Concurrent Queues
         register("ConcurrentLinkedQueue", "Lock-free unbounded queue",

@@ -153,7 +153,7 @@ public class BatchExecution {
                            long prodMs, long verMs, long totalMs,
                            double throughput, String error) {
             this.name = name;
-            this.success = true;
+            this.success = (error == null);
             this.linearizable = linearizable;
             this.prodMs = prodMs;
             this.verMs = verMs;

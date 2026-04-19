@@ -184,6 +184,38 @@ history passed to the checker):
 </Root>
 ```
 
+Raising the root logger to `DEBUG` also unlocks these diagnostics,
+which are intentionally guarded behind `LOGGER.isDebugEnabled()` to
+avoid inflating benchmark measurements:
+
+- Full `X_E` history dump in `Verifier` before the JIT-Lin check.
+- `CollectFAInc`: per-slot inspection of `logs-var` (total buffered events).
+- `CollectRAW`: per-slot inspection of `invs-var` / `returns-var`
+  (invocations and returns counted per thread).
+
+Under `INFO` (the default) these are silently skipped and the
+instrumentation layer runs without reflective overhead.
+
+**Enabling DEBUG without editing `log4j2.xml`.** You can also raise
+the level at runtime by passing a system property on the JVM
+command line:
+
+```bash
+java -Dlog4j2.level=DEBUG \
+     -cp target/efficient-distributed-rv-*-jar-with-dependencies.jar \
+     phd.experiments.VerifierBenchmark ...
+```
+
+or scope the change to a specific logger, for example:
+
+```bash
+java -Dlog4j2.logger.phd.distributed.core.Verifier.level=DEBUG \
+     -cp target/...jar phd.experiments.VerifierBenchmark ...
+```
+
+Useful when troubleshooting a single run without rebuilding the jar
+or touching the shipped configuration.
+
 **Async logging with Disruptor.** The framework supports high-throughput
 async logging via the LMAX Disruptor ring buffer. This is enabled by
 default (`feature.async.logging=true`). Buffer sizes can be tuned in
@@ -220,7 +252,8 @@ VerificationResult result = VerificationFramework
     .run();
 ```
 
-If the timeout expires, `run()` throws a runtime exception. For batch
+If the timeout expires, `run()` throws a `RuntimeException` wrapping a
+`java.util.concurrent.TimeoutException` as its cause. For batch
 experiments, wrap in a try-catch and treat timeouts as errors.
 
 Alternatively, set the default timeout globally in `system.properties`:
@@ -288,9 +321,9 @@ new A("java.util.concurrent.ConcurrentLinkedQueue", "offer", "poll")
 
 ### Clojure warnings in log output
 
-Clojure runtime initialization produces warnings on first load (e.g.,
-`WARNING: clojure.lang.Var`). These are harmless. Set `org.clojure`
-logger to `WARN` in `log4j2.xml` to suppress them.
+See Section 1.2 ("Note on Clojure warnings") for how to suppress
+`WARNING: clojure.lang.Var` messages produced during Clojure runtime
+initialization.
 
 ### Maven build fails with "Failed to delete target/classes"
 

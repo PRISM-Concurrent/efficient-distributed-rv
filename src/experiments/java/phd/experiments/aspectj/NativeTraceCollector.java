@@ -32,11 +32,6 @@ public class NativeTraceCollector {
 
     private static final ThreadLocal<Integer> localOpIndex = ThreadLocal.withInitial(() -> 0);
 
-    // Estos dos ThreadLocals son el puente entre @Before y @After.
-    // Con @Around no eran necesarios porque todo vivía en el mismo bloque.
-    private static final ThreadLocal<String>  currentOpId     = new ThreadLocal<>();
-    private static final ThreadLocal<String>  currentMethodName = new ThreadLocal<>();
-
     private static class TraceEvent {
         final long   nanoTime;
         final boolean isInvoke;
@@ -57,23 +52,22 @@ public class NativeTraceCollector {
     }
 
     public static void logOperation(int tid, String methodName, Object arg, Object result) {
-    int index = localOpIndex.get() + 1;
-    localOpIndex.set(index);
+        int index = localOpIndex.get() + 1;
+        localOpIndex.set(index);
 
-    String opId = "-" + tid + "-" + index;
+        String opId = "-" + tid + "-" + index;
 
-    // Guardamos los dos eventos juntos, con el mismo timestamp de captura
-    long t = System.nanoTime();
+        // Guardamos los dos eventos juntos, con el mismo timestamp de captura
+        long t = System.nanoTime();
 
-    localBuffer.get().add(new TraceEvent(t,     true,  tid, opId, methodName, arg));
-    localBuffer.get().add(new TraceEvent(t + 1, false, tid, opId, methodName, result));
-}
+        localBuffer.get().add(new TraceEvent(t,     true,  tid, opId, methodName, arg));
+        localBuffer.get().add(new TraceEvent(t + 1, false, tid, opId, methodName, result));
+    }
 
     public static void clear() {
         allBuffers.clear();
+        localBuffer.remove();
         localOpIndex.remove();
-        currentOpId.remove();
-        currentMethodName.remove();
     }
 
     public static IPersistentVector buildPersistentVector() {

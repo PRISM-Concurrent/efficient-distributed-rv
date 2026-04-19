@@ -10,14 +10,15 @@ import java.util.Arrays;
 /**
  * Instrumentación estilo El-Hokayem & Falcone (RV 2018).
  *
- * Usa @Before y @After separados — no @Around.
- * Esto reproduce exactamente la no-atomicidad que el paper analiza:
- * entre el @Before (logInvoke) y el @After (logReturn) puede ocurrir
- * un context switch, haciendo que la traza capturada difiera del
- * orden real de ejecución.
+ * Usa @AfterReturning sobre Method.invoke dentro de A.apply().
+ * El evento es capturado después de que la operación retorna, por lo
+ * que el intervalo entre el inicio real de la operación y la captura
+ * del evento no es atómico: puede ocurrir un context switch durante
+ * ese intervalo y provocar que la traza capturada difiera del orden
+ * real de ejecución.
  *
- * El paper lo demuestra empíricamente: con AspectJ sin sincronización
- * adicional, ~50% de las trazas tienen un orden diferente al real.
+ * El paper demuestra empíricamente que, sin sincronización adicional,
+ * ~50% de las trazas resultantes tienen un orden diferente al real.
  */
 @Aspect
 public class LinearizabilityMonitorAspect {
