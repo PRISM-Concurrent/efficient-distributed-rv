@@ -387,7 +387,7 @@ deques (10–40%).
 
 The performance scaling and accuracy gaps detailed in the tables above are visually synthesized in the following figure.
 
-[[file:fig_benchmark.pdf]]
+[[file:fig_benchmark.svg]]
 
 ___
 
