@@ -8,23 +8,29 @@ import org.aspectj.lang.reflect.MethodSignature;
 import java.util.Arrays;
 
 /**
- * Instrumentación estilo El-Hokayem & Falcone (RV 2018).
- *
- * Usa @AfterReturning sobre Method.invoke dentro de A.apply().
- * El evento es capturado después de que la operación retorna, por lo
- * que el intervalo entre el inicio real de la operación y la captura
- * del evento no es atómico: puede ocurrir un context switch durante
- * ese intervalo y provocar que la traza capturada difiera del orden
- * real de ejecución.
- *
- * El paper demuestra empíricamente que, sin sincronización adicional,
- * ~50% de las trazas resultantes tienen un orden diferente al real.
+ * Instrumentation style based on El-Hokayem & Falcone (RV 2018).
+ * * This aspect uses @AfterReturning to intercept Method.invoke calls within A.apply().
+ * The event is captured only after the operation has returned. Consequently, the 
+ * interval between the actual execution of the operation and the event capture 
+ * is not atomic: a context switch can occur during this gap, causing the 
+ * captured trace to potentially differ from the real-time execution order.
+ * * The original paper empirically demonstrates that, without additional 
+ * synchronization, approximately 50% of the resulting traces might exhibit 
+ * an order that does not match the actual execution (Variant 2).
  */
 @Aspect
 public class LinearizabilityMonitorAspect {
 
+    /** Global flag to enable or disable trace collection during experiments. */
     public static volatile boolean ACTIVE = false;
 
+    /**
+     * Advice that intercepts reflective method calls to the target algorithm.
+     * * The pointcut targets Method.invoke within the A API class, specifically 
+     * capturing the returned object.
+     * * @param jp The JoinPoint providing metadata about the reflective call.
+     * @param result The object returned by the invoked method.
+     */
     @AfterReturning(
         pointcut = "call(* java.lang.reflect.Method.invoke(..)) && within(phd.distributed.api.A)",
         returning = "result"
@@ -33,22 +39,26 @@ public class LinearizabilityMonitorAspect {
 
         if (!ACTIVE) return;
 
+        // Retrieve the logical TID stored in the Snapshot thread-local.
         int tid = NativeAspectJSnapshot.getCurrentLogicalTid();
         if (tid == -1) return;
 
-        // Extraer nombre del método
+        // Extract the name of the method being invoked reflectively.
         String methodName = ((java.lang.reflect.Method) jp.getTarget()).getName();
 
-        // Extraer argumento — igual que antes, del JoinPoint
+        // Extract the arguments from the JoinPoint metadata.
+        // In Method.invoke(target, args[]), the actual arguments are in the second position.
         Object[] callArgs  = jp.getArgs();
         Object[] actualArgs = (callArgs.length > 1 && callArgs[1] instanceof Object[])
                 ? (Object[]) callArgs[1]
                 : new Object[0];
 
+        // Format the argument for the trace: 
+        // null if empty, the object itself if singular, or a list if multiple arguments exist.
         Object rawArg = actualArgs.length == 0 ? null
                 : (actualArgs.length == 1 ? actualArgs[0] : Arrays.asList(actualArgs));
 
-        // Un solo evento que contiene todo: arg + result
+        // Log a single operation event containing both the input (arg) and output (result).
         NativeTraceCollector.logOperation(tid, methodName, rawArg, result);
     }
 }

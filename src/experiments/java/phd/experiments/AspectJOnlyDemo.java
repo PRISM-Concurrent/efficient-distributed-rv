@@ -14,22 +14,20 @@ import phd.experiments.aspectj.NativeTraceCollector;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Demo reproduciendo el experimento de El-Hokayem & Falcone (RV 2018).
+ * Demo reproducing the experiment by El-Hokayem & Falcone (RV 2018).
  *
- * Diferencia clave respecto al demo con @Around:
- * aquí no hay garantía de que la traza capturada refleje el orden real.
- * El experimento corre N veces para estimar la tasa de discrepancia,
- * igual que la Tabla de la slide 12 (10,000 ejecuciones, Variant 2).
+ * here there is no guarantee that the captured trace reflects the actual order.
+ * The experiment runs N times to estimate the discrepancy rate.
  */
 public class AspectJOnlyDemo {
 
     private static final int OPERATIONS = 40;
     private static final int THREADS    = 4;
-    private static final int RUNS       = 100; // para estimar tasa de discrepancia
+    private static final int RUNS       = 100; // to estimate discrepancy rate
 
     public static void main(String[] args) {
         System.out.println("╔════════════════════════════════════════════════════════════╗");
-        System.out.println("║  AspectJ Before/After — Estilo El-Hokayem & Falcone        ║");
+        System.out.println("║  AspectJ Before/After — El-Hokayem & Falcone Style         ║");
         System.out.println("╚════════════════════════════════════════════════════════════╝");
         System.out.printf("Threads: %d | Ops: %d | Runs: %d%n%n", THREADS, OPERATIONS, RUNS);
 
@@ -46,14 +44,14 @@ public class AspectJOnlyDemo {
             totalVerMs += r.verTimeMs;
         }
 
-        System.out.println("\n=== Resumen (" + RUNS + " runs) ===");
+        System.out.println("\n=== Summary (" + RUNS + " runs) ===");
         System.out.printf("Linearizable     : %d (%.1f%%)%n", linearizable,    100.0 * linearizable / RUNS);
-        System.out.printf("No linearizable  : %d (%.1f%%)%n", notLinearizable, 100.0 * notLinearizable / RUNS);
-        System.out.printf("Verifier promedio: %.1f ms%n", (double) totalVerMs / RUNS);
+        System.out.printf("Non-linearizable : %d (%.1f%%)%n", notLinearizable, 100.0 * notLinearizable / RUNS);
+        System.out.printf("Average Verifier : %.1f ms%n", (double) totalVerMs / RUNS);
         System.out.println();
-        System.out.println("Referencia paper (Variant 2, 2 consumers, 10k runs):");
+        System.out.println("Paper reference (Variant 2, 2 consumers, 10k runs):");
         System.out.println("  → JMOP: 1.28% true | 92.20% false | 6.52% timeout");
-        System.out.println("  → Comparar con tus números de arriba.");
+        System.out.println("  → Compare with your numbers above.");
     }
 
     private static RunResult runOnce(AlgConfig config) {

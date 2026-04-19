@@ -15,39 +15,52 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * VerifierBenchmark is a comprehensive evaluation suite designed to analyze 
+ * the performance and reliability of linearizability verification.
+ * * It focuses on three main metrics:
+ * 1. Instrumentation Overhead (Table C): Measures the cost of capturing traces using
+ * different techniques (GAI, RAW, and AspectJ).
+ * 2. Verdict Accuracy (Table D): Assesses the verifier's ability to correctly identify
+ * linearizable vs. non-linearizable executions across different levels of concurrency.
+ * 3. Cross-Implementation Validation (Table E): Tests the verifier against a wide range 
+ * of standard JDK concurrent collections and specifically designed "broken" implementations.
+ * * The benchmarking methodology (warmup and measurement phases) follows the guidelines 
+ * proposed by Georges et al. (OOPSLA 2007).
+ */
 public class VerifierBenchmark {
 
-    // ── Parámetros Georges et al. ─────────────────────────────────────────
+    // ── Georges et al. Parameters ─────────────────────────────────────────
     static final int WARMUP_ROUNDS   = 5;
     static final int MEASURED_ROUNDS = 10;
 
-    // ── Parámetros Table C ────────────────────────────────────────────────
+    // ── Table C Parameters (Overhead Sweep) ────────────────────────────────
     static final int[] OPERATIONS_SWEEP = {
         100, 500, 1_000, 5_000, 10_000, 50_000, 100_000
     };
     static final int[] THREADS_SWEEP_C = { 2, 4, 8, 16, 32, 64 };
 
-    // ── Parámetros Table D ────────────────────────────────────────────────
+    // ── Table D Parameters (Verdict Accuracy) ──────────────────────────────
     static final int   VERDICT_OPS     = 50;
     static final int   VERDICT_RUNS    = 100;
     static final int[] THREADS_VERDICT = { 2, 4, 8, 16, 32, 64 };
 
-    // ── Parámetros Table E ────────────────────────────────────────────────
+    // ── Table E Parameters (Implementation Diversity) ──────────────────────
     static final int TABLE_E_OPS     = 30;
     static final int TABLE_E_RUNS    = 10;
     static final int TABLE_E_THREADS = 4;
 
-    // ── Algoritmo principal ───────────────────────────────────────────────
+    // ── Main Algorithm Configuration ──────────────────────────────────────
     static final String   ALG_CLASS = "java.util.concurrent.ConcurrentLinkedQueue";
     static final String   ALG_TYPE  = "queue";
     static final String[] METHODS   = { "offer", "poll" };
 
-    // ── Algoritmos para Table E ───────────────────────────────────────────
+    // ── Algorithm Suite for Table E ────────────────────────────────────────
     record AlgConfig(String name, String clazz, String type,
                      boolean expectedLinearizable, String... methods) {}
 
     static final AlgConfig[] TABLE_E_ALGORITHMS = {
-        // Implementaciones correctas
+        // Correct implementations
         new AlgConfig("ConcurrentLinkedQueue",  "java.util.concurrent.ConcurrentLinkedQueue",
                       "queue",  true,  "offer", "poll"),
         new AlgConfig("LinkedBlockingQueue",    "java.util.concurrent.LinkedBlockingQueue",
@@ -64,7 +77,7 @@ public class VerifierBenchmark {
                       "map",    true,  "put", "get", "remove"),
         new AlgConfig("ConcurrentSkipListMap",  "java.util.concurrent.ConcurrentSkipListMap",
                       "map",    true,  "put", "get", "remove"),
-        // Implementaciones incorrectas
+        // Incorrect/Broken implementations
         new AlgConfig("BrokenQueue",            "phd.distributed.verifier.BrokenQueue",
                       "queue",  false, "offer", "poll"),
         new AlgConfig("NonLinearizableQueue",   "phd.distributed.verifier.NonLinearizableQueue",
@@ -74,7 +87,7 @@ public class VerifierBenchmark {
 
     enum SnapType { GAIsnap, RAWsnap, AspectJ }
 
-    // ── Records de resultados ─────────────────────────────────────────────
+    // ── Result Records ─────────────────────────────────────────────────────
     record ResultsC(long[][][] gai, long[][][] raw, long[][][] aj) {}
     record ResultsD(VerdictStats[] gai, VerdictStats[] raw, VerdictStats[] aj) {}
     record ResultsE(TableERow[] rows) {}
@@ -118,7 +131,7 @@ public class VerifierBenchmark {
         String[] dMethods = METHODS;
 
         if (broken) System.out.println(
-            "  Mode: BROKEN implementation (expected: NOT linearizable)\n");
+            "  Mode: BROKEN implementation (expected result: NOT linearizable)\n");
 
         ResultsC rc = null;
         ResultsD rd = null;
@@ -132,10 +145,10 @@ public class VerifierBenchmark {
         writeReport(rc, rd, re, args);
     }
 
-    // ═════════════════════════════════════════════════════════════════════
-    //  TABLE C
-    // ═════════════════════════════════════════════════════════════════════
-
+    /**
+     * Executes Table C experiment to measure instrumentation overhead.
+     * Sweeps through different thread counts and operation volumes.
+     */
     static ResultsC runTableC() {
         int T = THREADS_SWEEP_C.length;
         int O = OPERATIONS_SWEEP.length;
@@ -198,10 +211,9 @@ public class VerifierBenchmark {
         } catch (Exception e) { return -1; }
     }
 
-    // ═════════════════════════════════════════════════════════════════════
-    //  TABLE D
-    // ═════════════════════════════════════════════════════════════════════
-
+    /**
+     * Executes Table D experiment to compare verdict accuracy across instrumentation types.
+     */
     static ResultsD runTableD() {
         return runTableDWith(ALG_CLASS, ALG_TYPE, METHODS);
     }
@@ -227,10 +239,6 @@ public class VerifierBenchmark {
         return new ResultsD(gai, raw, aj);
     }
 
-    static VerdictStats collectVerdicts(int threads, SnapType type) {
-        return collectVerdictsFor(threads, type, ALG_CLASS, ALG_TYPE, METHODS);
-    }
-
     static VerdictStats collectVerdictsFor(int threads, SnapType type,
                                             String algClass, String algType,
                                             String[] methods) {
@@ -243,10 +251,6 @@ public class VerifierBenchmark {
             else             falseC++;
         }
         return new VerdictStats(trueC, falseC, errorC);
-    }
-
-    static Boolean runFullPipeline(int threads, int ops, SnapType type) {
-        return runFullPipelineFor(threads, ops, type, ALG_CLASS, ALG_TYPE, METHODS);
     }
 
     static Boolean runFullPipelineFor(int threads, int ops, SnapType type,
@@ -281,10 +285,9 @@ public class VerifierBenchmark {
         } catch (Exception e) { return null; }
     }
 
-    // ═════════════════════════════════════════════════════════════════════
-    //  TABLE E — Todas las implementaciones, una corrida por celda
-    // ═════════════════════════════════════════════════════════════════════
-
+    /**
+     * Executes Table E experiment, validating all implementations in the algorithm suite.
+     */
     static ResultsE runTableE() {
         System.out.println("\n" + "═".repeat(80));
         System.out.printf("  Table E — All implementations  [threads=%d, ops=%d, runs=%d]%n",
@@ -322,9 +325,7 @@ public class VerifierBenchmark {
         return new VerdictStats(trueC, falseC, errorC);
     }
 
-    // ═════════════════════════════════════════════════════════════════════
-    //  REPORTE
-    // ═════════════════════════════════════════════════════════════════════
+    // ── Reporting ─────────────────────────────────────────────────────────
 
     static void writeReport(ResultsC rc, ResultsD rd, ResultsE re, String[] args) {
         ReportWriter.Format fmt = ReportWriter.parseFormat(args);
@@ -336,7 +337,7 @@ public class VerifierBenchmark {
         try {
             if (out.getParent() != null) Files.createDirectories(out.getParent());
         } catch (IOException e) {
-            System.err.println("ERROR creando directorio: " + e.getMessage());
+            System.err.println("ERROR creating directory: " + e.getMessage());
             return;
         }
 
@@ -353,7 +354,7 @@ public class VerifierBenchmark {
                                System.getProperty("java.version"));
             w.blank();
 
-            // Table C
+            // Table C Report
             if (rc != null) {
                 for (int ti = 0; ti < THREADS_SWEEP_C.length; ti++) {
                     int threads = THREADS_SWEEP_C[ti];
@@ -378,7 +379,7 @@ public class VerifierBenchmark {
                 }
             }
 
-            // Table D
+            // Table D Report
             if (rd != null) {
                 w.section("Table D — Verdict comparison (ops=" + VERDICT_OPS + ")");
                 w.text("Full pipeline. " + VERDICT_RUNS + " runs per cell. " +
@@ -401,7 +402,7 @@ public class VerifierBenchmark {
                 w.blank();
             }
 
-            // Table E
+            // Table E Report
             if (re != null) {
                 w.section("Table E — All implementations (threads=" + TABLE_E_THREADS +
                           ", ops=" + TABLE_E_OPS + ", runs=" + TABLE_E_RUNS + ")");
@@ -435,11 +436,6 @@ public class VerifierBenchmark {
 
     // ── Helpers ───────────────────────────────────────────────────────────
 
-    static DistAlgorithm buildAlgorithm() {
-        try { return new A(ALG_CLASS, METHODS); }
-        catch (Exception e) { return null; }
-    }
-
     static String fmtStats(long[] t) {
         long s=0, mn=Long.MAX_VALUE, mx=Long.MIN_VALUE; int n=0;
         for (long v:t) if(v>=0){s+=v; mn=Math.min(mn,v); mx=Math.max(mx,v); n++;}
@@ -457,7 +453,7 @@ public class VerifierBenchmark {
     static String parseArg(String[] args, String prefix) {
         for (String a : args) {
             if (a.equals(prefix))
-                return "phd.distributed.verifier.BrokenQueue"; // default si no tiene valor
+                return "phd.distributed.verifier.BrokenQueue"; // default if no value provided
             if (a.startsWith(prefix + "="))
                 return a.substring(prefix.length() + 1);
         }

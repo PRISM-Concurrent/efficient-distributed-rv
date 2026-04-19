@@ -1,0 +1,52 @@
+#+DATE: 2026-04-19 14:19
+#+OPTIONS: toc:nil num:nil
+
+#+TITLE: VerifierBenchmark — Instrumentation overhead + Verdict accuracy
+
+- Algorithm :: java.util.concurrent.ConcurrentLinkedQueue
+- Methodology :: Georges et al. (OOPSLA 2007)
+- Warmup runs :: 5
+- Measured runs :: 10
+- OS :: Mac OS X
+- CPUs :: 10
+- JVM :: Java HotSpot(TM) 64-Bit Server VM 21.0.2
+
+* Table C — Instrumentation overhead (threads=2)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=2
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 2 | 1 | 6 | 4 | 1 | 22 | 1 | 1 | 6 |
+| 500 | 27 | 22 | 51 | 23 | 19 | 28 | 18 | 12 | 23 |
+| 1000 | 50 | 46 | 60 | 48 | 41 | 57 | 38 | 30 | 52 |
+| 5000 | 249 | 234 | 261 | 258 | 239 | 269 | 181 | 171 | 195 |
+
+
+* Table C — Instrumentation overhead (threads=4)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=4
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 3 | 1 | 7 | 4 | 1 | 10 | 3 | 1 | 8 |
+| 500 | 21 | 18 | 27 | 23 | 18 | 29 | 20 | 17 | 40 |
+| 1000 | 48 | 38 | 73 | 47 | 40 | 53 | 38 | 31 | 49 |
+| 5000 | 240 | 218 | 258 | 238 | 227 | 262 | 191 | 178 | 229 |
+
+
+* Table C — Instrumentation overhead (threads=8)
+
+taskProducers() only. Format: mean / min / max (ms).
+
+#+CAPTION: Threads=8
+| Ops | GAIsnap mean | GAIsnap min | GAIsnap max | RAWsnap mean | RAWsnap min | RAWsnap max | AspectJ mean | AspectJ min | AspectJ max |
+|-+----+----+----+----+----+----+----+----+-----|
+| 100 | 5 | 1 | 16 | 3 | 1 | 10 | 4 | 1 | 8 |
+| 500 | 23 | 20 | 31 | 24 | 15 | 41 | 18 | 15 | 25 |
+| 1000 | 46 | 41 | 59 | 49 | 39 | 74 | 38 | 31 | 48 |
+| 5000 | 247 | 218 | 275 | 242 | 234 | 259 | 199 | 186 | 221 |
+
+

@@ -27,7 +27,7 @@
   nil)
 
 ;; ============================================================
-;; 1. Escribir invocaciones y respuestas
+;; 1. Write invs and resp
 ;; ============================================================
 
 (defn log-invoke!
@@ -66,7 +66,7 @@
    Estructura:
    {:type :return, :op-id ..., :tid ..., :res ..., :view snapshot}"
   [tid op-id res]
-  ;; snapshot = copia inmutable de las invocaciones de todos los hilos
+  ;; snapshot = inmmutable copy of all invocations written
   (let [snapshot (->> (seq invs-var)
                       (mapv vec))
         event    {:type :return
@@ -80,7 +80,7 @@
     nil))
     
 ;; ============================================================
-;; 2. Helpers para agrupar por op-id
+;; 2. Helpers for every op-id
 ;; ============================================================
 
 (defn all-invs
@@ -175,7 +175,7 @@
       (vec (concat edges-own edges-ac edges-view)))))
 
 ;; ============================================================
-;; 4. Orden topológico sobre eventos
+;; 4. Topological sort over events
 ;; ============================================================
 
 (defn topo-order-events
