@@ -51,7 +51,7 @@ verification:
 This guide focuses on the *instrumentation* and *monitoring* layers for
 linearizability.
 
-[[file:systemArquitecture.svg]]
+[[file:systemArchitecture.svg]]
 
 ** Instrumentation: Wrappers (Happens-before detection objects)
 
@@ -483,48 +483,3 @@ VerificationResult result = VerificationFramework
 - Always specify =objectType= and =withMethods(...)=.
 - Use workloads for realism and schedules for debugging.
 - Use timeouts for large executions.
-
-
----
-
-### 3.3 Snapshot Strategies
-
-| | `CollectFAInc` (GAIsnap) | `CollectRAW` (RAWsnap) |
-|---|---|---|
-| Counter mechanism | `AtomicInteger.getAndIncrement()` | None |
-| Order imposed | Total (by counter value) | Partial (by view containment) |
-| Clojure namespace | `logtAs` | `logrAw` |
-| SWMR guarantee | Each slot `i` written only by thread `i` | Same |
-| Happens-before | `awaitTermination()` after all producers | Same |
-
-Both strategies satisfy the SWMR discipline: the ArrayList holding per-thread
-event logs is pre-allocated with one slot per process, and each thread writes
-exclusively to its own slot. The verifier reads all slots only after
-`awaitTermination()`, which establishes happens-before by the Java Memory Model.
-
-### 3.4 Package Structure
-
-```
-src/
-├── main/
-│   ├── java/phd/distributed/
-│   │   ├── api/           ← VerificationFramework, DistAlgorithm, A, AlgorithmLibrary
-│   │   ├── core/          ← Executioner, Wrapper, Verifier, JitLinChecker
-│   │   ├── snapshot/      ← Snapshot (abstract), CollectFAInc, CollectRAW
-│   │   └── datamodel/     ← OperationCall, MethodInf, Event
-│   └── clojure/
-│       ├── logtAs.clj     ← per-thread event log for GAIsnap
-│       ├── logrAw.clj     ← per-thread event log for RAWsnap
-│       ├── jitlin.clj     ← JIT-Lin DFS checker
-│       └── typelin.clj    ← sequential specifications (queue, deque, set, map)
-└── experiments/
-    └── java/phd/experiments/
-        ├── BatchComparison.java       ← end-to-end strategy comparison
-        ├── ProducersBenchmark.java    ← instrumentation-only overhead benchmark
-        └── aspectj/
-            ├── AspectJSnapshot.java              ← collect via bytecode interception
-            └── LinearizabilityMonitorAspect.java ← AspectJ advice for A.apply()
-```
-
----
-

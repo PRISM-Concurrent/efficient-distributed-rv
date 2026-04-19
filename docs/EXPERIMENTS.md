@@ -383,6 +383,13 @@ all implementations; AspectJ FAIL on `ConcurrentHashMap` and
 deques (10–40%).
 
 ---
+## Visual Summary
+
+The performance scaling and accuracy gaps detailed in the tables above are visually synthesized in the following figure.
+
+[[file:fig_benchmark.pdf]]
+
+___
 
 ## Additional Examples
 
