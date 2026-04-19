@@ -1,0 +1,134 @@
+@startuml
+package "ox.cads.testing" {
+
+  ' ==== Jerarquía de Solvers ====
+  abstract class Solver {
+    + solve(events : Array<Event>) : Int
+    + interrupt() : Unit
+    # <<volatile>> interrupted : Boolean
+  }
+
+  abstract class GenericSolver {
+    + solve(events : Array<Event>) : Int
+    + interrupt() : Unit
+    # <<volatile>> interrupted : Boolean
+  }
+
+  class JITLinUndoTester {
+    -- Fábricas de eventos --
+    + mkInvoke : LLInvokeEvent
+    + mkReturn : LLReturnEvent
+
+    -- Estado general --
+    - events : Array<Event>
+    - config : UndoConfig
+    - ThreadState
+    - maxReached : Int
+    - maxReachedFor : Array<Int>
+    - allowedResults : Array<ArrayBuffer<Any>>
+
+    -- Algoritmo recursivo --
+    - solveRec(es : Array<Event>) : Int
+    - debug(events : Array<Event>) : Unit
+    - solve(i : Int) : Int
+    - fireOthersThen(t : Int, i : Int) : Int
+    - next(t : Int, t1 : Int) : Int
+
+    -- Algoritmo iterativo --
+    + solve(es : Array<Event>) : Int
+
+    .. Clases internas (DFS iterativo) ..
+    {abstract} StackObject
+    Solve
+    Uninvoke
+    FireOthersThen
+    UndoFireOthers
+
+    -- Constructor --
+    + <<ctor>>(seqObj : Undoable, p : Int, maxSize : Long = -1, verbose : Boolean = false)
+  }
+
+  ' ==== Eventos ====
+  class Event
+  class InvokeEvent
+  class ReturnEvent {
+    + threadId : Int
+    + result : Any
+  }
+  class LLInvokeEvent
+  class LLReturnEvent
+
+  Event <|-- InvokeEvent
+  Event <|-- ReturnEvent
+  Event <|-- LLInvokeEvent
+  Event <|-- LLReturnEvent
+
+  ' ==== Configuración (UndoConfig) ====
+  class UndoConfig {
+    - tStates : Array<ThreadState>
+    + invoke(t:Int, msg:String, op:Function, result:Any) : Unit
+    + uninvoke(t:Int, msg:String, op:Function, result:Any) : Unit
+    + fire(t:Int) : Either
+    + fireRet(t:Int) : Either
+    + hasPending(t:Int) : Boolean
+    + canReturn(t:Int) : Boolean
+    + doReturn(t:Int) : ThreadState
+    + undo(t:Int, prev:ThreadState) : Unit
+  }
+
+  abstract class ThreadState
+  class Pending {
+    + msg : String
+    + op : Function
+    + result : Any
+  }
+  class Ret {
+    + res : Any
+  }
+  class Out
+
+  ThreadState <|-- Pending
+  ThreadState <|-- Ret
+  ThreadState <|-- Out
+
+  UndoConfig o-- ThreadState : "maneja estados"
+
+  ' ==== Dependencias ====
+  Solver <|-- GenericSolver
+  GenericSolver <|-- JITLinUndoTester
+  JITLinUndoTester --> UndoConfig : "usa para simular/retroceder"
+  JITLinUndoTester ..> LLInvokeEvent : "fabrica eventos (mkInvoke)"
+  JITLinUndoTester ..> LLReturnEvent : "fabrica eventos (mkReturn)"
+  JITLinUndoTester ..> ReturnEvent : "lee t y resultado"
+
+  ' ==== Librerías externas ====
+  package "ox.cads.util" {
+    class Profiler
+  }
+  JITLinUndoTester ..> Profiler : "conteos/tiempos (opcional)"
+
+  package "scala.collection.mutable" {
+    class ArrayBuffer
+    class Undoable
+  }
+  JITLinUndoTester ..> ArrayBuffer : "usa para allowedResults"
+  UndoConfig ..> Undoable : "secuencia secuencial con undo"
+  
+  ' ==== Notas para genéricos ====
+  note right of Solver
+    Solver<E extends Event>
+  end note
+
+  note right of GenericSolver
+    GenericSolver<S, E extends Event>
+  end note
+
+  note right of JITLinUndoTester
+    JITLinUndoTester<S extends scala.collection.mutable.Undoable>
+  end note
+
+  note right of UndoConfig
+    UndoConfig<S extends scala.collection.mutable.Undoable>
+  end note
+}
+@enduml

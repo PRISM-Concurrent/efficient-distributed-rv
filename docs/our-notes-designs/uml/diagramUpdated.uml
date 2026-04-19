@@ -1,0 +1,153 @@
+@startuml diagramUpdated
+  top to bottom direction
+  allow_mixing
+
+  package "High-level API" {
+
+    ' =========================
+    ' Core API
+    ' =========================
+    interface DistAlgorithm {
+        + List<MethodInf> methods()
+        + Object apply(Method method, Object... args)
+    }
+
+    class OperationCall {
+        - Object args
+        - MethodInf method
+        + OperationCall(Object args, MethodInf method)
+        + Object args()
+        + String argsAsString()
+        + MethodInf method()
+        + String toString()
+    }
+
+    ' =========================
+    ' Snapshot layer
+    ' =========================
+
+    class Executioner {
+        + int processes
+        + int totalOps
+        - String objectType
+        - Snapshot c
+        - DistAlgorithm A
+        - Verifier verifier
+        - Wrapper wrapper
+        - long verifierNanos
+        + Executioner(int processes, int totalOps,
+                      DistAlgorithm A, String objectType,
+                      String snapType)
+        + void taskProducers()
+        + void taskProducersSeed(List<OperationCall> ops)
+        + boolean taskVerifiers()
+    }
+
+
+    ' =========================
+    ' High-level API facade
+    ' =========================
+    class VerificationFramework {
+        + static VerificationBuilder verify(Class<?> algorithmClass)
+        + static VerificationBuilder verify(String className)
+        + static VerificationBuilder verify(Object instance)
+    }
+
+    class VerificationBuilder {
+        - Class<?> algorithmClass
+        - int threads
+        - String snapType
+        - int operations
+        - Duration timeout
+        - Long seed
+        - WorkloadPattern workload
+        - List<OperationCall> fixedSchedule
+        - String objectType
+        - String[] methods
+        + VerificationResult run()
+        + CompletableFuture<VerificationResult> runAsync()
+        .. fluent setters ..
+    }
+    
+    class WorkloadPattern {
+        - operations : int
+        - threads : int
+        - random : Random
+        - producerRatio : double
+        - type : PatternType
+        --
+        + static uniform(operations : int) : WorkloadPattern
+        + static uniform(operations : int, threads : int) : WorkloadPattern
+        + static producerConsumer(operations : int, threads : int, producerRatio : double) : WorkloadPattern
+        + static readHeavy(operations : int, threads : int, readRatio : double) : WorkloadPattern
+        + static writeHeavy(operations : int, threads : int, writeRatio : double) : WorkloadPattern
+        + static withSeed(operations : int, threads : int, seed : long) : WorkloadPattern
+        --
+        + generateOperations(alg : DistAlgorithm, objectType : String) : List<OperationCall>
+        + getOperations() : int
+        + getThreads() : int
+    }
+
+    ' =========================
+    ' Resultados de verificación
+    ' =========================
+
+    class VerificationResult {
+        - correct : boolean
+        - executionTime : Duration
+        - violations : List<Violation>
+        - statistics : ExecutionStatistics
+        --
+        + VerificationResult(correct : boolean,
+                            executionTime : Duration,
+                            violations : List<Violation>,
+                            statistics : ExecutionStatistics)
+        + isCorrect() : boolean
+        + isLinearizable() : boolean
+        + getExecutionTime() : Duration
+        + getViolations() : List<Violation>
+        + getStatistics() : ExecutionStatistics
+    }
+
+    class Violation {
+        - description : String
+        - trace : String
+        + Violation(description : String, trace : String)
+        + getDescription() : String
+        + getTrace() : String
+    }
+
+    class ExecutionStatistics {
+        - totalOperations : long
+        - eventsProcessed : long
+        + ExecutionStatistics(totalOperations : long,
+                            eventsProcessed : long)
+        + getTotalOperations() : long
+        + getEventsProcessed() : long
+    }
+
+    VerificationResult *-- Violation
+    VerificationResult *-- ExecutionStatistics
+
+
+    ' =========================
+    ' Relationships
+    ' =========================
+
+    ' Capa de alto nivel
+    VerificationFramework ..> VerificationResult : returns
+    VerificationBuilder ..> VerificationResult : run()/runAsync()
+
+    ' Capa de ejecución y workload
+    VerificationBuilder --> WorkloadPattern : «has» workload
+    VerificationBuilder ..> Executioner : builds
+    WorkloadPattern --> OperationCall : generates
+    Executioner --> OperationCall : consumes
+
+    ' Estadísticas derivadas de la ejecución
+    Executioner ..> ExecutionStatistics : «fills stats»
+    Verifier ..> Violation : «may create\nviolations»
+
+  }
+
+@enduml

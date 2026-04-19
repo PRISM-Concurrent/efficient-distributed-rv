@@ -1,0 +1,195 @@
+#+begin_src bash
+cd /Users/mangelpa/src/personal/rv_collects/code/efficient-distributed-rv && mvn compile -q && java -cp "target/classes:$(mvn dependency:build-classpath -q -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout)" ImprovedDetectionExample 2>&1 | grep -v "INFO\|Batch\|Thread\|Invoking\|going to\|execute\|obtained" | head -60
+#+end_src
+
+Help me to identify the current features available in this project. I want to
+work in improve the structure of the project and remove changes not
+utilized. Also, I'm working to present the current project as an artifact for
+the RV 2025 special issue, where I received an email with the requirements. I
+paste the requirements below, so, you can take these requirements as metrics the
+project must satisfy:
+
+
+cd /Users/mangelpa/src/personal/rv_collects/code/efficient-distributed-rv && mvn compile -q && java -cp "target/classes:$(mvn dependency:build-classpath -q -DincludeScope=runtime -Dmdep.outputFile=/dev/stdout)" ImprovedDetectionExample 2>&1 | grep -v "INFO\|Batch\|Thread\|Invoking\|going to\|execute\|obtained" | head -60
+#+end_src
+
+Help me to identify the current features available in this project. I want to
+work in improve the structure of the project and remove changes not
+utilized. Also, I'm working to present the current project as an artifact for
+the RV 2025 special issue, where I received an email with the requirements. I
+paste the requirements below, so, you can take these requirements as metrics the
+project must satisfy:
+
+
+Dear RV 2024 Authors,
+
+To make research on runtime verification reproducible, tool
+availability plays a crucial role. Therefore, we invite you to submit
+the software related to your RV'24 publication to a dedicated special
+issue. This provides other researchers with the means to reuse and
+advance the research results.
+
+Please submit your software artifact before
+
+  December 15, 2025
+
+on the web page of the Science of Computer Programming journal,
+choosing ‘VSI:RV24-software’ under the article type drop down menu:
+
+  https://www.editorialmanager.com/scico/default.aspx
+
+For more information, see the more detailed call below, as well as the website
+
+  https://www.sciencedirect.com/journal/science-of-computer-programming/about/call-for-software/research-software-from-the-runtime-verification-rv-conference-2024
+
+Best regards,
+Erika and Houssam
+RV'24 co-chairs and special issue editors
+
+-------
+
+Call for Submissions - RV 2024 Special Issue: Software Track
+
+
+Research software from the International Conference on Runtime
+Verification (RV) 2024
+
+
+Scope
+
+
+This special issue welcomes submissions from authors of research
+software that accompanied submissions to RV 2024.
+
+
+Runtime verification is concerned with the monitoring and analysis of
+the runtime behavior of software, hardware, and cyber-physical
+systems. Runtime verification techniques are crucial for system
+correctness, reliability, and robustness; they provide an additional
+level of rigor and effectiveness compared to conventional testing and
+are generally more practical than exhaustive formal verification.
+Runtime verification can be used prior to deployment for testing,
+verification, and debugging purposes, and after deployment for
+ensuring reliability, safety, and security and for providing fault
+containment and recovery as well as online system repair. Application
+areas of runtime verification include safety/mission-critical systems,
+enterprise and systems software, cloud and IoT systems, control
+systems, health management and diagnosis, and system security and
+privacy.
+
+The topics of the conference include, but are not limited to:
+
+specification languages for monitoring
+
+formal requirements elicitation, specification mining, and machine
+learning over runtime traces
+
+monitor construction techniques
+
+program instrumentation
+
+combination of static and dynamic analysis
+
+dynamic type checking and assurance cases
+
+monitoring techniques for concurrent and distributed systems
+
+runtime checking of privacy and security policies
+
+metrics and statistical information gathering
+
+fault localization, containment, resilience, recovery and repair
+
+monitoring of systems with learning-enabled components, including
+reinforcement learning
+
+runtime verification for autonomy and runtime assurance
+
+integrating the results of runtime monitoring with downstream tasks,
+especially metareasoning, control, fault recovery, and design
+modifications
+
+case studies of using RV in industrial settings, with lessons learned
+and challenges faced
+
+Application areas of runtime verification include cyber-physical
+systems, autonomous systems, safety/mission critical systems,
+enterprise and systems software, cloud systems, reactive control
+systems, health management and diagnosis systems, and system security
+and privacy.
+
+
+RV 2024 Software Tools Process
+
+
+The RV conference has a history of publishing new monitoring
+algorithms and theory in a wide variety of application domains, from
+software testing, hardware verification, Internet-of-Things, neural
+networks, and cyber-physical systems. Two key factors that RV
+emphasizes for any monitoring infrastructure are computational
+efficiency, and ease of integration with the system under monitoring.
+These two factors also affect the adoption of new RV methods by other
+researchers and practitioners.
+
+
+Evaluating worst-case computational complexity is only one element of
+performance evaluation -- the other is actual runtimes of the
+monitoring code. Thus it is necessary for researchers and
+practitioners to have access to the code or tool that implements the
+proposed RV method. Ease of use also requires the availability of
+code. Thus, the creation and dissemination of RV tools are necessary
+for advancing the state-of-the-art in runtime verification, and its
+adoption by practitioners.
+
+
+This Special Issue will solicit high-quality software that implements
+and otherwise demonstrates the scientific contributions made to RV
+2024. This includes, but is not limited to, monitoring software,
+specification tools, and benchmarks.
+
+Evaluation Commission Chairs:
+
+Erika Abraham - RWTH Aachen University, Germany
+
+Houssam Abbas - Oregon State University, USA
+
+
+Evaluation criteria for the RV 2024 Special Issue in the OSP track:
+
+Submissions to this Special Issue must consist of at least two
+artifacts: the software tool, and a user manual that explains how to
+use it. Submissions are invitation-only. They will be evaluated by an
+Evaluation Commission (at least 2 reviews per artifact) based on the
+following criteria:
+
+Originality and novelty. The software should not be formally published
+in its current form elsewhere. If comparable systems exist, the
+accompanying manual should explicitly point out in which aspects the
+submitted software is unique.
+
+Impact on the scientific process and significance within the scope of
+Science of Computer Programming. This may also involve educational
+aspects of programming or software engineering. Impact may also be
+described in the accompanying manuscript.
+
+Quality, completeness, and readability of the source code (if available).
+
+Availability, and ease to install and use. For a software system to be
+acceptable, external users should be able to install and use it,
+without problems. Moreover, it should not be just possible to start
+the software, but one should also be able to perform tasks for which
+the system was built.
+
+Good documentation: the user manual should explain how to obtain,
+install, and run the software on typical use cases.
+
+A high-quality submission will include some typical inputs or use
+cases on which to run the software, whenever applicable. Thus a
+monitoring tool submission will include typical traces, a
+specification tool will include some example requirements, etc.
+
+Timeline for the proposed special issue:
+
+Final Submission Deadline: December 15, 2025
+
+Editorial Acceptance Deadline: February 28, 2026

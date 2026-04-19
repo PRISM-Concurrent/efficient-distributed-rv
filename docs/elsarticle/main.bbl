@@ -1,0 +1,100 @@
+\begin{thebibliography}{16}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Bodden et~al.(2010)Bodden, Hendren, Lam, Lhot{\'{a}}k and Naeem}]{BHL10}
+\bibinfo{author}{Bodden, E.}, \bibinfo{author}{Hendren, L.}, \bibinfo{author}{Lam, P.}, \bibinfo{author}{Lhot{\'{a}}k, O.}, \bibinfo{author}{Naeem, N.A.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Collaborative runtime verification with tracematches}.
+\newblock \bibinfo{journal}{Journal of Logic and Computation} \bibinfo{volume}{20}, \bibinfo{pages}{707--723}.
+\newblock \DOIprefix\doi{10.1093/logcom/exn077}.
+%Type = Inproceedings
+\bibitem[{Casta\~{n}eda and Rodr\'{\i}guez(2023)}]{CR23}
+\bibinfo{author}{Casta\~{n}eda, A.}, \bibinfo{author}{Rodr\'{\i}guez, G.V.}, \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Asynchronous wait-free runtime verification and enforcement of linearizability}, in: \bibinfo{booktitle}{Proceedings of the 2023 ACM Symposium on Principles of Distributed Computing}, \bibinfo{publisher}{Association for Computing Machinery}, \bibinfo{address}{New York, NY, USA}. p. \bibinfo{pages}{90–101}.
+\newblock \URLprefix \url{https://doi.org/10.1145/3583668.3594563}, \DOIprefix\doi{10.1145/3583668.3594563}.
+%Type = Article
+\bibitem[{Casta\~{n}eda and Rodr\'{\i}guez(2026)}]{CR25_JACM}
+\bibinfo{author}{Casta\~{n}eda, A.}, \bibinfo{author}{Rodr\'{\i}guez, G.V.}, \bibinfo{year}{2026}.
+\newblock \bibinfo{title}{Asynchronous wait-free runtime verification and enforcement of linearizability}.
+\newblock \bibinfo{journal}{J. ACM} \bibinfo{volume}{73}.
+\newblock \URLprefix \url{https://doi.org/10.1145/3777409}, \DOIprefix\doi{10.1145/3777409}.
+%Type = Inproceedings
+\bibitem[{Chen and Ro\c{s}u(2005)}]{CR05}
+\bibinfo{author}{Chen, F.}, \bibinfo{author}{Ro\c{s}u, G.}, \bibinfo{year}{2005}.
+\newblock \bibinfo{title}{{Java-MOP}: {A} monitoring oriented programming environment for {Java}}, in: \bibinfo{booktitle}{Tools and Algorithms for the Construction and Analysis of Systems (TACAS)}, \bibinfo{publisher}{Springer}. pp. \bibinfo{pages}{546--550}.
+\newblock \DOIprefix\doi{10.1007/978-3-540-31980-1_36}.
+%Type = Inproceedings
+\bibitem[{Colombo et~al.(2009)Colombo, Pace and Schneider}]{CPS09}
+\bibinfo{author}{Colombo, C.}, \bibinfo{author}{Pace, G.J.}, \bibinfo{author}{Schneider, G.}, \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{{LARVA} --- {S}afer monitoring of real-time {Java} programs}, in: \bibinfo{booktitle}{7th IEEE International Conference on Software Engineering and Formal Methods (SEFM)}, \bibinfo{publisher}{IEEE Computer Society}. pp. \bibinfo{pages}{33--37}.
+\newblock \DOIprefix\doi{10.1109/SEFM.2009.13}.
+%Type = Inproceedings
+\bibitem[{El-Hokayem and Falcone(2018)}]{E-HF18}
+\bibinfo{author}{El-Hokayem, A.}, \bibinfo{author}{Falcone, Y.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Can we monitor all multithreaded programs?}, in: \bibinfo{editor}{Colombo, C.}, \bibinfo{editor}{Leucker, M.} (Eds.), \bibinfo{booktitle}{Runtime Verification}, \bibinfo{publisher}{Springer International Publishing}, \bibinfo{address}{Cham}. pp. \bibinfo{pages}{64--89}.
+%Type = Inproceedings
+\bibitem[{Georges et~al.(2007)Georges, Buytaert and Eeckhout}]{georges2007}
+\bibinfo{author}{Georges, A.}, \bibinfo{author}{Buytaert, D.}, \bibinfo{author}{Eeckhout, L.}, \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{Statistically rigorous {Java} performance evaluation}, in: \bibinfo{booktitle}{Proceedings of the 22nd Annual ACM SIGPLAN Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA)}, \bibinfo{publisher}{ACM}. pp. \bibinfo{pages}{57--76}.
+\newblock \DOIprefix\doi{10.1145/1297027.1297033}.
+%Type = Article
+\bibitem[{Gibbons and Korach(1997)}]{GK97}
+\bibinfo{author}{Gibbons, P.B.}, \bibinfo{author}{Korach, E.}, \bibinfo{year}{1997}.
+\newblock \bibinfo{title}{Testing shared memories}.
+\newblock \bibinfo{journal}{SIAM Journal on Computing} \bibinfo{volume}{26}, \bibinfo{pages}{1208--1244}.
+\newblock \DOIprefix\doi{10.1137/S0097539794279614}.
+%Type = Article
+\bibitem[{Havelund and Ro\c{s}u(2004)}]{HR04}
+\bibinfo{author}{Havelund, K.}, \bibinfo{author}{Ro\c{s}u, G.}, \bibinfo{year}{2004}.
+\newblock \bibinfo{title}{An overview of the runtime verification tool {Java} {PathExplorer}}.
+\newblock \bibinfo{journal}{Formal Methods in System Design} \bibinfo{volume}{24}, \bibinfo{pages}{189--215}.
+\newblock \DOIprefix\doi{10.1023/B:FORM.0000017721.39909.4b}.
+%Type = Article
+\bibitem[{Herlihy and Wing(1990)}]{HW90}
+\bibinfo{author}{Herlihy, M.P.}, \bibinfo{author}{Wing, J.M.}, \bibinfo{year}{1990}.
+\newblock \bibinfo{title}{Linearizability: a correctness condition for concurrent objects}.
+\newblock \bibinfo{journal}{ACM Trans. Program. Lang. Syst.} \bibinfo{volume}{12}, \bibinfo{pages}{463–492}.
+\newblock \URLprefix \url{https://doi.org/10.1145/78969.78972}, \DOIprefix\doi{10.1145/78969.78972}.
+%Type = Inproceedings
+\bibitem[{Huang et~al.(2014)Huang, Meredith and Ro\c{s}u}]{HMR14}
+\bibinfo{author}{Huang, J.}, \bibinfo{author}{Meredith, P.O.}, \bibinfo{author}{Ro\c{s}u, G.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{Maximal sound predictive race detection with control flow abstraction}, in: \bibinfo{booktitle}{Proceedings of the 35th ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI)}, \bibinfo{publisher}{ACM}. pp. \bibinfo{pages}{337--348}.
+\newblock \DOIprefix\doi{10.1145/2594291.2594315}.
+%Type = Article
+\bibitem[{Leucker and Schallhart(2009)}]{leucker2009}
+\bibinfo{author}{Leucker, M.}, \bibinfo{author}{Schallhart, C.}, \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{A brief account of runtime verification}.
+\newblock \bibinfo{journal}{Journal of Logic and Algebraic Programming} \bibinfo{volume}{78}, \bibinfo{pages}{293--303}.
+\newblock \DOIprefix\doi{10.1016/j.jlap.2008.08.004}.
+%Type = Incollection
+\bibitem[{Lourenço et~al.(2018)Lourenço, Fiedor, Křena and Vojnar}]{discoveringConcurrenterrors}
+\bibinfo{author}{Lourenço, J.M.}, \bibinfo{author}{Fiedor, J.}, \bibinfo{author}{Křena, B.}, \bibinfo{author}{Vojnar, T.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Discovering concurrency errors}, in: \bibinfo{booktitle}{Verification and Assurance of Concurrent Software}. \bibinfo{publisher}{Springer}. volume \bibinfo{volume}{10691} of \textit{\bibinfo{series}{Lecture Notes in Computer Science}}, pp. \bibinfo{pages}{34--82}.
+\newblock \DOIprefix\doi{10.1007/978-3-319-75632-5_2}.
+%Type = Article
+\bibitem[{Lowe(2017)}]{lowe2017}
+\bibinfo{author}{Lowe, G.}, \bibinfo{year}{2017}.
+\newblock \bibinfo{title}{Testing for linearizability}.
+\newblock \bibinfo{journal}{Concurrency and Computation: Practice and Experience} \bibinfo{volume}{29}, \bibinfo{pages}{e3928}.
+\newblock \DOIprefix\doi{https://doi.org/10.1002/cpe.3928}. \bibinfo{note}{e3928 cpe.3928}.
+%Type = Inproceedings
+\bibitem[{Rodr{\'i}guez and Casta{\~{n}}eda(2024)}]{RC24}
+\bibinfo{author}{Rodr{\'i}guez, G.V.}, \bibinfo{author}{Casta{\~{n}}eda, A.}, \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Towards efficient runtime verified linearizable algorithms}, in: \bibinfo{editor}{{\'A}brah{\'a}m, E.}, \bibinfo{editor}{Abbas, H.} (Eds.), \bibinfo{booktitle}{Runtime Verification}, \bibinfo{publisher}{Springer Nature Switzerland}, \bibinfo{address}{Cham}. pp. \bibinfo{pages}{262--281}.
+%Type = Techreport
+\bibitem[{Treiber(1986)}]{treiber}
+\bibinfo{author}{Treiber, R.K.}, \bibinfo{year}{1986}.
+\newblock \bibinfo{title}{Systems Programming: {C}oping with Parallelism}.
+\newblock \bibinfo{type}{Technical Report} \bibinfo{number}{RJ 5118}. IBM Almaden Research Center.
+
+\end{thebibliography}

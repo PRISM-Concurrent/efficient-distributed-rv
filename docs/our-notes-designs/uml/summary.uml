@@ -1,0 +1,70 @@
+@startuml summary
+top to bottom direction
+
+package "Verification API" {
+    class VerificationFramework
+    class VerificationBuilder
+    class VerificationResult
+    class WorkloadPattern
+}
+
+package "System Arquitecture" {
+    class Executioner
+    class OperationCall
+    class Wrapper
+    class Verifier
+    abstract class Snapshot
+    class CollectFAInc
+    class CollectRAW
+    interface DistAlgorithm
+    class A
+    class JitLinChecker
+    class MethodInf
+}
+
+package "Catalog & Config" {
+    class AlgorithmLibrary
+    class AlgorithmInfo
+
+    enum AlgorithmCategory {
+        QUEUES
+        DEQUES
+        SETS
+        MAPS
+    }
+}
+
+' Relaciones principales
+
+AlgorithmLibrary *-- AlgorithmInfo
+AlgorithmInfo --> AlgorithmCategory
+
+AlgorithmLibrary ..> VerificationFramework : choose\nimplementationClass
+VerificationFramework ..> VerificationBuilder : verify(...)
+VerificationFramework ..> VerificationResult : returns
+
+VerificationBuilder ..> WorkloadPattern
+VerificationBuilder ..> DistAlgorithm : builds A(implClass)
+VerificationBuilder ..> Executioner : builds
+VerificationBuilder ..> VerificationResult : run()
+
+WorkloadPattern --> OperationCall : generateOperations(...)
+Executioner --> OperationCall : consumes
+
+A ..|> DistAlgorithm
+
+Executioner --> Wrapper
+Executioner --> Verifier
+Executioner --> Snapshot
+Executioner --> DistAlgorithm
+
+Wrapper --> Snapshot
+Wrapper --> DistAlgorithm : apply()
+Snapshot <|-- CollectFAInc
+Snapshot <|-- CollectRAW
+OperationCall --> MethodInf
+
+Verifier --> Snapshot : buildXE()
+Verifier ..> JitLinChecker : checkLinearizable()
+
+@enduml

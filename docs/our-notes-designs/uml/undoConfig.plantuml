@@ -1,0 +1,14 @@
+@startuml
+[*] --> Out
+
+Out --> Pending : invoke(msg, op, result)
+Pending --> Out : uninvoke(msg, op, result)
+Pending --> Ret : fire(t) [result matches]
+Pending --> Out : fireRet(t) [result matches]
+Pending --> Pending : fire(t) [result mismatch → undo]
+
+Ret --> Out : doReturn(t)
+Ret --> Out : fireRet(t)
+Ret --> Ret : undo(t, prev=Ret)
+
+@enduml

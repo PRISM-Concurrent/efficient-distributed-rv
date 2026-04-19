@@ -1,0 +1,164 @@
+\documentclass[12pt]{article}
+
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+
+\begin{document}
+
+\section*{Pseudocode}
+
+% ----------------------------------------
+% Wrapper
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Wrapper}
+\KwData{Shared Snapshot c}
+\KwResult{Calls \texttt{DistAlgorithm} and save the invocation and
+response in the \texttt{Snapshot} using \texttt{write} and \texttt{snapshot}}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+\Fn{execute($op$, $param$)}{
+    \texttt{c.write(id,op(param))}\;
+    \texttt{response}=Execute $op(param)$ of \texttt{DistAlgorithm}\;
+    \texttt{c.snapshot(response)}\;
+    %\texttt{c.write(id,response)}\;
+    Return \texttt{response}\;
+}
+\end{algorithm}
+
+% ----------------------------------------
+% Verifier
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Verifier}
+\KwData{History of operations $X_E$, History in the snapshot $W_E$,
+Shared snapshot \texttt{c}, 
+DecisionAlgorithm \texttt{d}}
+\KwResult{Obtains the current execution written in the
+    snapshot and verifies if it is linearizable}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+\Fn{execute()}{
+    $W_E =$ \texttt{c.scanAll()} \;
+    $X_E =$ Obtain the well-formed execution\;
+    \texttt{boolean verdict} = \texttt{d.verify()}\;
+    Return \texttt{boolean verdict}\;
+}
+\end{algorithm}
+
+
+
+% ----------------------------------------
+% Abstract class Snapshot
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Abstract Class Snapshot}
+\KwData{Shared array of atomic registers}
+\KwResult{Provides \texttt{write}, \texttt{snapshot} 
+and \texttt{scanAll} operations}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+\Fn{write($id$, $event$)}{
+    Write $event$ to the position corresponding to $id$\;
+}
+
+\Fn{snapshot($response$)}{
+    Read the last event written in all registers, 
+    add the $response$ and return void\;
+}
+
+\Fn{scanAll()}{
+    Return all the operations written in the snapshot\;
+}
+\end{algorithm}
+
+% ----------------------------------------
+% Implementation: CollectSnapshot DAG
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Implementation: CollectSnapshotDAG}
+\KwData{SWMR Node with $n$ pointers}
+\KwResult{DAG of invocation and response events}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+\Fn{init($n$)}{
+    Create $n$ Nodes, one for each process\;
+}
+
+\Fn{write($id$, $event$)}{
+    Create Node($event$, $id$, $counter$)\;
+    Add Node\;
+}
+
+\Fn{snapshot(response)}{
+    Create Node($response$)\;
+    Add pointers to the last node of each process \;
+    Add Node\;
+}
+
+\Fn{scanAll()}{
+    Read the DAG using a topological sort to obtain a list\;
+}
+\end{algorithm}
+
+% ----------------------------------------
+% Implementation: CollectSnapshot FandINC
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Implementation: CollectSnapshotFAInc}
+\KwData{$n$ SWMR queues, Shared atomic counter $ts$}
+\KwResult{$n$ queues with every invocation and response
+event with a timestamp}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+
+\Fn{init($n$)}{
+    $ts$ is an atomic integer\;
+    Create $n$ SWMR queues, one for each process\;
+}
+
+\Fn{write($id$, $event$)}{
+    $i= ts.fetchAndInc()$\;
+    $queue[id].enq(i,event)$\;
+}
+
+\Fn{snapshot(response)}{
+    $i=ts.get()$\;
+    $queue[id].enq(i,response)$\;
+}
+
+\Fn{scanAll()}{
+    Read the Queues\;
+}
+\end{algorithm}
+
+% ----------------------------------------
+% Implementation: SnapshotWF (Wait-Free)
+% ----------------------------------------
+\begin{algorithm}[H]
+\caption{Implementation: SnapshotWF}
+\KwData{Shared registers with multi-version support}
+\KwResult{Wait-free snapshot}
+
+\SetKwProg{Fn}{Function}{:}{}
+
+\Fn{write($id$, $event$)}{
+    Write $event$ to the position corresponding to $id$\;
+}
+
+\Fn{snapshot($response$)}{
+    Read the last event written in all registers, 
+    add the $response$ and return void\;
+}
+
+\Fn{scanAll()}{
+    Return all the operations written in the snapshot\;
+}
+\end{algorithm}
+
+
+\end{document}

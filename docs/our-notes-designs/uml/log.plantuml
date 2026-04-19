@@ -1,0 +1,101 @@
+@startuml
+package "ox.cads.testing" {
+
+  ' ==== Log genérico ====
+  abstract class GenericLog {
+    + apply(threadId : Int) : GenericThreadLog
+    + getLog() : Array<Event>
+  }
+
+  class GenericLogObject {
+    {static} + type MkInvokeType
+    {static} + type MkReturnType
+  }
+
+  ' ==== ThreadLog genérico ====
+  abstract class GenericThreadLog {
+    + log(concOp : Function, message : String, seqOp : Function) : Unit
+    + apply(concOp : Function, message : String, seqOp : Function) : Unit
+  }
+
+  ' ==== SharedLog (basado en buffer compartido) ====
+  class SharedLog extends GenericLog {
+    - invocationsCount : Int
+    - concurrentObject : Any
+    - mkInvoke : MkInvokeType
+    - mkReturn : MkReturnType
+    - inQueue : BoundedBuffer<Event>
+    + apply(threadId : Int) : SharedThreadLog
+    + getLog() : Array<Event>
+  }
+
+  class SharedThreadLog extends GenericThreadLog {
+    + log(concOp : Function, message : String, seqOp : Function) : Unit
+  }
+
+  ' ==== TSLog (basado en timestamping) ====
+  class TSLog extends GenericLog {
+    - threadsCount : Int
+    - iterationsPerThread : Int
+    - concurrentObject : Any
+    - mkInvoke : MkInvokeType
+    - mkReturn : MkReturnType
+    - logs : Array<TSThreadLog>
+    + apply(threadId : Int) : TSThreadLog
+    + getLog() : Array<Event>
+  }
+
+  class TSThreadLog extends GenericThreadLog {
+    + log(concOp : Function, message : String, seqOp : Function) : Unit
+    + get() : Array<Event>
+  }
+
+  class TS {
+    {static} + merge(logs : Array<Array<Event>>) : Array<Event>
+  }
+
+  ' ==== Relaciones ====
+  GenericLog <|-- SharedLog
+  GenericLog <|-- TSLog
+
+  GenericThreadLog <|-- SharedThreadLog
+  GenericThreadLog <|-- TSThreadLog
+
+  SharedLog *-- SharedThreadLog : "per thread"
+  TSLog *-- TSThreadLog : "per thread"
+
+  SharedLog ..> BoundedBuffer : "usa"
+  SharedThreadLog ..> InvokeEvent : "crea"
+  SharedThreadLog ..> ReturnEvent : "crea"
+
+  TSLog ..> TS : "usa merge()"
+  TSThreadLog ..> InvokeEvent : "crea"
+  TSThreadLog ..> ReturnEvent : "crea"
+
+  ' ==== Notas para genéricos ====
+  note right of GenericLog
+    GenericLog<S, C>
+  end note
+
+  note right of GenericThreadLog
+    GenericThreadLog<S, C>
+  end note
+
+  note right of SharedLog
+    SharedLog<S, C>
+  end note
+
+  note right of SharedThreadLog
+    SharedThreadLog<S, C>
+  end note
+
+  note right of TSLog
+    TSLog<S, C>
+  end note
+
+  note right of TSThreadLog
+    TSThreadLog<S, C>
+  end note
+
+}
+@enduml

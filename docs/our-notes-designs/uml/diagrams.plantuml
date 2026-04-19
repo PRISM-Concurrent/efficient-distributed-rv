@@ -1,0 +1,95 @@
+@startuml diagrams
+  left to right direction
+  allow_mixing
+  package "Runtime_Verification (rv)" {
+          interface Dist_Algorithm {
+                  ' Algorithm A
+                  + Set<String> getAvailableMethods()
+          }
+          interface Decision_Algorithm {
+                  ' Algorithm D
+                  + Boolean verify()
+                  + Set<String> middleware()
+          }
+          class Event {
+                  - Object event
+                  - ThreadID id
+                  - LocalCounter counter
+                  + void Event(event,id,counter)
+          }
+          class Operations{
+                  ' Set of all invocations and responses in the snapshot
+                  - List<String> W_E
+          }
+          class Wrapper {
+                  ' Shared object
+                  - Snapshot c
+                  ' Algorithm A+ or A* (with collect or atomic snapshots)
+                  + Wrapper(Dist_Algorithm, Snapshot snapshot)
+                  ' Returns a response event
+                  + Event execute(String operation, Object... parameters)
+          }
+          class Verifier {
+                  ' Shared object
+                  - Snapshot c
+                  ' A+ should shared?
+                  + Verifier(Snapshot snapshot, Decision_Algorithm D)
+                  ' Here, processes read results from the snapshot
+                  void execute()
+          }
+          class Executioner {
+                  ' Shared object
+                  - Snapshot c
+                  + Executioner(Verifier verifier, Wrapper wrapper, Snapshot c)
+                  ' Each process use the same instance of Verifier or not?
+                  void execVerifier(int verifiers)
+                  void execWrapper(int producers)
+          }
+          abstract class Snapshot {
+                  ' A process writes an invocation or response event
+                  + void write(ThreadID id, Event value)
+                  ' A non-atomic snapshot is a collect
+                  + void snapshot(ThreadID id, Event Response)
+                  ' scanAll reads all events already written in the Snapshot                  
+                  + Set<Operations> scanAll()
+          }
+          class Collect_FetchAndInc {
+                  ' Shared object that uses fetch and inc
+                  - Atomic_Counter ts
+                  ' Shared object of SWMR sequential queues
+                  - Set<Sequential_Queue> queues
+                  ' A process writes an invocation or response event
+                  + void write(ThreadID id, Event value)
+                  ' A collect with timestamps
+                  + void snapshot(ThreadID id, Event response)
+                  ' scanAll reads all events already written in the Snapshot                  
+                  + Set<Operations> scanAll()
+          }
+          class Collect_DAG {
+                  ' Shared object, DAG of SWMR Nodes
+                  - DAG<Node> 
+                  ' A process writes an invocation or response event
+                  + void write(ThreadID id, Event value)
+                  ' A collect with timestamps
+                  + void snapshot(ThreadID id, Event response)
+                  ' scanAll reads all events already written in the Snapshot                  
+                  + Set<Operations> scanAll()
+          }
+          class Node {
+                  ' Shared object, DAG of SWMR Nodes
+                  - Node<Array> pointer_array
+                  ' A process writes an invocation or response event
+                  + void Node(Event value)
+                  + void Node(Event value, Node<Array> pointer_array)
+          }
+          Wrapper -> Dist_Algorithm
+          Wrapper -> Snapshot
+          Verifier -> Snapshot
+          Verifier -> Decision_Algorithm
+          Executioner -> Verifier
+          Executioner -> Wrapper
+          Collect_FetchAndInc --|> Snapshot
+          Collect_DAG --|> Snapshot
+          Collect_DAG -> Node
+  }
+@enduml

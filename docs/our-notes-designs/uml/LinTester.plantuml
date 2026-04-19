@@ -1,0 +1,75 @@
+@startuml LinTester
+skinparam classAttributeIconSize 0
+
+package "ox.cads.testing" {
+
+  ' ====== Tester principal ======
+  class LinearizabilityTester {
+    - mkLog : (MkInvokeType, MkReturnType) => GenericLog
+    - worker : WorkerType
+    - p : Int
+    - iters : Int
+    - concObj : Any
+    - seqObj : Any
+    - solver : GenericSolver
+    --
+    + apply() : Int
+  }
+
+  class LinearizabilityTesterObject <<companion>> {
+    {static} WorkerType
+    {static} mkLog(...)
+    {static} WGGraph(...)
+    {static} WGTree(...)
+    {static} JITTree(...)
+    {static} JITGraph(...)
+    {static} BFSJIT(...)
+  }
+
+  ' ====== Interfaces directas usadas ======
+  abstract class GenericLog {
+    + apply(threadId : Int) : GenericThreadLog
+    + getLog() : Array<Event>
+  }
+
+  abstract class GenericThreadLog {
+    + log(concOp : Function, message : String, seqOp : Function) : Unit
+    + apply(concOp : Function, message : String, seqOp : Function) : Unit
+  }
+
+  class Event
+  abstract class GenericSolver {
+    + solve(events : Array<Event>) : Int
+    + interrupt() : Unit
+  }
+
+  ' ====== Logs concretos usados en mkLog ======
+  class SharedLog
+  class TSLog
+  GenericLog <|-- SharedLog
+  GenericLog <|-- TSLog
+
+  ' ====== Solvers concretos usados en factory ======
+  class JITLinUndoTester
+  class WGGraph
+  class WGTree
+  class DFSGraphJITLinTester
+  class BFSJITLinTester
+
+  ' ====== Relaciones directas ======
+  LinearizabilityTester --> GenericLog : "usa para recolectar eventos"
+  LinearizabilityTester --> GenericThreadLog : "worker(i, log(i))"
+  LinearizabilityTester --> GenericSolver : "usa para decidir lin."
+  LinearizabilityTester ..> Event : "trabaja con historias"
+
+  LinearizabilityTesterObject ..> LinearizabilityTester : "fábrica"
+  LinearizabilityTesterObject ..> SharedLog
+  LinearizabilityTesterObject ..> TSLog
+  LinearizabilityTesterObject ..> JITLinUndoTester
+  LinearizabilityTesterObject ..> WGGraph
+  LinearizabilityTesterObject ..> WGTree
+  LinearizabilityTesterObject ..> DFSGraphJITLinTester
+  LinearizabilityTesterObject ..> BFSJITLinTester
+}
+
+@enduml
